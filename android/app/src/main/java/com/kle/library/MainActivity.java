@@ -1,4 +1,4 @@
-package com.kle_library;
+package com.kle.library;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
@@ -13,7 +13,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "kle_library";
+    return "KLE Library";
   }
 
   /**

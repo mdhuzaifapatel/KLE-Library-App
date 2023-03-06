@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface kle_libraryTests : XCTestCase
+@interface KLELibraryTests : XCTestCase
 
 @end
 
-@implementation kle_libraryTests
+@implementation KLELibraryTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

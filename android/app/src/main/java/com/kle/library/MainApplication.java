@@ -1,4 +1,4 @@
-package com.kle_library;
+package com.kle.library;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

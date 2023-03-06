@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.kle_library"
+    namespace "com.kle.library"
     defaultConfig {
-        applicationId "com.kle_library"
+        applicationId "com.kle.library"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
