@@ -21,7 +21,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'kle_library' do
+target 'KLELibrary' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -43,7 +43,7 @@ target 'kle_library' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'kle_libraryTests' do
+  target 'KLELibraryTests' do
     inherit! :complete
     # Pods for testing
   end
