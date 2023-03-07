@@ -31,7 +31,7 @@ const Login = ({navigation}) => {
           flex: 2,
           flexDirection: 'column',
           backgroundColor: '#fff',
-          paddingTop: 10,
+          paddingTop: 50,
           paddingHorizontal: '3%',
         }}>
         <View
@@ -42,7 +42,7 @@ const Login = ({navigation}) => {
           }}>
           <Text
             style={{
-              fontFamily: 'OpenSans-SemiBold',
+              fontFamily: 'BreezeSans-Bold',
               fontSize: 30,
               color: Colors.black,
             }}>
@@ -55,16 +55,15 @@ const Login = ({navigation}) => {
         </View>
         <Text
           style={{
-            fontFamily: 'OpenSans-Regular',
+            fontFamily: 'BreezeSans-Medium_20150728',
             fontSize: 14,
             paddingTop: 10,
             color: '#777',
           }}>
-          I am happy to see you again. You can continue where you left off by
-          logging in
+          You can continue where you left off by logging in
         </Text>
 
-        <View style={{flexDirection: 'column', paddingTop: 20}}>
+        <View style={{flexDirection: 'column', paddingTop: 50}}>
           <View
             style={{
               flexDirection: 'row',
@@ -76,13 +75,13 @@ const Login = ({navigation}) => {
               height: 60,
               paddingLeft: 20,
             }}>
-            <Icon name="envelope-o" size={22} color="#818181" />
+            <Icon name="user" size={22} color="#818181" />
             <TextInput
               onChangeText={text => {
                 setformData(prevState => ({...prevState, email: text}));
               }}
               style={styles.input}
-              placeholder="Enter Email"
+              placeholder="Enter your USN"
               placeholderTextColor="#818181"
             />
           </View>
@@ -115,10 +114,10 @@ const Login = ({navigation}) => {
             <Text
               style={{
                 fontSize: 17,
-                fontFamily: 'OpenSans-SemiBold',
+                fontFamily: 'BreezeSans-Medium_20150728',
                 color: '#818181',
                 alignSelf: 'flex-end',
-                paddingTop: 10,
+                paddingTop: 40,
               }}>
               Forgot Password?
             </Text>
@@ -227,7 +226,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: '100%',
     width: '90%',
-    fontFamily: 'OpenSans-Medium',
+    fontFamily: 'BreezeSans-Medium_20150728',
     paddingLeft: 20,
   },
   social_btn: {

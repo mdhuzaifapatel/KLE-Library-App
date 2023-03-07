@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const Buttons = ({on_press, btn_text}) => {
   return (
     <LinearGradient
-      colors={['#7826CF', '#8429D6','#962EDB']}
+      colors={['#2D97DA', '#2249D6']}
       style={{
         justifyContent: 'center',
         width: '95%',
@@ -20,7 +20,7 @@ const Buttons = ({on_press, btn_text}) => {
             letterSpacing: 1.5,
             textAlign: 'center',
             position: 'relative',
-            fontFamily: 'OpenSans-SemiBold',
+            fontFamily: 'BreezeSans-Medium_20150728',
             color: Colors.white,
           }}>
           {btn_text}

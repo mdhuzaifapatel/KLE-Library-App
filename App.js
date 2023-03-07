@@ -20,8 +20,8 @@ const App = () => {
         {/* <Stack.Screen name="Welcome" component={Welcome} /> */}
         {/* <Stack.Screen name="Onboarding" component={Onboarding} /> */}
 
-        {/* <Stack.Screen name="Splash" component={Splash} /> */}
-        {/* <Stack.Screen name="Login" component={Login} /> */}
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
 
         {/* <Stack.Screen name="Dashboard" component={Dashboard} /> */}
