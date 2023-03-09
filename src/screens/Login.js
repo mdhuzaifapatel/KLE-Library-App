@@ -7,11 +7,14 @@ import {
   StatusBar,
   Image,
   TextInput,
-  TouchableOpacity,
 } from 'react-native';
 import {Colors} from '../../src/constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Buttons from '../components/Buttons';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 const Login = ({navigation}) => {
   const [formData, setformData] = useState({
@@ -26,13 +29,13 @@ const Login = ({navigation}) => {
       {/* login form section */}
       <View
         style={{
-          marginTop: 100,
-          marginLeft: 10,
+          marginTop: hp('7%'),
+          marginLeft: wp('3%'),
           flex: 2,
           flexDirection: 'column',
           backgroundColor: '#fff',
-          paddingTop: 50,
-          paddingHorizontal: '3%',
+          paddingTop: hp('6%'),
+          paddingHorizontal: wp('3%'),
         }}>
         <View
           style={{
@@ -43,39 +46,40 @@ const Login = ({navigation}) => {
           <Text
             style={{
               fontFamily: 'BreezeSans-Bold',
-              fontSize: 30,
+              fontSize: hp('4%'),
+              // fontSize: 30,
               color: Colors.black,
             }}>
             Welcome Back
           </Text>
           <Image
             source={require('../assets/images/waving_hand.png')}
-            style={{width: 30, height: 30}}
+            style={{width: wp('7%'), height: hp('4%'), marginLeft: wp('2%')}}
           />
         </View>
         <Text
           style={{
             fontFamily: 'BreezeSans-Medium_20150728',
-            fontSize: 14,
-            paddingTop: 10,
+            fontSize: hp('2%'),
+            paddingTop: hp('1%'),
             color: '#777',
           }}>
           You can continue where you left off by logging in
         </Text>
 
-        <View style={{flexDirection: 'column', paddingTop: 50}}>
+        <View style={{flexDirection: 'column', paddingTop: hp('5%')}}>
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#ededed',
-              width: '95%',
-              borderRadius: 10,
-              height: 60,
-              paddingLeft: 20,
+              width: wp('86.5%'),
+              borderRadius: wp('3%'),
+              height: hp('6.8%'),
+              paddingLeft: wp('5%'),
             }}>
-            <Icon name="user" size={22} color="#818181" />
+            <Icon name="user" size={wp('5%')} color="#818181" />
             <TextInput
               onChangeText={text => {
                 setformData(prevState => ({...prevState, email: text}));
@@ -92,32 +96,36 @@ const Login = ({navigation}) => {
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#ededed',
-              width: '95%',
-              borderRadius: 10,
-              height: 60,
-              paddingLeft: 20,
-              marginTop: 20,
+              width: wp('86.5%'),
+              borderRadius: wp('3%'),
+              height: hp('6.8%'),
+              paddingLeft: wp('5%'),
+              marginTop: hp('2.3%'),
             }}>
-            <Icon name="lock" size={22} color="#818181" />
+            <Icon name="lock" size={wp('5.5%')} color="#818181" />
             <TextInput
               onChangeText={text => {
                 setformData(prevState => ({...prevState, password: text}));
               }}
               style={styles.input}
-              placeholder="Enter Password"
+              placeholder="Enter your Password"
               secureTextEntry={true}
               placeholderTextColor="#818181"
             />
           </View>
 
-          <View style={{width: '95%', marginBottom: 10}}>
+          <View
+            style={{
+              width: wp('85%'),
+              marginBottom: hp('1'),
+            }}>
             <Text
               style={{
-                fontSize: 17,
+                fontSize: hp('1.85%'),
                 fontFamily: 'BreezeSans-Medium_20150728',
                 color: '#818181',
                 alignSelf: 'flex-end',
-                paddingTop: 40,
+                paddingTop: hp('4.65%'),
               }}>
               Forgot Password?
             </Text>
@@ -224,24 +232,10 @@ export default Login;
 const styles = StyleSheet.create({
   input: {
     position: 'relative',
-    height: '100%',
-    width: '90%',
+    height: hp('100%'),
+    width: wp('76.5%'),
     fontFamily: 'BreezeSans-Medium_20150728',
-    paddingLeft: 20,
-  },
-  social_btn: {
-    height: 55,
-    width: '100%',
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#ddd',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  social_img: {
-    width: 25,
-    height: 25,
-    marginLeft: 15,
+    fontSize: wp('4%'),
+    paddingLeft: wp('6%'),
   },
 });

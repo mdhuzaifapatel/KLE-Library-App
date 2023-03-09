@@ -1,23 +1,27 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const Buttons = ({on_press, btn_text}) => {
   return (
     <LinearGradient
       colors={['#2D97DA', '#2249D6']}
       style={{
         justifyContent: 'center',
-        width: '95%',
+        width: wp('87%'),
         backgroundColor: '#1E80ED',
-        height: 50,
-        marginBottom: 30,
-        borderRadius: 10,
+        height: hp('6%'),
+        // marginBottom: hp('21%'),
+        borderRadius: wp('3%'),
       }}>
       <TouchableOpacity onPress={on_press}>
         <Text
           style={{
-            fontSize: 15,
-            letterSpacing: 1.5,
+            fontSize: hp('2%'),
+            letterSpacing: wp('0.2%'),
             textAlign: 'center',
             position: 'relative',
             fontFamily: 'BreezeSans-Medium_20150728',

@@ -1,39 +1,47 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Touchable} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Search, Dashboard, Welcome, Profile} from '../screens';
+import {Search, Dashboard, Welcome, Profile, CustomDrawer} from '../screens';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors } from '../constants';
+import {Colors} from '../constants';
 
+
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 const Tab = createBottomTabNavigator();
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
+    // Bottom Tab
+
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          marginTop: '2%',
-          height: 55,
+          marginTop: hp('2%'),
+          height: hp('6.2%'),
           ...styles.shadow,
         },
         tabBarShowLabel: false,
       }}>
+      {/* Home Button */}
       <Tab.Screen
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
               <Icon
                 name={focused ? 'home' : 'home-outline'}
-                size={23}
-                color={focused ? '#fff' : '#ffffff80'}
+                size={wp('5%')}
+                color={focused ? '#002757' : '#00709c'}
               />
               <Text
                 style={{
-                  color: focused ? '#fff' : '#ffffff80',
-                  fontFamily: 'Roboto-Bold',
-                  fontSize: 10,
+                  color: focused ? '#002757' : '#00709c',
+                  fontFamily: 'BreezeSans-Medium_20150728',
+                  fontSize: wp('2.5%'),
                 }}>
                 Dashboard
               </Text>
@@ -44,20 +52,22 @@ const Home = () => {
         component={Dashboard}
       />
 
-<Tab.Screen
+      {/* Search Button */}
+      <Tab.Screen
         options={{
           tabBarIcon: ({focused}) => (
             <View>
               <Icon
                 name={focused ? 'search' : 'search-outline'}
-                size={23}
-                color={focused ? '#fff' : '#ffffff80'}
+                size={wp('5%')}
+                color={focused ? '#002757' : '#00709c'}
               />
               <Text
                 style={{
-                  color: focused ? '#fff' : '#ffffff80',
-                  fontSize: 10,
-                  fontFamily: 'Roboto-Bold',
+                  color: focused ? '#002757' : '#00709c',
+                  fontSize: wp('2.5%'),
+
+                  fontFamily: 'BreezeSans-Medium_20150728',
                 }}>
                 Search
               </Text>
@@ -68,46 +78,56 @@ const Home = () => {
         component={Search}
       />
 
-      <Tab.Screen
-        options={{
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
-              <Icon
-                name={focused ? 'grid' : 'grid-outline'}
-                size={23}
-                color={focused ? '#fff' : '#ffffff80'}
-                
-              />
-              <Text
-                style={{
-                  color: focused ? '#fff' : '#ffffff80',
-                  fontFamily: 'Roboto-Bold',
-                  fontSize: 10,
-                }}>
-                Menu
-              </Text>
-            </View>
-          ),
-        }}
-        name="menu"
-        component={Welcome}
-      />
-
+      {/* Menu Button */}
       
       <Tab.Screen
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
               <Icon
-                name={focused ? 'person' : 'person-outline'}
-                size={23}
-                color={focused ? '#fff' : '#ffffff80'}
+                name={focused ? 'grid' : 'grid-outline'}
+                size={wp('5%')}
+                color={focused ? '#002757' : '#00709c'}
               />
               <Text
                 style={{
-                  color: focused ? '#fff' : '#ffffff80',
-                  fontFamily: 'Roboto-Bold',
-                  fontSize: 10,
+                  color: focused ? '#002757' : '#00709c',
+                  fontFamily: 'BreezeSans-Medium_20150728',
+                  fontSize: wp('2.5%'),
+                }}>
+                Menu
+              </Text>
+            </View>
+          ),
+        }} 
+        name="menu"
+        listeners={({ navigation }) => ({
+          tabPress: e => {
+            e.preventDefault();
+            navigation.openDrawer();
+          }
+        })}
+        component={CustomDrawer}
+        
+      />
+      
+      
+
+      {/* Profile Button */}
+      <Tab.Screen
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{alignItems: 'center'}}>
+              <Icon
+                name={focused ? 'person' : 'person-outline'}
+                size={wp('5%')}
+                color={focused ? '#002757' : '#00709c'}
+              />
+              <Text
+                style={{
+                  color: focused ? '#002757' : '#00709c',
+                  fontFamily: 'BreezeSans-Medium_20150728',
+                  fontSize: wp('2.5%'),
                 }}>
                 Profile
               </Text>
@@ -117,20 +137,24 @@ const Home = () => {
         name="Profile"
         component={Profile}
       />
+
+      {/* Info Button */}
       <Tab.Screen
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
               <Icon
-                name={focused ? 'information-circle' : 'information-circle-outline'}
-                size={22}
-                color={focused ? '#fff' : '#ffffff80'}
+                name={
+                  focused ? 'information-circle' : 'information-circle-outline'
+                }
+                size={wp('5%')}
+                color={focused ? '#002757' : '#00709c'}
               />
               <Text
                 style={{
-                  color: focused ? '#fff' : '#ffffff80',
-                  fontFamily: 'Roboto-Bold',
-                  fontSize: 10,
+                  color: focused ? '#002757' : '#00709c',
+                  fontFamily: 'BreezeSans-Medium_20150728',
+                  fontSize: wp('2.5%'),
                 }}>
                 Info
               </Text>
@@ -148,10 +172,10 @@ export default Home;
 
 const styles = StyleSheet.create({
   shadow: {
-    elevation: 5,
+    elevation: hp('1.5%'),
     shadowColor: '#000',
-    backgroundColor:'#2249D6',
-    borderWidth: 1,
+    backgroundColor: '#2aa8d9',
+    borderWidth: wp('0.5%'),
     borderColor: 'transparent',
   },
 });

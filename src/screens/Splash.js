@@ -7,9 +7,9 @@ import {
 } from 'react-native-responsive-screen';
 
 const Splash = ({navigation}) => {
-  setTimeout(()=>{
-      navigation.replace('Login')
-  },3000)
+  setTimeout(() => {
+    navigation.replace('Login');
+  }, 3000);
   return (
     <View
       style={{
@@ -18,7 +18,7 @@ const Splash = ({navigation}) => {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: Colors.white,
-        marginTop: -295,
+        marginTop: hp('-7%'),
       }}>
       <StatusBar
         barStyle="light-content"
@@ -26,20 +26,10 @@ const Splash = ({navigation}) => {
         backgroundColor="black"
       />
       <Image
-        resizeMode="contain"
+        // resizeMode="contain"
         source={require('../assets/images/kle-mobile.png')}
-        style={{width: wp('110%'), height: hp('93%'), marginBottom: 60}}
+        style={{width: wp('100%'), height: hp('100%')}}
       />
-      <View
-        style={{
-          marginTop: -295,
-          marginLeft: 126,
-        }}>
-        {/* <Text
-          style={{fontFamily: 'timesbd', fontSize: 30, color: Colors.kleRed}}>
-          LIBRARY
-        </Text> */}
-      </View>
     </View>
   );
 };

@@ -30,18 +30,19 @@ const Dashboard = () => {
       />
       {/* Header section */}
       <LinearGradient
-        start={{x: 0.0, y: 0.4}}
-        end={{x: 0.5, y: 1.0}}
+        start={{x: 15, y: 1}}
+        end={{x: 1, y: 15}}
         location={[0, 1]}
         // colors={['#266df0','#2D97DA' , '#177CEB']}
-        colors={['#2D97DA', '#2249D6']}
+        colors={['#84dcf4', '#0090cd']}
+        // colors={['#c3f8c4', '#c9f8ce']}
         // colors={['#BC2C2C', '#e05553', '#f76a68']}
         style={{flex: 1.2, flexDirection: 'column'}}>
         <View
           style={{
             flexDirection: 'column',
-            marginTop: hp('9%'),
-            paddingHorizontal: '5%',
+            marginTop: hp('9.2%'),
+            paddingHorizontal: wp('5.5%'),
           }}>
           <View
             style={{
@@ -49,29 +50,35 @@ const Dashboard = () => {
               justifyContent: 'space-between',
               alignItems: 'flex-start',
             }}>
-            {/* Welcome message and name */}
+            {/* ome message and name */}
             <View style={{flexDirection: 'column'}}>
               <Text
                 style={{
-                  fontFamily: 'BreezeSans-Medium_20150728',
-                  fontSize: 20,
-                  color: '#fff',
+                  fontFamily: 'OpenSans-SemiBoldItalic',
+                  fontSize: hp('2.5%'),
+                  color: '#002c62',
                 }}>
                 Welcome Back
               </Text>
               <Text
                 style={{
+                  // fontFamily: 'OpenSans-Bold',
                   fontFamily: 'BreezeSans-Bold',
-                  color: '#fff',
-                  fontSize: 22,
+                  color: '#002c62',
+                  fontSize: hp('3.15%'),
                 }}>
                 ASHUTOSH ATNOOR
               </Text>
             </View>
 
             {/* Bell icon and profile pic */}
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Icon name="bell" size={25} color="#fff" />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                margin: wp('1.35%'),
+              }}>
+              <Icon name="bell" size={wp('5.5%')} color="#000" />
               {/* <Image
                 source={require('../assets/images/avatar.jpg')}
                 resizeMode="cover"
@@ -130,90 +137,238 @@ const Dashboard = () => {
           paddingHorizontal: wp('5%'),
         }}>
         {/* Profile Card */}
-        <View
+        <LinearGradient
+          start={{x: 0.0, y: 0.1}}
+          end={{x: 1, y: 1.0}}
+          location={[1, 0]}
+          // colors={['#7881dc', '#b7bef2', '#7881dc', '#7881dc']}
+          colors={[
+            '#002c62',
+            // '#00397c',
+            // '#005a99',
+            // '#2aa8d9',
+            // '#0090cd',
+
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#2aa8d9',
+            // '#0090cd',
+            // '#156da5',
+            // '#005a99',
+            // '#00397c',
+            '#fff',
+            '#fff',
+            '#fff',
+            '#fff',
+            '#fff',
+            '#fff',
+            '#002c62',
+          ]}
+          // colors={['#7881dc', '#9ba6f6', '#b7bef2', '#7881dc']}
+          // colors={['#8cf093', '#a0e8a8', '#a0e8a8']}
+          // colors={['#BC2C2C', '#e05553', '#f76a68']}
           style={{
             flexDirection: 'row',
-            backgroundColor: '#fff',
             height: hp('25%'),
-            width: '100%',
+            width: wp('90%'),
             alignItems: 'center',
             justifyContent: 'space-around',
-            borderRadius: 10,
-            borderWidth: 1,
-            borderColor: 'rgba(255,255,255,0.1)',
-            elevation: 10,
+            borderRadius: wp('4%'),
+            borderWidth: wp('0.09%'),
+            borderColor: '#00397c',
+            elevation: hp('2.5%'),
             shadowColor: '#000',
-            shadowRadius: 10,
-            marginTop: -120,
+            shadowRadius: wp('1%'),
+            marginTop: hp('-13.4%'),
           }}>
-          <View
-            style={{
-              width: '55%',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}>
-            <Image
-              style={{height: 170, width: 130}}
-              source={require('../assets/images/profile.png')}
-            />
+          <View style={{marginTop: hp('2.75%')}}>
+            <View
+              style={{
+                // width: '55%',
+                flex: 1,
+                width: wp('15%'),
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: wp('14.5%'),
+                // marginTop: hp(8.4),
+                // marginBottom: hp(5.2),
+                // marginLeft: wp(10),
+              }}>
+              <Image
+                style={{
+                  height: hp('21%'),
+                  width: wp('33%'),
+                  borderRadius: wp('3%'),
+                  borderColor: '#00397c',
+                  borderWidth: wp('0.09%'),
+                }}
+                resizeMode="cover"
+                source={require('../assets/images/profile.png')}
+              />
+            </View>
+            {/* <ActionCenter */}
+            {/* img_src={require('../assets/images/profile.png')} */}
+            {/* // img_text="WithDraw" */}
+            {/* /> */}
+
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                width: wp('60%'),
+                marginLeft: wp('51%'),
+                marginTop: hp('-19.5%'),
+              }}>
+              {/* USN */}
+              <Text
+                style={{
+                  marginTop: hp('-2%'),
+                  fontSize: hp('4%'),
+                  fontFamily: 'OpenSans-Bold',
+                  color: '#00397c',
+                  // textShadowColor: '#002c62',
+                  textShadowOffset: {width: 1, height: 1},
+                  textShadowRadius: 7,
+                  paddingBottom: hp('0.5%'),
+                }}>
+                2KL19EC016
+              </Text>
+
+              {/* course */}
+              <Text
+                style={{
+                  fontSize: hp('2.2%'),
+                  fontFamily: 'OpenSans-Medium',
+                  // textShadowColor: '#002c62',
+                  color: '#00397c',
+                  textShadowRadius: wp('2.2%'),
+                }}>
+                <Text
+                  style={{
+                    fontSize: hp('2.2%'),
+                    fontFamily: 'OpenSans-Bold',
+                    // textShadowColor: '#002c62',
+                    color: '#00397c',
+                    textShadowRadius: wp('2.2%'),
+                  }}>
+                  Course:{' '}
+                </Text>{' '}
+                B.E
+              </Text>
+
+              {/* branch */}
+              <Text
+                style={{
+                  fontSize: hp(2.2),
+                  fontFamily: 'OpenSans-Medium',
+                  // textShadowColor: '#002c62',
+                  color: '#00397c',
+                  textShadowRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: hp('2.2%'),
+                    fontFamily: 'OpenSans-Bold',
+                    textShadowColor: '#002c62',
+                    // textShadowColor: '#002c62',
+                    color: '#00397c',
+                  }}>
+                  Branch:{' '}
+                </Text>{' '}
+                EC
+              </Text>
+
+              {/* DOB */}
+              <Text
+                style={{
+                  fontSize: hp('2.2%'),
+                  fontFamily: 'OpenSans-Medium',
+                  // textShadowColor: '#002c62',
+                  color: '#00397c',
+                  textShadowRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: hp('2.2%'),
+                    fontFamily: 'OpenSans-Bold',
+                    // textShadowColor: '#002c62',
+                    color: '#00397c',
+                    textShadowRadius: 5,
+                  }}>
+                  D.O.B:{' '}
+                </Text>{' '}
+                29/07/2001
+              </Text>
+
+              {/* No. Books issued */}
+              <Text
+                style={{
+                  fontSize: hp('2.2%'),
+                  marginTop: hp('1.2%'),
+                  fontFamily: 'OpenSans-Medium',
+                  // textShadowColor: '#002c62',
+                  color: '#00397c',
+                  textShadowRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: hp('2.2%'),
+                    fontFamily: 'OpenSans-Bold',
+
+                    // textShadowColor: '#002c62',
+                    color: '#00397c',
+                    textShadowRadius: 5,
+                  }}>
+                  Books issued:{' '}
+                </Text>{' '}
+                5
+              </Text>
+
+              {/* Fine */}
+              <Text
+                style={{
+                  fontSize: hp('2.2%'),
+                  fontFamily: 'OpenSans-Medium',
+                  // textShadowColor: '#002c62',
+                  color: '#00397c',
+                  textShadowRadius: 5,
+                }}>
+                <Text
+                  style={{
+                    fontSize: hp('2.2%'),
+                    fontFamily: 'OpenSans-Bold',
+                    // textShadowColor: '#002c62',
+                    color: '#00397c',
+
+                    textShadowRadius: 5,
+                  }}>
+                  Fine amount:{' '}
+                </Text>{' '}
+                ₹50.54
+              </Text>
+            </View>
           </View>
-          {/* <ActionCenter */}
-          {/* img_src={require('../assets/images/profile.png')} */}
-          {/* // img_text="WithDraw" */}
-          {/* /> */}
-
-          <View style={{width: wp('60%'), marginLeft: 20}}>
-            {/* USN */}
-            <Text
-              style={{
-                fontSize: 30,
-                fontFamily: 'BreezeSans-Bold',
-                color: '#333',
-              }}>
-              2KL19EC016
-            </Text>
-
-            {/* branch */}
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'BreezeSans-Medium_20150728',
-                color: '#333',
-              }}>
-              B.E (Electronics & Communication)
-            </Text>
-
-            {/* No. Books issued */}
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'BreezeSans-Medium_20150728',
-                color: '#333',
-              }}>
-              Books issued: 5
-            </Text>
-
-            {/* Fine */}
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'BreezeSans-Medium_20150728',
-                color: '#333',
-              }}>
-              Fine: ₹50.54
-            </Text>
-          </View>
-        </View>
+        </LinearGradient>
 
         {/* My Books */}
-        <View style={{flex: 1, flexDirection: 'column', marginTop: 20}}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            marginTop: hp('1.5%'),
+          }}>
           {/* market text */}
           <Text
             style={{
-              fontFamily: 'BreezeSans-Bold',
-              fontSize: 22,
-              color: '#333',
-              margin: 10,
+              fontFamily: 'OpenSans-Bold',
+              fontSize: hp('2.5%'),
+              color: '#002c62',
+              margin: hp('1%'),
             }}>
             My Books
           </Text>
@@ -227,19 +382,22 @@ const Dashboard = () => {
                 style={{
                   flexDirection: 'row',
                   height: hp('10%'),
-                  width: '100%',
-                  borderWidth: 1,
+                  width: wp('90%'),
+                  borderWidth: wp('0.4%'),
                   borderColor: '#ddd',
-                  borderRadius: 15,
+                  borderRadius: wp('4%'),
                   justifyContent: 'space-between',
-                  padding: 10,
-                  marginBottom: 8,
+                  padding: wp('1%'),
+                  marginBottom: hp('0.8%'),
                 }}>
                 {/* Coin image ,coin name and symbol */}
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {/* Coin image */}
                   <Image
-                    style={{height: '70%', marginLeft: -10}}
+                    style={{
+                      height: hp('7%'),
+                      marginLeft: wp('-0.1%'),
+                    }}
                     resizeMode="contain"
                     source={item.image}
                   />
@@ -253,17 +411,17 @@ const Dashboard = () => {
                     <Text
                       style={{
                         fontFamily: 'BreezeSans-Bold',
-                        color: '#333',
-                        fontSize: 17,
+                        color: '#002c62',
+                        fontSize: hp('2.1%'),
                       }}>
                       {item.currency}
                     </Text>
                     <Text
                       style={{
                         marginTop: 1,
-                        fontFamily: 'BreezeSans-Regular',
-                        color: '#333',
-                        fontSize: 14,
+                        fontFamily: 'OpenSans-Medium',
+                        color: '#002c62',
+                        fontSize: hp('1.67%'),
                       }}>
                       Due date: 27 March 2023
                     </Text>
@@ -274,18 +432,18 @@ const Dashboard = () => {
                 <View
                   style={{
                     flexDirection: 'column',
-                    backgroundColor: '#fff',
+                    // backgroundColor: '#fff',
                     alignContent: 'center',
                     justifyContent: 'center',
+                    marginRight: wp('2.5%'),
                   }}>
                   {/* price */}
                   <Text
                     style={{
-                      fontFamily: 'BreezeSans-Medium_20150728',
-                      fontSize: 14,
-                      color: item.type == 'I' ? 'green' : 'red',
-                      fontFamily: 'BreezeSans-Bold',
-                      fontSize: 15,
+                      fontSize: hp('2%'),
+                      // color: item.type == 'I' ? 'green' : 'red',
+                      color: '#002c62',
+                      fontFamily: 'OpenSans-Bold',
                     }}>
                     ₹{item.amount}
                   </Text>
