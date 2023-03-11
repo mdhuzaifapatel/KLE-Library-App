@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -11,45 +11,51 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Colors} from '../constants';
+import Developers from '../screens/Developers';
+import {AuthContext} from '../context/AuthContext';
 
-const CustomDrawer = props => {
+const CustomDrawer = ({navigation, ...props}) => {
+  const {logout} = useContext(AuthContext);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{backgroundColor: '#8200d6'}}>
+        contentContainerStyle={{backgroundColor: Colors.main}}>
         <ImageBackground
-          source={require('../assets/images/menu-bg.jpeg')}
+          source={require('../assets/images/drawerImage.png')}
           style={{padding: 20}}>
           <Image
             source={require('../assets/images/profile.png')}
             style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
-            resizeMode = 'contain'
+            resizeMode="contain"
           />
           <Text
             style={{
               color: '#fff',
               fontSize: 18,
-              fontFamily: 'OpenSans-Bold',
+              fontFamily: 'BreezeSans-Bold',
               marginBottom: 5,
             }}>
             Ashutosh Atnoor
           </Text>
 
           <View style={{flexDirection: 'row'}}>
-            
-          <FontAwesome5 name="school" size={14} color="#fff" style={{marginRight: 10}} />
+            <Icon
+              name="school"
+              size={14}
+              color="#fff"
+              style={{marginRight: 10}}
+            />
             <Text
               style={{
                 color: '#fff',
-                fontFamily: 'OpenSans-Bold',
+                fontFamily: 'BreezeSans-Bold',
                 marginRight: 5,
               }}>
               STUDENT
             </Text>
-            
           </View>
         </ImageBackground>
         <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
@@ -57,29 +63,38 @@ const CustomDrawer = props => {
         </View>
       </DrawerContentScrollView>
 
-      
       <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Developers');
+          }}
+          style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="share-social-outline" size={22} />
+            <Icon name="code-tags" size={22} color={Colors.font} />
             <Text
               style={{
                 fontSize: 15,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'BreezeSans-Bold',
                 marginLeft: 5,
+                color: Colors.font,
               }}>
-              Tell a Friend
+              Developers
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}} style={{paddingVertical: 15}}>
+        <TouchableOpacity
+          onPress={() => {
+            logout();
+          }}
+          style={{paddingVertical: 15}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Ionicons name="exit-outline" size={22} />
+            <Icon name="logout" size={22} color={Colors.font} />
             <Text
               style={{
                 fontSize: 15,
-                fontFamily: 'Roboto-Medium',
+                fontFamily: 'BreezeSans-Bold',
                 marginLeft: 5,
+                color: Colors.font,
               }}>
               Sign Out
             </Text>

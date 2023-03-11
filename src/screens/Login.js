@@ -1,241 +1,97 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  StyleSheet,
-  Text,
-  ScrollView,
+  SafeAreaView,
   View,
-  StatusBar,
-  Image,
+  Text,
   TextInput,
+  TouchableOpacity,
 } from 'react-native';
+import {useState, useContext} from 'react';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../../src/constants';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Buttons from '../components/Buttons';
+import CustomButton from '../components/CustomButton';
+import InputField from '../components/InputField';
+import LoginSVG from '../assets/images/misc/Login.svg';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import {AuthContext} from '../context/AuthContext';
+
 const Login = ({navigation}) => {
-  const [formData, setformData] = useState({
-    email: '',
-    password: '',
-  });
+  // const [test, setTest] = useState('Incorrect USN or Password');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const {login} = useContext(AuthContext);
 
   return (
-    <ScrollView
-      style={{flex: 1, backgroundColor: '#fff', flexDirection: 'column'}}>
-      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      {/* login form section */}
-      <View
-        style={{
-          marginTop: hp('7%'),
-          marginLeft: wp('3%'),
-          flex: 2,
-          flexDirection: 'column',
-          backgroundColor: '#fff',
-          paddingTop: hp('6%'),
-          paddingHorizontal: wp('3%'),
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontFamily: 'BreezeSans-Bold',
-              fontSize: hp('4%'),
-              // fontSize: 30,
-              color: Colors.black,
-            }}>
-            Welcome Back
-          </Text>
-          <Image
-            source={require('../assets/images/waving_hand.png')}
-            style={{width: wp('7%'), height: hp('4%'), marginLeft: wp('2%')}}
+    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+      <View style={{paddingHorizontal: 25}}>
+        <View style={{alignItems: 'center'}}>
+          <LoginSVG
+            height={300}
+            width={300}
+            style={{transform: [{rotate: '-5deg'}]}}
           />
         </View>
+
         <Text
           style={{
-            fontFamily: 'BreezeSans-Medium_20150728',
-            fontSize: hp('2%'),
-            paddingTop: hp('1%'),
-            color: '#777',
+            fontFamily: 'Roboto-Medium',
+            fontSize: 28,
+            fontWeight: '500',
+            color: '#333',
+            marginBottom: 30,
           }}>
-          You can continue where you left off by logging in
+          Login
         </Text>
 
-        <View style={{flexDirection: 'column', paddingTop: hp('5%')}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#ededed',
-              width: wp('86.5%'),
-              borderRadius: wp('3%'),
-              height: hp('6.8%'),
-              paddingLeft: wp('5%'),
-            }}>
-            <Icon name="user" size={wp('5%')} color="#818181" />
-            <TextInput
-              onChangeText={text => {
-                setformData(prevState => ({...prevState, email: text}));
-              }}
-              style={styles.input}
-              placeholder="Enter your USN"
-              placeholderTextColor="#818181"
+        
+        {/* <Text>{test}</Text> */}
+
+        <InputField
+          label={'Email ID'}
+          icon={
+            <MaterialIcons
+              name="alternate-email"
+              size={20}
+              color="#666"
+              style={{marginRight: 5}}
             />
-          </View>
+          }
+          keyboardType="email-address"
+          value={email}
+          onChangeText={text => setEmail(text)}
+        />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#ededed',
-              width: wp('86.5%'),
-              borderRadius: wp('3%'),
-              height: hp('6.8%'),
-              paddingLeft: wp('5%'),
-              marginTop: hp('2.3%'),
-            }}>
-            <Icon name="lock" size={wp('5.5%')} color="#818181" />
-            <TextInput
-              onChangeText={text => {
-                setformData(prevState => ({...prevState, password: text}));
-              }}
-              style={styles.input}
-              placeholder="Enter your Password"
-              secureTextEntry={true}
-              placeholderTextColor="#818181"
+        <InputField
+          label={'Password'}
+          icon={
+            <Ionicons
+              name="ios-lock-closed-outline"
+              size={20}
+              color="#666"
+              style={{marginRight: 5}}
             />
-          </View>
+          }
+          inputType="password"
+          fieldButtonLabel={'Forgot?'}
+          fieldButtonFunction={() => {}}
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
 
-          <View
-            style={{
-              width: wp('85%'),
-              marginBottom: hp('1'),
-            }}>
-            <Text
-              style={{
-                fontSize: hp('1.85%'),
-                fontFamily: 'BreezeSans-Medium_20150728',
-                color: '#818181',
-                alignSelf: 'flex-end',
-                paddingTop: hp('4.65%'),
-              }}>
-              Forgot Password?
-            </Text>
-          </View>
-
-          <Buttons
-            btn_text={'Sign In'}
-            on_press={() => navigation.navigate('Home')}
-          />
-        </View>
+        <CustomButton
+          label={'Login'}
+          onPress={() => {
+            login(email, password);
+          }}
+        />
       </View>
-
-      {/* social login section */}
-      {/* <View
-        style={{
-          flex: 2,
-          backgroundColor: '#fff',
-          flexDirection: 'column',
-          paddingHorizontal: '3%',
-        }}>
-        <Text
-          style={{
-            fontFamily: 'OpenSans-Bold',
-            textAlign: 'center',
-            marginVertical: 35,
-            color: '#818181',
-            fontSize: 20,
-          }}>
-          Or
-        </Text>
-
-        <View
-          style={{flexDirection: 'column', alignItems: 'center', width: '95%'}}>
-          <TouchableOpacity
-            onPress={() => console.log('google login')}
-            style={styles.social_btn}>
-            <Image
-              style={styles.social_img}
-              source={require('../assets/images/google_icon.png')}
-            />
-            <Text
-              style={{
-                width: '80%',
-                textAlign: 'center',
-                fontSize: 16,
-                fontFamily: 'OpenSans-Medium',
-              }}>
-              Sign in with Google{' '}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => console.log('facebook login')}
-            style={styles.social_btn}>
-            <Image
-              style={styles.social_img}
-              source={require('../assets/images/facebook_icon.png')}
-            />
-            <Text
-              style={{
-                width: '80%',
-                textAlign: 'center',
-                fontSize: 16,
-                fontFamily: 'OpenSans-Medium',
-              }}>
-              Sign in with Facebook{' '}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-            backgroundColor: '#fff',
-            marginBottom: 40,
-          }}>
-          <Text
-            style={{
-              fontFamily: 'OpenSans-Medium',
-              fontSize: 17,
-              color: '#818181',
-            }}>
-            Don't have a account?{' '}
-          </Text>
-          <Text
-            style={{
-              fontSize: 18,
-              fontFamily: 'OpenSans-SemiBold',
-              color: '#333',
-            }}>
-            Sign Up
-          </Text>
-        </View>
-      </View> */}
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Login;
-
-const styles = StyleSheet.create({
-  input: {
-    position: 'relative',
-    height: hp('100%'),
-    width: wp('76.5%'),
-    fontFamily: 'BreezeSans-Medium_20150728',
-    fontSize: wp('4%'),
-    paddingLeft: wp('6%'),
-  },
-});

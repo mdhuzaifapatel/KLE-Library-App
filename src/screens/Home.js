@@ -4,12 +4,13 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Search, Dashboard, Welcome, Profile, CustomDrawer} from '../screens';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
-
-
+import Info from './Info';
+import Developers from './Developers';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import MyBooks from './MyBooks';
 const Tab = createBottomTabNavigator();
 
 const Home = ({navigation}) => {
@@ -35,13 +36,12 @@ const Home = ({navigation}) => {
               <Icon
                 name={focused ? 'home' : 'home-outline'}
                 size={wp('5%')}
-                color={focused ? '#002757' : '#00709c'}
+                color={focused ? Colors.font : '#002c6280'}
               />
               <Text
                 style={{
-                  color: focused ? '#002757' : '#00709c',
-                  fontFamily: 'BreezeSans-Medium_20150728',
-                  fontSize: wp('2.5%'),
+                  color: focused ? Colors.font : '#002c6280',
+                  ...styles.bottomIcons,
                 }}>
                 Dashboard
               </Text>
@@ -60,14 +60,12 @@ const Home = ({navigation}) => {
               <Icon
                 name={focused ? 'search' : 'search-outline'}
                 size={wp('5%')}
-                color={focused ? '#002757' : '#00709c'}
+                color={focused ? Colors.font : '#002c6280'}
               />
               <Text
                 style={{
-                  color: focused ? '#002757' : '#00709c',
-                  fontSize: wp('2.5%'),
-
-                  fontFamily: 'BreezeSans-Medium_20150728',
+                  color: focused ? Colors.font : '#002c6280',
+                  ...styles.bottomIcons,
                 }}>
                 Search
               </Text>
@@ -79,39 +77,35 @@ const Home = ({navigation}) => {
       />
 
       {/* Menu Button */}
-      
+
       <Tab.Screen
         options={{
           tabBarIcon: ({focused}) => (
             <View style={{alignItems: 'center'}}>
               <Icon
-                name={focused ? 'grid' : 'grid-outline'}
+                name={focused ? 'book' : 'book-outline'}
                 size={wp('5%')}
-                color={focused ? '#002757' : '#00709c'}
+                color={focused ? Colors.font : '#002c6280'}
               />
               <Text
                 style={{
-                  color: focused ? '#002757' : '#00709c',
-                  fontFamily: 'BreezeSans-Medium_20150728',
-                  fontSize: wp('2.5%'),
+                  color: focused ? Colors.font : '#002c6280',
+                  ...styles.bottomIcons,
                 }}>
-                Menu
+                My Books
               </Text>
             </View>
           ),
-        }} 
-        name="menu"
-        listeners={({ navigation }) => ({
-          tabPress: e => {
-            e.preventDefault();
-            navigation.openDrawer();
-          }
-        })}
-        component={CustomDrawer}
-        
+        }}
+        name="myBooks"
+        // listeners={({navigation}) => ({
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //     navigation.navigate('Search');
+        //   },
+        // })}
+        component={MyBooks}
       />
-      
-      
 
       {/* Profile Button */}
       <Tab.Screen
@@ -121,13 +115,12 @@ const Home = ({navigation}) => {
               <Icon
                 name={focused ? 'person' : 'person-outline'}
                 size={wp('5%')}
-                color={focused ? '#002757' : '#00709c'}
+                color={focused ? Colors.font : '#002c6280'}
               />
               <Text
                 style={{
-                  color: focused ? '#002757' : '#00709c',
-                  fontFamily: 'BreezeSans-Medium_20150728',
-                  fontSize: wp('2.5%'),
+                  color: focused ? Colors.font : '#002c6280',
+                  ...styles.bottomIcons,
                 }}>
                 Profile
               </Text>
@@ -148,23 +141,27 @@ const Home = ({navigation}) => {
                   focused ? 'information-circle' : 'information-circle-outline'
                 }
                 size={wp('5%')}
-                color={focused ? '#002757' : '#00709c'}
+                color={focused ? Colors.font : '#002c6280'}
               />
               <Text
                 style={{
-                  color: focused ? '#002757' : '#00709c',
-                  fontFamily: 'BreezeSans-Medium_20150728',
-                  fontSize: wp('2.5%'),
+                  color: focused ? Colors.font : '#002c6280',
+                  ...styles.bottomIcons,
                 }}>
                 Info
               </Text>
             </View>
           ),
         }}
-        name="info"
-        component={Profile}
+        name="Info"
+        component={Info}
       />
     </Tab.Navigator>
+    // <Screen
+    //     name="Developers"
+    //     component={Developers}
+    //     style={{display: 'none'}}
+    //   />
   );
 };
 
@@ -173,9 +170,13 @@ export default Home;
 const styles = StyleSheet.create({
   shadow: {
     elevation: hp('1.5%'),
-    shadowColor: '#000',
-    backgroundColor: '#2aa8d9',
+    shadowColor: Colors.main,
+    backgroundColor: Colors.main,
     borderWidth: wp('0.5%'),
     borderColor: 'transparent',
+  },
+  bottomIcons: {
+    fontFamily: 'BreezeSans-Medium_20150728',
+    fontSize: wp('2.5%'),
   },
 });

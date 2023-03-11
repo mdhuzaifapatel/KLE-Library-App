@@ -32,8 +32,9 @@ const Search = ({navigation}) => {
             alignItems: 'center',
           }}>
 
+            
           {/* backbutton */}
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon name="arrow-left" size={23} margin={15} color="#333" />
           </TouchableOpacity>
 

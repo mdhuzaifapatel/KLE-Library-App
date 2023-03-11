@@ -52,6 +52,19 @@ export const coins = [
         crypto:'1203'
     }
 },
+{
+    id:5,
+    currency:'KLE Library',
+    symbol:'Doge',
+    image: require("../assets/icons/book.png"),
+    amount :'2421',
+    
+    type :'I', //I = increase , D = Decrease
+    wallet:{
+        value:'4273.10',
+        crypto:'1203'
+    }
+},
 
 
 ]

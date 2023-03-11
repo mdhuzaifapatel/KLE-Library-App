@@ -4,4 +4,7 @@ export default Colors = {
   black: '#333',
   white: '#fff',
   kleRed: '#bc2c2c',
+  main: '#B7BEF2',
+  font: '#002c62',
+  mainLight: '#b7bef266',
 };
