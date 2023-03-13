@@ -15,8 +15,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../constants';
 import Developers from '../screens/Developers';
 import {AuthContext} from '../context/AuthContext';
+import {useNavigation} from '@react-navigation/native';
 
-const CustomDrawer = ({navigation, ...props}) => {
+const CustomDrawer = ({...props}) => {
+  const navigation = useNavigation();
   const {logout} = useContext(AuthContext);
   return (
     <View style={{flex: 1}}>

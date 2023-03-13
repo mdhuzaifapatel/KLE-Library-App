@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://catalog.bywatersolutions.com';
+export const BASE_URL = 'http://172.16.250.240';

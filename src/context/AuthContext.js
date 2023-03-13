@@ -26,10 +26,10 @@ export const AuthProvider = ({children}) => {
             // setUserInfo(userInfo);
             setUserToken(userToken);
             AsyncStorage.setItem('userToken', userToken);
+          } else {
+            userToken = false;
+            console.log(userToken);
           }
-          var userToken = false;
-          console.log(userToken);
-
 
           //   return res.status(401).json({msg: 'Failed login'});
         });

@@ -1,25 +1,27 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import {
-  SafeAreaView,
-  View,
+  StyleSheet,
   Text,
+  ScrollView,
+  View,
+  SafeAreaView,
+  StatusBar,
+  Image,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {useState, useContext} from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../../src/constants';
-import CustomButton from '../components/CustomButton';
-import InputField from '../components/InputField';
-import LoginSVG from '../assets/images/misc/Login.svg';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Buttons from '../components/Buttons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import InputField from '../components/InputField';
+import CustomButton from '../components/CustomButton';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../context/AuthContext';
-
 const Login = ({navigation}) => {
   // const [test, setTest] = useState('Incorrect USN or Password');
   const [email, setEmail] = useState(null);
@@ -30,11 +32,11 @@ const Login = ({navigation}) => {
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <View style={{paddingHorizontal: 25}}>
         <View style={{alignItems: 'center'}}>
-          <LoginSVG
+        {/* <Image
             height={300}
             width={300}
             style={{transform: [{rotate: '-5deg'}]}}
-          />
+          /> */}
         </View>
 
         <Text
@@ -47,9 +49,6 @@ const Login = ({navigation}) => {
           }}>
           Login
         </Text>
-
-        
-        {/* <Text>{test}</Text> */}
 
         <InputField
           label={'Email ID'}
@@ -95,3 +94,14 @@ const Login = ({navigation}) => {
 };
 
 export default Login;
+
+const styles = StyleSheet.create({
+  input: {
+    position: 'relative',
+    height: hp('100%'),
+    width: wp('76.5%'),
+    fontFamily: 'BreezeSans-Medium_20150728',
+    fontSize: wp('4%'),
+    paddingLeft: wp('6%'),
+  },
+});

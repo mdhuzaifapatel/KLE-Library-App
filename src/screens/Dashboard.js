@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import DashboardGrid from '../components/dashboardGrid';
 
-const Dashboard = ({navigation}) => {
+export const Dashboard = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       {/* Statusbar */}

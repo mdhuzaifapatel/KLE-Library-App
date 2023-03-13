@@ -5,7 +5,6 @@ import {Search, Dashboard, Welcome, Profile, CustomDrawer} from '../screens';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
 import Info from './Info';
-import Developers from './Developers';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -157,11 +156,6 @@ const Home = ({navigation}) => {
         component={Info}
       />
     </Tab.Navigator>
-    // <Screen
-    //     name="Developers"
-    //     component={Developers}
-    //     style={{display: 'none'}}
-    //   />
   );
 };
 
