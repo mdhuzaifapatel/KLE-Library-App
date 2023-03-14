@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  Button,
-  View,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -20,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import DashboardGrid from '../components/DashboardGrid';
+import { Colors } from '../constants';
 
 export const Dashboard = ({navigation}) => {
   return (
@@ -203,7 +197,7 @@ const styles = ScaledSheet.create({
   title: {
     fontFamily: 'BreezeSans-Bold',
     fontSize: scale(20),
-    color: '#002c62',
+    color: Colors.font,
     marginLeft: scale(-251),
     marginTop: scale(-0.5),
   },

@@ -1,13 +1,6 @@
-import {
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Linking} from 'react-native';
 import React, {useState} from 'react';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {FlatGrid} from 'react-native-super-grid';
@@ -21,23 +14,60 @@ import {
   responsiveFontSize,
   responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
+import {QP_URL} from '../utils/config';
 
 const DashboardGrid = () => {
   const [items, setItems] = React.useState([
-    {name: 'SEARCH', code: Colors.mainLight, route: 'Search', icon: 'search'},
+    {
+      name: 'SEARCH',
+      code: Colors.mainLight,
+      route: 'Search',
+      icon: 'book-search-outline',
+    },
     {
       name: 'PROFILE',
       code: Colors.mainLight,
       route: 'Profile',
-      icon: 'person-circle-outline',
+      icon: 'account-circle-outline',
     },
-    {name: 'ABOUT US', code: Colors.mainLight, route: 'Info'},
-    {name: 'QUESTION PAPERS', code: Colors.mainLight},
-    {name: 'Reading History', code: Colors.mainLight, route: 'ReadingHistory'},
-    {name: 'CONTACT US', code: Colors.mainLight},
-    {name: "FAQ'S", code: Colors.mainLight},
-    {name: 'STAFF', code: Colors.mainLight},
-    {name: 'DEVELOPERS', code: Colors.mainLight, route: 'Developers'},
+    {name: 'FINE', code: Colors.mainLight, route: 'Fine', icon: 'currency-inr'},
+    {
+      name: 'QUESTION PAPERS',
+      code: Colors.mainLight,
+
+      icon: 'newspaper',
+    },
+    {
+      name: 'CURRENT BOOKS',
+      code: Colors.mainLight,
+      route: 'MyBooks',
+      icon: 'bookshelf',
+    },
+    {
+      name: 'READING HISTORY',
+      code: Colors.mainLight,
+      route: 'ReadingHistory',
+      icon: 'history',
+    },
+
+    {
+      name: 'DEVELOPERS',
+      code: Colors.mainLight,
+      route: 'Developers',
+      icon: 'code-tags',
+    },
+    {
+      name: 'CONTACT US',
+      code: Colors.mainLight,
+      route: 'Contact',
+      icon: 'cellphone-basic',
+    },
+    {
+      name: 'ABOUT              LIBRARY',
+      code: Colors.mainLight,
+      route: 'Info',
+      icon: 'information-outline',
+    },
   ]);
 
   const navigation = useNavigation();
@@ -53,12 +83,16 @@ const DashboardGrid = () => {
         <ScrollView>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(item.route);
+              if (item.name == 'QUESTION PAPERS') {
+                Linking.openURL(QP_URL);
+              } else {
+                navigation.navigate(item.route);
+              }
             }}>
             <View style={[styles.itemContainer, {backgroundColor: item.code}]}>
-              <Ionicon
+              <Icon
                 name={item.icon}
-                size={22}
+                size={25}
                 color={Colors.font}
                 style={styles.Icon}
               />
@@ -89,7 +123,7 @@ const styles = StyleSheet.create({
     padding: scale(5),
     height: hp(13.8),
     borderColor: Colors.main,
-    borderWidth: scale(0.4),
+    borderWidth: scale(0.5),
   },
   itemName: {
     fontSize: responsiveFontSize(1.5),
@@ -105,7 +139,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   Icon: {
-    padding: scale(2),
+    padding: scale(3),
     textAlign: 'center',
   },
 });

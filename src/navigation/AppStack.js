@@ -18,6 +18,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
+import Contact from '../screens/Contact';
 
 function Root() {
   return (
@@ -112,6 +113,9 @@ function AppStack() {
       <Stack.Screen name="Root" component={Root} />
       <Stack.Screen name="Developers" component={Developers} />
       <Stack.Screen name="ReadingHistory" component={ReadingHistory} />
+      <Stack.Screen name="MyBooks" component={MyBooks} />
+      <Stack.Screen name="Info" component={Info} />
+      <Stack.Screen name="Contact" component={Contact} />
     </Stack.Navigator>
   );
 }

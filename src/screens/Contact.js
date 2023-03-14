@@ -1,14 +1,14 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const Info = () => {
+const Contact = () => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>This is Info screen</Text>
+      <Text>Contact</Text>
     </View>
   );
 };
 
-export default Info;
+export default Contact;
 
 const styles = StyleSheet.create({});
