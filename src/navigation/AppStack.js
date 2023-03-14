@@ -1,19 +1,25 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CustomDrawer from '../components/CustomDrawer';
 import {Dashboard, Home, Profile, Search} from '../screens';
 import Info from '../screens/Info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../constants';
 import MyBooks from '../screens/MyBooks';
-import {NavigationContainer} from '@react-navigation/native';
-import {scale} from 'react-native-size-matters';
 import Developers from '../screens/Developers';
+import Fine from '../screens/Fine';
+import ReadingHistory from '../screens/ReadingHistory';
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-export default function AppStack() {
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
+
+function Root() {
   return (
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
@@ -23,9 +29,9 @@ export default function AppStack() {
         drawerActiveTintColor: Colors.font,
         drawerInactiveTintColor: Colors.font,
         drawerLabelStyle: {
-          marginLeft: -25,
+          marginLeft: wp(-5),
           fontFamily: 'BreezeSans-Bold',
-          fontSize: 15,
+          fontSize: responsiveFontSize(1.8),
         },
       }}>
       {/* <Stack.Screen name="Welcome" component={Welcome} /> */}
@@ -35,7 +41,9 @@ export default function AppStack() {
         name="Home"
         component={Home}
         options={{
-          drawerIcon: () => <Icon name="home" size={22} color={Colors.font} />,
+          drawerIcon: () => (
+            <Icon name="home" size={wp(5.5)} color={Colors.font} />
+          ),
         }}
       />
       <Drawer.Screen
@@ -43,26 +51,36 @@ export default function AppStack() {
         component={Search}
         options={{
           drawerIcon: () => (
-            <Icon name="magnify-plus" size={22} color={Colors.font} />
+            <Icon name="magnify-plus" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
 
       <Drawer.Screen
-        name="My Books"
+        name="Current Books"
         component={MyBooks}
         options={{
           drawerIcon: () => (
-            <Icon name="bookshelf" size={22} color={Colors.font} />
+            <Icon name="bookshelf" size={wp(5.5)} color={Colors.font} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Reading History"
+        component={ReadingHistory}
+        options={{
+          drawerIcon: () => (
+            <Icon name="history" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
       <Drawer.Screen
         name="Fine"
-        component={Dashboard}
+        component={Fine}
         options={{
           drawerIcon: () => (
-            <Icon name="currency-inr" size={22} color={Colors.font} />
+            <Icon name="currency-inr" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
@@ -71,7 +89,7 @@ export default function AppStack() {
         component={Profile}
         options={{
           drawerIcon: () => (
-            <Icon name="account" size={22} color={Colors.font} />
+            <Icon name="account" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
@@ -80,14 +98,22 @@ export default function AppStack() {
         component={Info}
         options={{
           drawerIcon: () => (
-            <Icon name="information" size={22} color={Colors.font} />
+            <Icon name="information" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
-
-      <Drawer.Screen name="Developers" component={Developers} />
     </Drawer.Navigator>
   );
 }
 
+function AppStack() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Root" component={Root} />
+      <Stack.Screen name="Developers" component={Developers} />
+      <Stack.Screen name="ReadingHistory" component={ReadingHistory} />
+    </Stack.Navigator>
+  );
+}
+export default AppStack;
 const styles = StyleSheet.create({});

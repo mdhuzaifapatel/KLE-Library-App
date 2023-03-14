@@ -22,6 +22,7 @@ import CustomButton from '../components/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../context/AuthContext';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
 const Login = ({navigation}) => {
   // const [test, setTest] = useState('Incorrect USN or Password');
   const [email, setEmail] = useState(null);
@@ -29,34 +30,45 @@ const Login = ({navigation}) => {
   const {login} = useContext(AuthContext);
 
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
-      <View style={{paddingHorizontal: 25}}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: Colors.white,
+      }}>
+      <ScrollView
+        style={{paddingHorizontal: 25, backgroundColor: Colors.mainLight}}>
         <View style={{alignItems: 'center'}}>
-        {/* <Image
-            height={300}
-            width={300}
-            style={{transform: [{rotate: '-5deg'}]}}
-          /> */}
+          <Image
+            source={require('../assets/images/klec.png')}
+            style={{
+              height: hp(35),
+              width: wp(70),
+              resizeMode: 'contain',
+            }}
+          />
         </View>
 
         <Text
           style={{
-            fontFamily: 'Roboto-Medium',
-            fontSize: 28,
+            fontFamily: 'BreezeSans-Bold',
+            fontSize: responsiveFontSize(2.5),
             fontWeight: '500',
-            color: '#333',
-            marginBottom: 30,
+            textAlign: 'center',
+            color: Colors.font,
+            marginBottom: hp(7),
           }}>
-          Login
+          Sign in to your account
         </Text>
 
         <InputField
-          label={'Email ID'}
+          label={'Enter USN or card number'}
+          color={Colors.font}
           icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
+            <Ionicons
+              name="person-circle-outline"
+              size={23}
+              color={Colors.font}
               style={{marginRight: 5}}
             />
           }
@@ -69,26 +81,43 @@ const Login = ({navigation}) => {
           label={'Password'}
           icon={
             <Ionicons
-              name="ios-lock-closed-outline"
-              size={20}
-              color="#666"
+              name="lock-closed"
+              size={22}
+              color={Colors.font}
               style={{marginRight: 5}}
             />
           }
           inputType="password"
-          fieldButtonLabel={'Forgot?'}
-          fieldButtonFunction={() => {}}
+          // fieldButtonLabel={'Forgot?'}
+          // fieldButtonFunction={() => {}}
           value={password}
           onChangeText={text => setPassword(text)}
         />
 
         <CustomButton
-          label={'Login'}
+          label={'Sign in'}
           onPress={() => {
             login(email, password);
           }}
+          name={'log-in-outline'}
         />
-      </View>
+        <Text
+          style={{
+            textAlign: 'center',
+            color: Colors.font,
+            fontFamily: 'BreezeSans-Bold',
+            padding: hp(1)
+          }}>
+          OR
+        </Text>
+        <CustomButton
+          label={'Scan ID Barcode'}
+          onPress={() => {
+            login(email, password);
+          }}
+          name={'scan-outline'}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };

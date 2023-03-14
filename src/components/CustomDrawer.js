@@ -10,12 +10,18 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
-import Developers from '../screens/Developers';
 import {AuthContext} from '../context/AuthContext';
 import {useNavigation} from '@react-navigation/native';
+import {scale} from 'react-native-size-matters';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 const CustomDrawer = ({...props}) => {
   const navigation = useNavigation();
@@ -27,18 +33,23 @@ const CustomDrawer = ({...props}) => {
         contentContainerStyle={{backgroundColor: Colors.main}}>
         <ImageBackground
           source={require('../assets/images/drawerImage.png')}
-          style={{padding: 20}}>
+          style={{padding: wp(5)}}>
           <Image
             source={require('../assets/images/profile.png')}
-            style={{height: 80, width: 80, borderRadius: 40, marginBottom: 10}}
+            style={{
+              height: wp(25),
+              width: wp(25),
+              borderRadius: wp(15),
+              marginBottom: hp(1),
+            }}
             resizeMode="contain"
           />
           <Text
             style={{
               color: '#fff',
-              fontSize: 18,
+              fontSize: responsiveFontSize(2),
               fontFamily: 'BreezeSans-Bold',
-              marginBottom: 5,
+              marginBottom: hp(0.5),
             }}>
             Ashutosh Atnoor
           </Text>
@@ -46,38 +57,44 @@ const CustomDrawer = ({...props}) => {
           <View style={{flexDirection: 'row'}}>
             <Icon
               name="school"
-              size={14}
+              size={wp(4.5)}
               color="#fff"
-              style={{marginRight: 10}}
+              style={{marginRight: wp(2)}}
             />
             <Text
               style={{
                 color: '#fff',
                 fontFamily: 'BreezeSans-Bold',
-                marginRight: 5,
+                // marginRight: scale(15),
               }}>
               STUDENT
             </Text>
           </View>
         </ImageBackground>
-        <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
+        <View style={{flex: 1, backgroundColor: '#fff', paddingTop: hp(1)}}>
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
 
-      <View style={{padding: 20, borderTopWidth: 1, borderTopColor: '#ccc'}}>
+      <View
+        style={{
+          paddingLeft: wp(4),
+          paddingTop: hp(1),
+          borderTopWidth: scale(0.6),
+          borderTopColor: Colors.font,
+        }}>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate('Developers');
           }}
-          style={{paddingVertical: 15}}>
+          style={{paddingVertical: hp(1)}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Icon name="code-tags" size={22} color={Colors.font} />
+            <Ionicon name="code-slash" size={wp(5.5)} color={Colors.font} />
             <Text
               style={{
-                fontSize: 15,
+                fontSize: responsiveFontSize(1.9),
                 fontFamily: 'BreezeSans-Bold',
-                marginLeft: 5,
+                marginLeft: wp(1.2),
                 color: Colors.font,
               }}>
               Developers
@@ -88,14 +105,14 @@ const CustomDrawer = ({...props}) => {
           onPress={() => {
             logout();
           }}
-          style={{paddingVertical: 15}}>
+          style={{paddingVertical: hp(2)}}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Icon name="logout" size={22} color={Colors.font} />
+            <Icon name="logout" size={wp(5)} color={Colors.font} />
             <Text
               style={{
-                fontSize: 15,
+                fontSize: responsiveFontSize(1.9),
                 fontFamily: 'BreezeSans-Bold',
-                marginLeft: 5,
+                marginLeft: wp(1.2),
                 color: Colors.font,
               }}>
               Sign Out

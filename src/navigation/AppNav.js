@@ -6,7 +6,6 @@ import AppStack from './AppStack';
 import {AuthContext} from '../context/AuthContext';
 import {Colors} from '../constants';
 import {scale} from 'react-native-size-matters';
-
 function AppNav() {
   const {isLoading, userToken} = useContext(AuthContext);
   if (isLoading) {

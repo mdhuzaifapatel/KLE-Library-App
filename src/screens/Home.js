@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Touchable} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Search, Dashboard, Welcome, Profile, CustomDrawer} from '../screens';
+import {Search, Dashboard, Profile} from '../screens';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
 import Info from './Info';

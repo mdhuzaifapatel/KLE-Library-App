@@ -1,5 +1,13 @@
-import {StyleSheet, Text, View, ScrollView, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Button,
+  Text,
+  View,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import React, {useState} from 'react';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {FlatGrid} from 'react-native-super-grid';
@@ -16,11 +24,16 @@ import {
 
 const DashboardGrid = () => {
   const [items, setItems] = React.useState([
-    {name: 'SEARCH', code: Colors.mainLight, route: 'Search'},
-    {name: 'PROFILE', code: Colors.mainLight, route: 'Profile'},
+    {name: 'SEARCH', code: Colors.mainLight, route: 'Search', icon: 'search'},
+    {
+      name: 'PROFILE',
+      code: Colors.mainLight,
+      route: 'Profile',
+      icon: 'person-circle-outline',
+    },
     {name: 'ABOUT US', code: Colors.mainLight, route: 'Info'},
     {name: 'QUESTION PAPERS', code: Colors.mainLight},
-    {name: 'E-RESOURCES', code: Colors.mainLight},
+    {name: 'Reading History', code: Colors.mainLight, route: 'ReadingHistory'},
     {name: 'CONTACT US', code: Colors.mainLight},
     {name: "FAQ'S", code: Colors.mainLight},
     {name: 'STAFF', code: Colors.mainLight},
@@ -43,7 +56,14 @@ const DashboardGrid = () => {
               navigation.navigate(item.route);
             }}>
             <View style={[styles.itemContainer, {backgroundColor: item.code}]}>
+              <Ionicon
+                name={item.icon}
+                size={22}
+                color={Colors.font}
+                style={styles.Icon}
+              />
               <Text style={styles.itemName}>{item.name}</Text>
+
               {/* <Text style={styles.itemCode}>{item.code}</Text> */}
             </View>
           </TouchableOpacity>
@@ -82,6 +102,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: scale(10),
     color: Colors.font,
+    textAlign: 'center',
+  },
+  Icon: {
+    padding: scale(2),
     textAlign: 'center',
   },
 });

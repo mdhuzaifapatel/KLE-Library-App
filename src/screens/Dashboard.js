@@ -1,5 +1,12 @@
 import React from 'react';
-import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
+import {
+  Text,
+  Button,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -12,7 +19,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
-import DashboardGrid from '../components/dashboardGrid';
+import DashboardGrid from '../components/DashboardGrid';
 
 export const Dashboard = ({navigation}) => {
   return (
