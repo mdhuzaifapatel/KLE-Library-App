@@ -19,6 +19,7 @@ import {
 } from 'react-native-responsive-screen';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Contact from '../screens/Contact';
+import ChangePassword from '../screens/ChangePassword';
 
 function Root() {
   return (
@@ -116,6 +117,7 @@ function AppStack() {
       <Stack.Screen name="MyBooks" component={MyBooks} />
       <Stack.Screen name="Info" component={Info} />
       <Stack.Screen name="Contact" component={Contact} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 }

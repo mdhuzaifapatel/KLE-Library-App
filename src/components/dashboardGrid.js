@@ -82,6 +82,7 @@ const DashboardGrid = () => {
       renderItem={({item}) => (
         <ScrollView>
           <TouchableOpacity
+            activeOpacity={0.5}
             onPress={() => {
               if (item.name == 'QUESTION PAPERS') {
                 Linking.openURL(QP_URL);

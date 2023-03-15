@@ -14,7 +14,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import {Colors} from '../constants';
 import ProfileGrid from '../components/ProfileGrid';
-const Profile = ({navigation}) => {
+
+const ChangePassword = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       {/* Statusbar */}
@@ -92,14 +93,12 @@ const Profile = ({navigation}) => {
           <Text style={styles.name}>JAYRAJ MODGEKAR</Text>
           <Text style={styles.usn}>02FE21MCA009</Text>
         </View>
-
-        <ProfileGrid />
       </View>
     </View>
   );
 };
 
-export default Profile;
+export default ChangePassword;
 
 const styles = ScaledSheet.create({
   body: {
