@@ -181,11 +181,11 @@ export const AuthProvider = ({children}) => {
 
   useEffect(() => {
     // adminLogin();
-    // isLoggedIn();
+    isLoggedIn();
   }, []);
 
   useEffect(() => {
-    // getPatronInfo();
+    getPatronInfo();
   }, [userToken]);
 
   return (
