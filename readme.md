@@ -1,4 +1,2 @@
-Splash
-Login
-Home
-Buttons
+To be updated soon....
+App under devlopment.
