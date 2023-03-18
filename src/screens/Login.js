@@ -87,7 +87,7 @@ const Login = ({navigation}) => {
               style={{marginRight: 5}}
             />
           }
-          inputType="password"
+          // inputType="password"
           // fieldButtonLabel={'Forgot?'}
           // fieldButtonFunction={() => {}}
           value={password}

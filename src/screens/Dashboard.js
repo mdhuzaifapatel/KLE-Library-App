@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
+import {AuthContext} from '../context/AuthContext';
 import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -13,9 +14,45 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import DashboardGrid from '../components/DashboardGrid';
-import { Colors } from '../constants';
+import {Colors} from '../constants';
 
 export const Dashboard = ({navigation}) => {
+  const {userInfo} = useContext(AuthContext);
+  const data = userInfo.GetPatronInfo;
+  let books = '0';
+
+  //************** Conditional rendering section **********************//
+
+  // No. of Books
+  try {
+    if (typeof data.loans != undefined) {
+      books = JSON.stringify(Object.keys(data.loans[0].loan).length);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  //For Category
+  if (data.categorycode == 'ST') {
+    var category = 'STUDENT';
+  } else if (data.categorycode == 'S') {
+    var category = 'STAFF';
+  } else {
+    var category = '';
+  }
+
+  //For Branch
+  let branch = data.sort1;
+  if (data.sort1 == 'Electronics & Communication' || data.sort1 == 'E&C') {
+    branch = 'E&C';
+  } else if (
+    data.sort1 == 'Computer Science' ||
+    data.sort1 == 'Computer Science Engg'
+  ) {
+    branch = 'CSE';
+  } else if (data.sort1 == 'Electrical & Electronics') {
+    branch = 'E&E';
+  }
   return (
     <View style={{flex: 1}}>
       {/* Statusbar */}
@@ -74,34 +111,44 @@ export const Dashboard = ({navigation}) => {
 
             <View style={styles.profileInfo}>
               {/* USN */}
-              <Text style={styles.usn}>02FE21MCA009</Text>
+              <Text style={styles.usn}>{data.cardnumber}</Text>
 
               {/* Course */}
-              <Text style={styles.profileCardTextRight}>
-                <Text style={styles.profileCardTextLeft}>Course: </Text> B.E
-              </Text>
+              <View style={styles.category1}>
+                <Icon
+                  name="school"
+                  size={hp(2.5)}
+                  color="#002c62"
+                  style={{top: hp(0.2)}}
+                />
+                <Text style={styles.category2}>{category}</Text>
+              </View>
 
-              {/* Bbranch */}
-              <Text style={styles.profileCardTextRight}>
-                <Text style={styles.profileCardTextLeft}>Branch: </Text> EC
-              </Text>
+              {/* Branch */}
+              <View style={{top: hp(-2)}}>
+                <Text style={styles.profileCardTextRight}>
+                  <Text style={styles.profileCardTextLeft}>Branch: </Text>{' '}
+                  {branch}
+                </Text>
 
-              {/* D.O.B */}
-              <Text style={styles.profileCardTextRight}>
-                <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
-                29/07/2001
-              </Text>
+                {/* D.O.B */}
+                <Text style={styles.profileCardTextRight}>
+                  <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
+                  {data.dateofbirth}
+                </Text>
 
-              {/* No. Books issued */}
-              <Text style={styles.profileCardTextRight}>
-                <Text style={styles.profileCardTextLeft}>Books issued: </Text> 5
-              </Text>
+                {/* No. Books issued */}
+                <Text style={styles.profileCardTextRight}>
+                  <Text style={styles.profileCardTextLeft}>Books issued: </Text>{' '}
+                  {books}
+                </Text>
 
-              {/* Fine */}
-              <Text style={styles.profileCardTextRight}>
-                <Text style={styles.profileCardTextLeft}>Fine amount: </Text>{' '}
-                ₹50.54
-              </Text>
+                {/* Fine */}
+                <Text style={styles.profileCardTextRight}>
+                  <Text style={styles.profileCardTextLeft}>Fine amount: </Text>{' '}
+                  ₹ {data.charges}
+                </Text>
+              </View>
             </View>
           </View>
         </LinearGradient>
@@ -174,16 +221,13 @@ const styles = ScaledSheet.create({
   profileCardTextRight: {
     fontSize: responsiveFontSize(2),
     fontFamily: 'OpenSans-Medium',
-    // textShadowColor: '#002c62',
     color: '#00397c',
     textShadowRadius: wp('2.2%'),
     left: scale(7),
   },
   profileCardTextLeft: {
     fontSize: responsiveFontSize(2),
-
     fontFamily: 'BreezeSans-Bold',
-    // textShadowColor: '#002c62',
     color: '#00397c',
     textShadowRadius: wp('2.2%'),
   },
@@ -214,5 +258,19 @@ const styles = ScaledSheet.create({
     flexDirection: 'column',
     marginTop: scale(50),
     paddingHorizontal: scale(18),
+  },
+  category2: {
+    fontSize: hp(2.2),
+    fontFamily: 'BreezeSans-Bold',
+    // textShadowColor: '#002c62',
+    color: '#00397c',
+    textShadowRadius: wp('2.2%'),
+    left: scale(7),
+  },
+  category1: {
+    flex: 1,
+    flexDirection: 'row',
+    left: scale(7),
+    top: hp(-0.5),
   },
 });

@@ -75,7 +75,7 @@ const Home = ({navigation}) => {
         component={Search}
       />
 
-      {/* Menu Button */}
+      {/* My Books */}
 
       <Tab.Screen
         options={{

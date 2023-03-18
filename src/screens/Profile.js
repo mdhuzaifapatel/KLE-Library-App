@@ -1,5 +1,12 @@
-import React from 'react';
-import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
+import React, { useContext } from 'react';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -14,6 +21,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import {Colors} from '../constants';
 import ProfileGrid from '../components/ProfileGrid';
+import { AuthContext } from '../context/AuthContext';
+
 const Profile = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
@@ -91,6 +100,15 @@ const Profile = ({navigation}) => {
           />
           <Text style={styles.name}>JAYRAJ MODGEKAR</Text>
           <Text style={styles.usn}>02FE21MCA009</Text>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+            <Icon
+              name="email"
+              size={scale(15)}
+              style={styles.emailIcon}
+              color={'#002c6280'}
+            />
+            <Text style={styles.email}>2kl19ec045@klescet.ac.in</Text>
+          </View>
         </View>
 
         <ProfileGrid />
@@ -115,7 +133,7 @@ const styles = ScaledSheet.create({
     // borderRadius: wp('4%'),
     // borderWidth: wp('0.09%'),
     borderColor: '#00397c',
-    marginTop: hp('-25%'),
+    marginTop: hp('-25.3%'),
   },
 
   profileImage: {
@@ -157,6 +175,20 @@ const styles = ScaledSheet.create({
   usn: {
     fontFamily: 'BreezeSans-Bold',
     fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    color: '#002c6280',
+  },
+  email: {
+    top: 5,
+    fontFamily: 'BreezeSans-Bold',
+    fontSize: responsiveFontSize(1.5),
+    textAlign: 'center',
+    color: '#002c6280',
+  },
+  emailIcon: {
+    top: 4.5,
+    right: 2,
+    fontFamily: 'BreezeSans-Bold',
     textAlign: 'center',
     color: '#002c6280',
   },

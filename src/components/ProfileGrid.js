@@ -21,6 +21,7 @@ import {FEEDBACK_URL} from '../utils/config';
 import {AuthContext} from '../context/AuthContext';
 
 const ProfileGrid = () => {
+  
   const [items, setItems] = React.useState([
     {
       name: 'Category:',
@@ -71,30 +72,28 @@ const ProfileGrid = () => {
       // fixed
       spacing={scale(11)}
       renderItem={({item}) => (
-        <ScrollView>
-          <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => {
-              if (item.name == 'Change your password') {
-                navigation.navigate('ChangePassword');
-              } else if (item.name == 'Send a feedback') {
-                Linking.openURL(FEEDBACK_URL);
-              } else if (item.name == 'Send a feedback') {
-                logout();
-              }
-            }}>
-            <View style={[styles.itemContainer, {backgroundColor: item.code}]}>
-              <Icon
-                name={item.icon}
-                size={30}
-                color={Colors.font}
-                style={styles.Icon}
-              />
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemData}>{item.data}</Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => {
+            if (item.name == 'Change your password') {
+              navigation.navigate('ChangePassword');
+            } else if (item.name == 'Send a feedback') {
+              Linking.openURL(FEEDBACK_URL);
+            } else if (item.name == 'Logout') {
+              logout();
+            }
+          }}>
+          <View style={[styles.itemContainer, {backgroundColor: item.code}]}>
+            <Icon
+              name={item.icon}
+              size={30}
+              color={Colors.font}
+              style={styles.Icon}
+            />
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemData}>{item.data}</Text>
+          </View>
+        </TouchableOpacity>
       )}
     />
   );
