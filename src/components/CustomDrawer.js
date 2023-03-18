@@ -26,6 +26,29 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 const CustomDrawer = ({...props}) => {
   const navigation = useNavigation();
   const {logout} = useContext(AuthContext);
+  const {userInfo} = useContext(AuthContext);
+  const data = userInfo.GetPatronInfo;
+  
+  // For Category
+  if (data.categorycode == 'ST') {
+    var category = 'STUDENT';
+  } else if (data.categorycode == 'S') {
+    var category = 'STAFF';
+  } else {
+    var category = '';
+  }
+
+  // For Capitilize
+  // const word = data.surname[0];
+
+  // const firstLetter = word.charAt(0);
+  // console.log(firstLetter);
+  // const firstLetterCap = firstLetter.toUpperCase();
+  // const remainingLetters = word.slice(1);
+  // const r = remainingLetters.toLowerCase();
+
+  // const name = firstLetterCap + r;
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
@@ -51,7 +74,7 @@ const CustomDrawer = ({...props}) => {
               fontFamily: 'BreezeSans-Bold',
               marginBottom: hp(0.5),
             }}>
-            Ashutosh Atnoor
+            {data.surname}
           </Text>
 
           <View style={{flexDirection: 'row'}}>
@@ -67,7 +90,7 @@ const CustomDrawer = ({...props}) => {
                 fontFamily: 'BreezeSans-Bold',
                 // marginRight: scale(15),
               }}>
-              STUDENT
+              {category}
             </Text>
           </View>
         </ImageBackground>

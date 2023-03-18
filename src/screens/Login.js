@@ -28,6 +28,7 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const {login} = useContext(AuthContext);
+  const {barcodeLogin} = useContext(AuthContext);
 
   return (
     <SafeAreaView
@@ -106,14 +107,14 @@ const Login = ({navigation}) => {
             textAlign: 'center',
             color: Colors.font,
             fontFamily: 'BreezeSans-Bold',
-            padding: hp(1)
+            padding: hp(1),
           }}>
           OR
         </Text>
         <CustomButton
           label={'Scan ID Barcode'}
           onPress={() => {
-            login(email, password);
+            navigation.navigate('ScannerScreen');
           }}
           name={'scan-outline'}
         />

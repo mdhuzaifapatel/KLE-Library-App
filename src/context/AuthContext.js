@@ -2,7 +2,13 @@ import React, {createContext, useState, useEffect, useContext} from 'react';
 import {Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {BASE_URL, data, IMAGE_URL, USER_INFO} from '../utils/config';
+import {
+  BARCODE_URL,
+  BASE_URL,
+  data,
+  IMAGE_URL,
+  USER_INFO,
+} from '../utils/config';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -11,6 +17,7 @@ export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState(null);
   var parseString = require('react-native-xml2js').parseString;
 
+  // Login
   const login = async (username, password) => {
     setIsLoading(true);
     await axios
@@ -43,6 +50,7 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   };
 
+  // Logout
   const logout = () => {
     setIsLoading(true);
     setUserToken(null);
@@ -51,6 +59,7 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   };
 
+  // Is Logged in Check
   const isLoggedIn = async () => {
     try {
       setIsLoading(true);
@@ -59,7 +68,7 @@ export const AuthProvider = ({children}) => {
       console.log('Token : ' + userToken);
       // userInfo = JSON.parse(userInfo);
 
-      if (userToken) {
+      if (userToken != null) {
         setUserToken(userToken);
         // setUserInfo(userInfo);
       }
@@ -69,31 +78,13 @@ export const AuthProvider = ({children}) => {
     }
   };
 
+  // Admin Login
   const config = {
     method: 'post',
     url: BASE_URL,
     data: data,
     headers: {'Content-Type': 'multipart/form-data'},
   };
-
-  const getBase64 = async () => {
-    const patronimage = IMAGE_URL + userToken;
-    console.log(patronimage);
-    return await axios
-      .get(patronimage, {
-        responseType: 'arraybuffer',
-      })
-      .then(response =>
-        setUserInfo(Buffer.from(response.data, 'binary').toString('base64')),
-      )
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log();
-      });
-  };
-
   const adminLogin = async () => {
     setIsLoading(true);
     await axios(config)
@@ -112,11 +103,46 @@ export const AuthProvider = ({children}) => {
       });
   };
 
+  // Barcode Login
+  const barcodeLogin = async () => {
+    setIsLoading(true);
+    await axios
+      // .get(`${USER_INFO}=67&show_fines=1&show_loans=1`)
+      // .get(
+      //   'https://catalog.bywatersolutions.com/cgi-bin/koha/ilsdi.pl?service=GetPatronInfo&patron_id=40&show_contact=0&show_loans=1',
+      // )
+      .get(`${BARCODE_URL}=${userToken}&id_type=cardnumber`)
+      .then(res => {
+        parseString(res.data, function (err, result) {
+          if (result.LookupPatron.id) {
+            var userToken = result.LookupPatron.id[0];
+            // const stat = res.status();
+            // setUserInfo(userInfo);
+            setUserToken(userToken);
+            AsyncStorage.setItem('userToken', userToken);
+          } else {
+            userToken = false;
+            console.log('Barcode:', userToken);
+          }
+
+          //   return res.status(401).json({msg: 'Failed login'});
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    setIsLoading(false);
+  };
+
+  // Patron Info
   const getPatronInfo = async () => {
     setIsLoading(true);
     await axios
-      .get(`${USER_INFO}=6000&show_fines=1&show_loans=1`)
-      // .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
+      // .get(`${USER_INFO}=67&show_fines=1&show_loans=1`)
+      // .get(
+      //   'https://catalog.bywatersolutions.com/cgi-bin/koha/ilsdi.pl?service=GetPatronInfo&patron_id=40&show_contact=0&show_loans=1',
+      // )
+      .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
       .then(res => {
         parseString(res.data, {trim: true}, function (err, result) {
           let userInfo = result;
@@ -131,16 +157,35 @@ export const AuthProvider = ({children}) => {
     setIsLoading(false);
   };
 
+  //Patron Image
+  const getBase64 = async () => {
+    const patronimage = IMAGE_URL + userToken;
+    console.log(patronimage);
+    return await axios
+      .get(patronimage, {
+        responseType: 'arraybuffer',
+      })
+      .then(response =>
+        setUserInfo(Buffer.from(response.data, 'binary').toString('base64')),
+      )
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        console.log();
+      });
+  };
+
   // const base64Icon = 'data:image/png;base64, {userInfo}';
   // <Image style={{width: 50, height: 50}} source={{uri: base64Icon}} />;
 
   useEffect(() => {
     // adminLogin();
-    isLoggedIn();
+    // isLoggedIn();
   }, []);
 
   useEffect(() => {
-    getPatronInfo();
+    // getPatronInfo();
   }, [userToken]);
 
   return (

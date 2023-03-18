@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {
   Text,
   View,
@@ -21,9 +21,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import {Colors} from '../constants';
 import ProfileGrid from '../components/ProfileGrid';
-import { AuthContext } from '../context/AuthContext';
+import {AuthContext} from '../context/AuthContext';
 
 const Profile = ({navigation}) => {
+  const {userInfo} = useContext(AuthContext);
+  const data = userInfo.GetPatronInfo;
   return (
     <View style={{flex: 1}}>
       {/* Statusbar */}
@@ -98,8 +100,8 @@ const Profile = ({navigation}) => {
             resizeMode="contain"
             source={require('../assets/images/profile.png')}
           />
-          <Text style={styles.name}>JAYRAJ MODGEKAR</Text>
-          <Text style={styles.usn}>02FE21MCA009</Text>
+          <Text style={styles.name}>{data.surname}</Text>
+          <Text style={styles.usn}>{data.cardnumber}</Text>
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
             <Icon
               name="email"
@@ -107,7 +109,7 @@ const Profile = ({navigation}) => {
               style={styles.emailIcon}
               color={'#002c6280'}
             />
-            <Text style={styles.email}>2kl19ec045@klescet.ac.in</Text>
+            <Text style={styles.email}>{data.email}</Text>
           </View>
         </View>
 
