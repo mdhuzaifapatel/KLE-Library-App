@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 import {Splash, Login} from '../screens';
 import ScannerScreen from '../screens/ScannerScreen';
+import CheckInternet from '../context/CheckInternet';
 
 export default function AuthStack() {
   return (

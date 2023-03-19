@@ -102,7 +102,7 @@ const Profile = ({navigation}) => {
           />
           <Text style={styles.name}>{data.surname}</Text>
           <Text style={styles.usn}>{data.cardnumber}</Text>
-          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',top:-5}}>
             <Icon
               name="email"
               size={scale(15)}
@@ -128,14 +128,14 @@ const styles = ScaledSheet.create({
     // paddingHorizontal: scale(18),
   },
   profileCard: {
-    height: responsiveScreenHeight(23),
+    height: responsiveScreenHeight(25),
     width: responsiveScreenWidth(100),
     alignItems: 'center',
     justifyContent: 'center',
     // borderRadius: wp('4%'),
     // borderWidth: wp('0.09%'),
     borderColor: '#00397c',
-    marginTop: hp('-25.3%'),
+    top: hp('-25.3%'),
   },
 
   profileImage: {

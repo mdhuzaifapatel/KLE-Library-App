@@ -115,7 +115,7 @@ export default ProfileGrid;
 const styles = StyleSheet.create({
   gridView: {
     position: 'absolute',
-    top: scale(-2),
+    top: scale(-5),
     flex: 1,
     margin: scale(3),
   },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     borderRadius: 5,
     padding: scale(5),
-    height: hp(8),
+    height: hp(7.8),
     borderColor: Colors.main,
     borderWidth: scale(0.5),
   },
