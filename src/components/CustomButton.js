@@ -1,9 +1,11 @@
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {Colors} from '../constants';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-
-export default function CustomButton({label, onPress, name}) {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+export default function CustomButton({label, onPress}) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -13,19 +15,30 @@ export default function CustomButton({label, onPress, name}) {
         borderRadius: 10,
         marginBottom: 5,
         marginTop: 5,
-        
       }}>
-      
-      <Text
+      <View
         style={{
-          textAlign: 'center',
-          fontWeight: '700',
-          fontSize: responsiveFontSize(2),
-          color: Colors.font,
-          fontFamily: 'BreezeSans-Bold',
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
-        {label}
-      </Text>
+        <Icon
+          name="barcode-scan"
+          size={responsiveFontSize(2.3)}
+          style={{marginRight: wp(2)}}
+          color={Colors.font}
+        />
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: responsiveFontSize(2),
+            color: Colors.font,
+            fontFamily: 'BreezeSans-Bold',
+          }}>
+          {label}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }

@@ -6,6 +6,7 @@ export default Colors = {
   kleRed: '#bc2c2c',
   main: '#B7BEF2',
   font: '#002c62',
+  font2: '#002c6280',
   mainLight: '#b7bef266',
   main2: '#b7bef28f',
 };

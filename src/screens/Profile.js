@@ -170,7 +170,7 @@ const styles = ScaledSheet.create({
   name: {
     color: Colors.font,
     fontFamily: 'BreezeSans-Bold',
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(2.2),
 
     textAlign: 'center',
   },

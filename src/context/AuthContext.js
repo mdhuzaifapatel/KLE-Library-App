@@ -1,6 +1,10 @@
 import React, {createContext, useState, useEffect, useContext} from 'react';
-import {Image} from 'react-native';
+import {Alert, Image} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
 import axios from 'axios';
 import {
   BARCODE_URL,
@@ -9,12 +13,19 @@ import {
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
+import AwesomeAlert from 'react-native-awesome-alerts';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
+import {Colors} from '../constants';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
+  const [buttonText, setButtonText] = useState('');
+  const [touch, setTouch] = useState();
   var parseString = require('react-native-xml2js').parseString;
 
   // Login
@@ -29,16 +40,20 @@ export const AuthProvider = ({children}) => {
         parseString(res.data, function (err, result) {
           if (result.AuthenticatePatron.id) {
             var userToken = result.AuthenticatePatron.id[0];
-            // const stat = res.status();
-            // setUserInfo(userInfo);
             setUserToken(userToken);
             AsyncStorage.setItem('userToken', userToken);
+            setShowAlert(true);
+            setAlertMsg('Logged in sucessfully');
+            setButtonText('OK');
+            setTouch(true);
           } else {
             userToken = false;
             console.log(userToken);
+            setShowAlert(true);
+            setTouch(false);
+            setAlertMsg('Incorrect USN or password');
+            setButtonText('Back to login');
           }
-
-          //   return res.status(401).json({msg: 'Failed login'});
         });
       })
 
@@ -46,7 +61,6 @@ export const AuthProvider = ({children}) => {
         console.log(`Login error ${e}`);
       });
 
-    // setUserToken('sefsesghs');
     setIsLoading(false);
   };
 
@@ -54,6 +68,10 @@ export const AuthProvider = ({children}) => {
   const logout = () => {
     setIsLoading(true);
     setUserToken(null);
+    setShowAlert(true);
+    setAlertMsg('Logged out sucessfully');
+    setButtonText('OK');
+    setTouch(true);
     AsyncStorage.removeItem('userToken');
     // AsyncStorage.removeItem('userInfo');
     setIsLoading(false);
@@ -89,12 +107,12 @@ export const AuthProvider = ({children}) => {
     setIsLoading(true);
     await axios(config)
       .then(res => {
-        console.log(JSON.stringify(res.data).includes('Welcome'));
+        console.log(JSON.stringify(res.data).includes('admin'));
         console.log('admin: ' + JSON.stringify(res.status));
       })
-      // .then(() => {
-      //   getBase64();
-      // })
+      .then(() => {
+        // getBase64();
+      })
       .catch(err => {
         console.log(err);
       })
@@ -104,33 +122,42 @@ export const AuthProvider = ({children}) => {
   };
 
   // Barcode Login
-  const barcodeLogin = async () => {
+  const barcodeLogin = async data => {
     setIsLoading(true);
+    console.log('Barcode:', data);
     await axios
-      // .get(`${USER_INFO}=67&show_fines=1&show_loans=1`)
-      // .get(
-      //   'https://catalog.bywatersolutions.com/cgi-bin/koha/ilsdi.pl?service=GetPatronInfo&patron_id=40&show_contact=0&show_loans=1',
-      // )
-      .get(`${BARCODE_URL}=${userToken}&id_type=cardnumber`)
+      .get(`${BARCODE_URL}=${data}&id_type=cardnumber`)
       .then(res => {
         parseString(res.data, function (err, result) {
           if (result.LookupPatron.id) {
             var userToken = result.LookupPatron.id[0];
-            // const stat = res.status();
-            // setUserInfo(userInfo);
             setUserToken(userToken);
             AsyncStorage.setItem('userToken', userToken);
+            setShowAlert(true);
+            setAlertMsg('Logged in sucessfully');
+            setButtonText('OK');
+            setTouch(true);
           } else {
             userToken = false;
-            console.log('Barcode:', userToken);
+            console.log(userToken);
+            setShowAlert(true);
+            setTouch(false);
+            setAlertMsg('Incorrect USN or password');
+            setButtonText('Back to login');
+            setShowAlert(true);
+            setTouch(false);
+            setAlertMsg('Incorrect USN or password');
+            setButtonText('Back to login');
           }
-
           //   return res.status(401).json({msg: 'Failed login'});
         });
       })
-      .catch(err => {
-        console.log(err);
+
+      .catch(e => {
+        console.log(`Login error ${e}`);
       });
+
+    // setUserToken('sefsesghs');
     setIsLoading(false);
   };
 
@@ -163,11 +190,12 @@ export const AuthProvider = ({children}) => {
     console.log(patronimage);
     return await axios
       .get(patronimage, {
-        responseType: 'arraybuffer',
+        responseType: 'text',
+        responseEncoding: 'base64',
       })
-      .then(response =>
-        setUserInfo(Buffer.from(response.data, 'binary').toString('base64')),
-      )
+      .then(response => {
+        const img = Buffer.from(response.data, 'base64');
+      })
       .catch(err => {
         console.log(err);
       })
@@ -188,11 +216,52 @@ export const AuthProvider = ({children}) => {
     getPatronInfo();
   }, [userToken]);
 
+  // useEffect(() => {
+  //   getBase64();
+  // }, [userToken]);
+
   return (
-    <AuthContext.Provider
-      value={{login, logout, isLoading, userToken, userInfo}}>
-      {children}
-    </AuthContext.Provider>
+    <>
+      <AwesomeAlert
+        show={showAlert}
+        // alertContainerStyle={{backgroundColor: Colors.white}}
+        contentContainerStyle={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: Colors.white,
+          height: hp(18),
+          width: wp(70),
+        }}
+        title="KLE Library"
+        titleStyle={{
+          fontSize: responsiveFontSize(2),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font,
+        }}
+        message={alertMsg}
+        messageStyle={{
+          fontSize: responsiveFontSize(1.8),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font2,
+        }}
+        showConfirmButton={true}
+        confirmText={buttonText}
+        confirmButtonTextStyle={{
+          fontSize: responsiveFontSize(1.7),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font,
+        }}
+        confirmButtonStyle={{backgroundColor: Colors.main}}
+        onConfirmPressed={() => {
+          setShowAlert(false);
+        }}
+        closeOnTouchOutside={touch}
+      />
+      <AuthContext.Provider
+        value={{login, logout, barcodeLogin, isLoading, userToken, userInfo}}>
+        {children}
+      </AuthContext.Provider>
+    </>
   );
 };
 

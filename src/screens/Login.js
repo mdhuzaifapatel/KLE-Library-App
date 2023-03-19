@@ -11,25 +11,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Colors} from '../../src/constants';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Buttons from '../components/Buttons';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import InputField from '../components/InputField';
 import CustomButton from '../components/CustomButton';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 const Login = ({navigation}) => {
-  // const [test, setTest] = useState('Incorrect USN or Password');
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const {login} = useContext(AuthContext);
-  const {barcodeLogin} = useContext(AuthContext);
-
   return (
     <SafeAreaView
       style={{
@@ -88,20 +82,94 @@ const Login = ({navigation}) => {
               style={{marginRight: 5}}
             />
           }
-          // inputType="password"
+          inputType="password"
           // fieldButtonLabel={'Forgot?'}
           // fieldButtonFunction={() => {}}
           value={password}
           onChangeText={text => setPassword(text)}
         />
 
-        <CustomButton
-          label={'Sign in'}
-          onPress={() => {
-            login(email, password);
-          }}
-          name={'log-in-outline'}
-        />
+        {email == '' || password == '' ? (
+          <TouchableOpacity
+            disabled
+            style={{
+              backgroundColor: Colors.main2,
+              padding: 20,
+              borderRadius: 10,
+              marginBottom: 5,
+              marginTop: 5,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Ionicons
+                name="enter-outline"
+                size={responsiveFontSize(2.3)}
+                style={{marginRight: wp(2)}}
+                color={Colors.font2}
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+
+                  fontSize: responsiveFontSize(2),
+                  color: Colors.font2,
+                  fontFamily: 'BreezeSans-Bold',
+                }}>
+                Sign in
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              login(email, password);
+            }}
+            style={{
+              backgroundColor: Colors.main,
+              padding: 20,
+              borderRadius: 10,
+              marginBottom: 5,
+              marginTop: 5,
+            }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Ionicons
+                name="enter"
+                size={responsiveFontSize(2.3)}
+                style={{marginRight: wp(2)}}
+                color={Colors.font}
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+
+                  fontSize: responsiveFontSize(2),
+                  color: Colors.font,
+                  fontFamily: 'BreezeSans-Bold',
+                }}>
+                Sign in
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          // <CustomButton
+          //   label={'Sign in'}
+          //   onPress={() => {
+          //     login(email, password);
+          //   }}
+          // />
+        )}
+
         <Text
           style={{
             textAlign: 'center',

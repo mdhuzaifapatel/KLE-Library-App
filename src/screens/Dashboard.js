@@ -44,7 +44,7 @@ export const Dashboard = ({navigation}) => {
   //For Branch
   let branch = data.sort1;
   if (data.sort1 == 'Electronics & Communication' || data.sort1 == 'E&C') {
-    branch = 'E&C';
+    branch = 'EC';
   } else if (
     data.sort1 == 'Computer Science' ||
     data.sort1 == 'Computer Science Engg'
@@ -53,6 +53,7 @@ export const Dashboard = ({navigation}) => {
   } else if (data.sort1 == 'Electrical & Electronics') {
     branch = 'E&E';
   }
+
   return (
     <View style={{flex: 1}}>
       {/* Statusbar */}

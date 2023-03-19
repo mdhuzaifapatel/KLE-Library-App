@@ -21,25 +21,36 @@ import {FEEDBACK_URL} from '../utils/config';
 import {AuthContext} from '../context/AuthContext';
 
 const ProfileGrid = () => {
-  
+  const {userInfo} = useContext(AuthContext);
+  const data = userInfo.GetPatronInfo;
+
+  // For Category
+  if (data.categorycode == 'ST') {
+    var category = 'STUDENT';
+  } else if (data.categorycode == 'S') {
+    var category = 'STAFF';
+  } else {
+    var category = '';
+  }
+
   const [items, setItems] = React.useState([
     {
       name: 'Category:',
       code: Colors.mainLight,
       icon: 'school-outline',
-      data: 'STUDENT',
+      data: category,
     },
     {
       name: 'Date of birth:',
       code: Colors.mainLight,
       icon: 'calendar-account-outline',
-      data: '2000-03-09',
+      data: data.dateofbirth,
     },
     {
       name: 'Card expiry date:',
       code: Colors.mainLight,
       icon: 'card-bulleted-outline',
-      data: '2024-03-14',
+      data: data.dateexpiry,
     },
 
     {
