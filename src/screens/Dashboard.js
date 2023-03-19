@@ -17,6 +17,7 @@ import DashboardGrid from '../components/DashboardGrid';
 import {Colors} from '../constants';
 
 export const Dashboard = ({navigation}) => {
+  // Data fetch
   const {userInfo} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
   let books = '0';
@@ -25,12 +26,10 @@ export const Dashboard = ({navigation}) => {
 
   // No. of Books
   try {
-    if (typeof data.loans != undefined) {
+    if (data.loans) {
       books = JSON.stringify(Object.keys(data.loans[0].loan).length);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 
   //For Category
   if (data.categorycode == 'ST') {

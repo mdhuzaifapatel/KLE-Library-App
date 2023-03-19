@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  TextInput,
 } from 'react-native';
-import {Colors, dummyData} from '../constants';
+import {Colors} from '../constants';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -17,7 +16,24 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ProfitIndicator} from '../components';
 import {scale} from 'react-native-size-matters';
+import {AuthContext} from '../context/AuthContext';
+import {responsiveFontSize} from 'react-native-responsive-dimensions';
+
 const MyBooks = ({navigation}) => {
+  // Data fetch
+  const {userInfo} = useContext(AuthContext);
+  const data = userInfo.GetPatronInfo;
+  let books = null;
+  let noOfBooks = 0;
+  try {
+    if (data.loans) {
+      noOfBooks = JSON.stringify(Object.keys(data.loans[0].loan).length);
+    }
+  } catch (e) {}
+
+  // Books data
+  books = data.loans[0].loan;
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
@@ -67,99 +83,128 @@ const MyBooks = ({navigation}) => {
         </View>
 
         {/* Books List */}
-        <View
-          style={{
-            flex: 2.5,
-            backgroundColor: '#fff',
-            marginTop: scale(-20),
-            marginBottom: scale(6),
-          }}>
-          {/* Copying horizontal flatlist from dashboard */}
-          <FlatList
-            style={{}}
-            keyExtractor={item => item.id}
-            data={dummyData.coins}
-            renderItem={({item}) => (
-              <View
-                style={{
-                  position: 'relative',
-                  flexDirection: 'column',
-                  height: scale(105),
-                  width: scale(315),
-                  borderWidth: scale(1),
-                  borderColor: '#ddd',
-                  backgroundColor: Colors.mainLight,
-                  borderRadius: scale(15),
-                  marginLeft: scale(19),
-                  marginTop: scale(10),
-                }}>
-                {/* Coin and symbol */}
+        {noOfBooks > 0 ? (
+          <View
+            style={{
+              flex: 2.5,
+              backgroundColor: '#fff',
+              marginTop: scale(-20),
+              marginBottom: scale(6),
+            }}>
+            <FlatList
+              style={{}}
+              data={books}
+              keyExtractor={item => item.title}
+              renderItem={({item}) => (
                 <View
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: scale(10),
-                    paddingTop: scale(10),
+                    position: 'relative',
+                    flexDirection: 'column',
+                    height: scale(105),
+                    width: scale(315),
+                    borderWidth: scale(1),
+                    borderColor: '#ddd',
+                    backgroundColor: Colors.mainLight,
+                    borderRadius: scale(15),
+                    marginLeft: scale(19),
+                    marginTop: scale(10),
                   }}>
-                  <Image
-                    style={{height: scale(35), width: scale(30)}}
-                    source={item.image}
-                  />
-                  <Text
+                  {/* Coin and symbol */}
+                  <View
                     style={{
-                      fontFamily: 'BreezeSans-Bold',
-                      color: '#333',
-                      fontSize: scale(15),
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingHorizontal: scale(10),
+                      paddingTop: scale(10),
                     }}>
-                    {' '}
-                    {item.currency}
-                  </Text>
-                </View>
-
-                {/* coin and price indicator */}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginTop: scale(15),
-                    justifyContent: 'space-around',
-                    alignItems: 'center',
-                    marginTop: scale(5),
-                  }}>
-                  {/* Coin Price */}
-
-                  <View style={{flexDirection: 'column'}}>
+                    {/* <Image */}
+                    {/* style={{height: scale(35), width: scale(30)}} */}
+                    {/* // source={item.image} */}
+                    {/* /> */}
                     <Text
                       style={{
                         fontFamily: 'BreezeSans-Bold',
                         color: '#333',
-                        fontSize: scale(18),
-
-                        marginBottom: scale(-5),
+                        fontSize: scale(15),
                       }}>
                       {' '}
-                      ₹{item.amount}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'BreezeSans-Bold',
-                        color: '#333',
-                        fontSize: scale(11.5),
-                      }}>
-                      Due Date: 27 March 2023
+                      {item.title}
                     </Text>
                   </View>
 
-                  {/* indicator */}
-                  <ProfitIndicator
+                  {/* coin and price indicator */}
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: scale(15),
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                      marginTop: scale(5),
+                    }}>
+                    {/* Coin Price */}
+
+                    <View style={{flexDirection: 'column'}}>
+                      <Text
+                        style={{
+                          fontFamily: 'BreezeSans-Bold',
+                          color: '#333',
+                          fontSize: responsiveFontSize(2),
+
+                          marginBottom: scale(-5),
+                        }}>
+                        {item.itype == 'LEN_BK'
+                          ? 'Lending Library'
+                          : 'Central Library'}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'BreezeSans-Bold',
+                          color: '#333',
+                          fontSize: scale(11.5),
+                        }}>
+                        Due date: {item.onloan}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'BreezeSans-Bold',
+                          color: '#333',
+                          fontSize: scale(11.5),
+                        }}>
+                        Issue date: {item.datelastborrowed}
+                      </Text>
+                    </View>
+
+                    {/* indicator */}
+                    {/* <ProfitIndicator
                     type={item.type}
                     percentage_change={item.changes}
-                  />
+                  /> */}
+                  </View>
                 </View>
-              </View>
-            )}
-            // horizontal={true}
-          />
-        </View>
+              )}
+              // horizontal={true}
+            />
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 2.5,
+              backgroundColor: '#fff',
+              marginTop: scale(-20),
+              marginBottom: scale(6),
+            }}>
+            <Image
+              source={require('../assets/images/noBooks.png')}
+              style={styles.image}
+            />
+            <View style={styles.container2}>
+              <Text style={styles.text1}>No books issued</Text>
+              <Text style={styles.text2}>
+                You can visit Central Library OR Lending Library to get books
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -167,4 +212,27 @@ const MyBooks = ({navigation}) => {
 
 export default MyBooks;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  image: {
+    width: wp(85),
+    height: wp(120),
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  container2: {
+    top: hp(-5),
+  },
+  text1: {
+    fontFamily: 'BreezeSans-Bold',
+    fontSize: responsiveFontSize(3),
+    textAlign: 'center',
+    color: Colors.font,
+  },
+  text2: {
+    fontFamily: 'BreezeSans-Bold',
+    fontSize: responsiveFontSize(2),
+    textAlign: 'center',
+    color: Colors.font2,
+    marginHorizontal: wp(5),
+  },
+});
