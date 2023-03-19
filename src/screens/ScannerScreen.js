@@ -3,14 +3,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
   Image,
   AnimationEffect,
   ReadableStreamReader,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
-import {Button, Dialog} from '@rneui/themed';
+import {Button} from '@rneui/themed';
 import {AuthContext} from '../context/AuthContext';
 import {Colors} from '../constants';
 import {
@@ -35,8 +34,6 @@ const ScannerScreen = ({navigation}) => {
           this.scanner = node;
         }}
         onRead={e => {
-          // setShowDialog(true);
-          //   Alert.alert('Logged in sucessfully:', e.data);
           barcodeLogin(e.data);
         }}
         flashMode={
@@ -111,26 +108,6 @@ const ScannerScreen = ({navigation}) => {
           </>
         }
       />
-      
-
-      {/* <Dialog
-        isVisible={showDialog}
-        onBackdropPress={() => setShowDialog(!showDialog)}>
-        <Dialog.Title
-          titleStyle={{color: '#000', fontSize: 25}}
-          title="Scanned QR:"
-        />
-        <Text style={{color: '#000', fontSize: 25}}>{qrValue}</Text>
-        <Dialog.Actions>
-          <Dialog.Button
-            title="Scan Again"
-            onPress={() => {
-              this.scanner.reactivate();
-              setShowDialog(false);
-            }}
-          />
-        </Dialog.Actions>
-      </Dialog> */}
     </View>
   );
 };
