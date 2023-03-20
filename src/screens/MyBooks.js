@@ -34,6 +34,101 @@ const MyBooks = ({navigation}) => {
   // Books data
   books = data.loans[0].loan;
 
+  // Capitalise
+  function capitalizeString(str) {
+    return str.toLowerCase().replace(/\b\w/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1);
+    });
+  }
+
+  const renderItem = ({item}) => {
+    // const title = capitalizeString(...item.title);
+    return (
+      <View
+        style={{
+          alignSelf: 'center',
+          position: 'relative',
+          flexDirection: 'column',
+          height: hp(18),
+          width: wp(92),
+          borderColor: Colors.mainLight,
+          backgroundColor: Colors.mainLight,
+          borderRadius: scale(15),
+          // marginLeft: wp(2),
+          marginTop: hp(1.8),
+        }}>
+        {/* Title and Icon */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Image
+            style={{height: hp(4.5), width: wp(15), left: wp(1), top: hp(1.5)}}
+            source={require('../assets/images/book.png')}
+            resizeMode="contain"
+          />
+          <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.5}
+            style={{
+              textAlign: 'left',
+              top: hp(1.3),
+              fontFamily: 'BreezeSans-Bold',
+              color: Colors.font,
+              fontSize: responsiveFontSize(1.9),
+              marginLeft: wp(2),
+              marginRight: wp(15),
+            }}>
+            {item.title}
+          </Text>
+        </View>
+
+        {/* coin and price indicator */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            top: hp(3),
+          }}>
+          {/* Coin Price */}
+
+          <View style={{flexDirection: 'row'}}>
+            <Text
+              style={{
+                fontFamily: 'BreezeSans-Bold',
+                color: Colors.font2,
+                fontSize: responsiveFontSize(2),
+                right: wp(3),
+                top: hp(0.7),
+                marginBottom: scale(-5),
+              }}>
+              {item.itype == 'LEN_BK' ? 'Lending Library' : 'Central Library'}
+            </Text>
+            <View style={{top: hp(0.4), left: wp(4)}}>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                Due date: {item.onloan}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                Issue date: {item.datelastborrowed}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
@@ -94,94 +189,8 @@ const MyBooks = ({navigation}) => {
             <FlatList
               style={{}}
               data={books}
-              keyExtractor={item => item.title}
-              renderItem={({item}) => (
-                <View
-                  style={{
-                    position: 'relative',
-                    flexDirection: 'column',
-                    height: scale(105),
-                    width: scale(315),
-                    borderWidth: scale(1),
-                    borderColor: '#ddd',
-                    backgroundColor: Colors.mainLight,
-                    borderRadius: scale(15),
-                    marginLeft: scale(19),
-                    marginTop: scale(10),
-                  }}>
-                  {/* Coin and symbol */}
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: scale(10),
-                      paddingTop: scale(10),
-                    }}>
-                    {/* <Image */}
-                    {/* style={{height: scale(35), width: scale(30)}} */}
-                    {/* // source={item.image} */}
-                    {/* /> */}
-                    <Text
-                      style={{
-                        fontFamily: 'BreezeSans-Bold',
-                        color: '#333',
-                        fontSize: scale(15),
-                      }}>
-                      {' '}
-                      {item.title}
-                    </Text>
-                  </View>
-
-                  {/* coin and price indicator */}
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: scale(15),
-                      justifyContent: 'space-around',
-                      alignItems: 'center',
-                      marginTop: scale(5),
-                    }}>
-                    {/* Coin Price */}
-
-                    <View style={{flexDirection: 'column'}}>
-                      <Text
-                        style={{
-                          fontFamily: 'BreezeSans-Bold',
-                          color: '#333',
-                          fontSize: responsiveFontSize(2),
-
-                          marginBottom: scale(-5),
-                        }}>
-                        {item.itype == 'LEN_BK'
-                          ? 'Lending Library'
-                          : 'Central Library'}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: 'BreezeSans-Bold',
-                          color: '#333',
-                          fontSize: scale(11.5),
-                        }}>
-                        Due date: {item.onloan}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: 'BreezeSans-Bold',
-                          color: '#333',
-                          fontSize: scale(11.5),
-                        }}>
-                        Issue date: {item.datelastborrowed}
-                      </Text>
-                    </View>
-
-                    {/* indicator */}
-                    {/* <ProfitIndicator
-                    type={item.type}
-                    percentage_change={item.changes}
-                  /> */}
-                  </View>
-                </View>
-              )}
+              keyExtractor={item => item.issue_id}
+              renderItem={renderItem}
               // horizontal={true}
             />
           </View>
@@ -200,7 +209,7 @@ const MyBooks = ({navigation}) => {
             <View style={styles.container2}>
               <Text style={styles.text1}>No books issued</Text>
               <Text style={styles.text2}>
-                You can visit Central Library OR Lending Library to get books
+                You can visit Central Library or Lending Library to get books
               </Text>
             </View>
           </View>
@@ -214,7 +223,7 @@ export default MyBooks;
 
 const styles = StyleSheet.create({
   image: {
-    width: wp(85),
+    width: wp(90),
     height: wp(120),
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -233,6 +242,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
     textAlign: 'center',
     color: Colors.font2,
-    marginHorizontal: wp(5),
+    marginHorizontal: wp(9),
   },
 });

@@ -22,16 +22,24 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 const Fine = ({navigation}) => {
   const {userInfo} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
-  let books = null;
   let noOfBooks = 0;
   try {
     if (data.loans) {
-      noOfBooks = JSON.stringify(Object.keys(data.loans[0].loan).length);
+      noOfBooks = JSON.stringify(Object.keys(data.fines[0].fine).length);
     }
   } catch (e) {}
 
-  // Books data
-  books = data.fines[0].fine;
+  // Books data (Fine)
+  let books = data.fines[0].fine;
+  const new_data = {fines: {fine: []}};
+  books.forEach(fine => {
+    if (fine.amountoutstanding && parseFloat(fine.amountoutstanding) > 0) {
+      new_data.fines.fine.push(fine);
+    }
+  });
+
+  let booksData = new_data.fines.fine;
+  // console.log(booksData);
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -59,7 +67,7 @@ const Fine = ({navigation}) => {
 
           <View style={{marginLeft: scale(-20)}}>
             <Icon
-              name="history"
+              name="currency-inr"
               size={scale(23)}
               margin={scale(18)}
               color={Colors.font}
@@ -71,18 +79,18 @@ const Fine = ({navigation}) => {
             style={{
               width: scale(150),
               marginTop: scale(-0.9),
-              marginLeft: scale(-25),
+              right: scale(63),
               textAlign: 'center',
               fontFamily: 'BreezeSans-Bold',
               fontSize: scale(17),
               color: Colors.font,
             }}>
-            Reading History
+            Fines
           </Text>
         </View>
 
         {/* Books List */}
-        {noOfBooks > 0 ? (
+        {booksData > [] ? (
           <View
             style={{
               flex: 2.5,
@@ -92,10 +100,10 @@ const Fine = ({navigation}) => {
             }}>
             <FlatList
               style={{}}
-              data={books}
+              data={booksData}
               keyExtractor={(item, index) => String(index)}
               renderItem={({item}) =>
-                item.amountoutstanding > 0 ? (
+                item.amount > 0 ? (
                   <View
                     style={{
                       position: 'relative',
@@ -171,7 +179,7 @@ const Fine = ({navigation}) => {
                             color: '#333',
                             fontSize: scale(11.5),
                           }}>
-                          Due date: {item.date}
+                          Return date: {item.date}
                         </Text>
                       </View>
 
@@ -200,9 +208,9 @@ const Fine = ({navigation}) => {
               style={styles.image}
             />
             <View style={styles.container2}>
-              <Text style={styles.text1}>No books issued</Text>
+              <Text style={styles.text1}>You have no fines!</Text>
               <Text style={styles.text2}>
-                You can visit Central Library OR Lending Library to get books
+                You can visit Central Library or Lending Library to get books
               </Text>
             </View>
           </View>
@@ -215,7 +223,7 @@ export default Fine;
 
 const styles = StyleSheet.create({
   image: {
-    width: wp(85),
+    width: wp(90),
     height: wp(120),
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -234,6 +242,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
     textAlign: 'center',
     color: Colors.font2,
-    marginHorizontal: wp(5),
+    marginHorizontal: wp(9),
   },
 });

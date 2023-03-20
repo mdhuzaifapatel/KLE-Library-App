@@ -26,7 +26,7 @@ const ReadingHistory = ({navigation}) => {
   let noOfBooks = 0;
   try {
     if (data.loans) {
-      noOfBooks = JSON.stringify(Object.keys(data.loans[0].loan).length);
+      noOfBooks = JSON.stringify(Object.keys(data.fines[0].fine).length);
     }
   } catch (e) {}
 
@@ -185,6 +185,7 @@ const ReadingHistory = ({navigation}) => {
                 ) : null
               }
               // horizontal={true}
+              
             />
           </View>
         ) : (
@@ -202,7 +203,7 @@ const ReadingHistory = ({navigation}) => {
             <View style={styles.container2}>
               <Text style={styles.text1}>No books issued</Text>
               <Text style={styles.text2}>
-                You can visit Central Library OR Lending Library to get books
+                You can visit Central Library or Lending Library to get books
               </Text>
             </View>
           </View>
@@ -215,7 +216,7 @@ export default ReadingHistory;
 
 const styles = StyleSheet.create({
   image: {
-    width: wp(85),
+    width: wp(90),
     height: wp(120),
     resizeMode: 'contain',
     alignSelf: 'center',
@@ -234,6 +235,6 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
     textAlign: 'center',
     color: Colors.font2,
-    marginHorizontal: wp(5),
+    marginHorizontal: wp(9),
   },
 });

@@ -10,7 +10,13 @@ function AppNav() {
   const {isLoading, userToken} = useContext(AuthContext);
   if (isLoading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: Colors.white,
+        }}>
         <ActivityIndicator
           size={scale(30)}
           color={Colors.font}

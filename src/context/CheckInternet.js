@@ -10,8 +10,8 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 const CheckInternet = () => {
   return (
-    <View style={styles.container}>
-        <View>
+    <View style={styles.main}>
+        <View style={styles.container}>
           <Image
             source={require('../assets/images/nointernet.png')}
             style={styles.image}
@@ -30,8 +30,15 @@ const CheckInternet = () => {
 export default CheckInternet;
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.white,
+  },
   container: {
     flex: 1,
+    width: wp(100),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.mainLight,
