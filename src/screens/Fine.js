@@ -40,6 +40,117 @@ const Fine = ({navigation}) => {
 
   let booksData = new_data.fines.fine;
   // console.log(booksData);
+  const renderItem = ({item}) => {
+    return item.amount > 0 ? (
+      <View
+        style={{
+          alignSelf: 'center',
+          position: 'relative',
+          flexDirection: 'column',
+          height: hp(18),
+          width: wp(92),
+          borderColor: Colors.mainLight,
+          backgroundColor: Colors.mainLight,
+          borderRadius: scale(15),
+          // marginLeft: wp(2),
+          marginTop: hp(1.8),
+        }}>
+        {/* Title and Icon */}
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Image
+            style={{height: hp(4.5), width: wp(15), left: wp(1), top: hp(1.5)}}
+            source={require('../assets/images/book.png')}
+            resizeMode="contain"
+          />
+
+          <Text
+            adjustsFontSizeToFit={true}
+            minimumFontScale={0.5}
+            style={{
+              textAlign: 'left',
+              top: hp(1.3),
+              fontFamily: 'BreezeSans-Bold',
+              color: Colors.font,
+              fontSize: responsiveFontSize(1.9),
+              marginLeft: wp(2),
+              marginRight: wp(15),
+            }}>
+            {item.description}
+          </Text>
+        </View>
+
+        {/* coin and price indicator */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            top: hp(3),
+          }}>
+          {/* Coin Price */}
+
+          <View style={{flexDirection: 'row'}}>
+            {item.status == 'RETURNED' ? (
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: Colors.font2,
+                  fontSize: responsiveFontSize(2),
+                  right: wp(3),
+                  top: hp(0.7),
+                  marginBottom: scale(-5),
+                }}>
+                RETURNED
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: 'red',
+                  fontSize: responsiveFontSize(2),
+                  right: wp(3),
+                  top: hp(0.7),
+                  marginBottom: scale(-5),
+                }}>
+                UNRETURNED
+              </Text>
+            )}
+
+            <View style={{top: hp(0.4), left: wp(4)}}>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                Fine:{' '}
+                {item.amountoutstanding > 0 ? item.amountoutstanding : '0'}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                Due date: {item.date}
+              </Text>
+            </View>
+          </View>
+
+          {/* indicator */}
+          {/* <ProfitIndicator
+        type={item.type}
+        percentage_change={item.changes}
+      /> */}
+        </View>
+      </View>
+    ) : null;
+  };
+
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -102,96 +213,8 @@ const Fine = ({navigation}) => {
               style={{}}
               data={booksData}
               keyExtractor={(item, index) => String(index)}
-              renderItem={({item}) =>
-                item.amount > 0 ? (
-                  <View
-                    style={{
-                      position: 'relative',
-                      flexDirection: 'column',
-                      height: scale(105),
-                      width: scale(315),
-                      borderWidth: scale(1),
-                      borderColor: '#ddd',
-                      backgroundColor: Colors.mainLight,
-                      borderRadius: scale(15),
-                      marginLeft: scale(19),
-                      marginTop: scale(10),
-                    }}>
-                    {/* Coin and symbol */}
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingHorizontal: scale(10),
-                        paddingTop: scale(10),
-                      }}>
-                      {/* <Image */}
-                      {/* style={{height: scale(35), width: scale(30)}} */}
-                      {/* // source={item.image} */}
-                      {/* /> */}
-
-                      <Text
-                        style={{
-                          fontFamily: 'BreezeSans-Bold',
-                          color: '#333',
-                          fontSize: scale(15),
-                        }}>
-                        {item.description}
-                      </Text>
-                    </View>
-
-                    {/* coin and price indicator */}
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        marginTop: scale(15),
-                        justifyContent: 'space-around',
-                        alignItems: 'center',
-                        marginTop: scale(5),
-                      }}>
-                      {/* Coin Price */}
-
-                      <View style={{flexDirection: 'column'}}>
-                        <Text
-                          style={{
-                            fontFamily: 'BreezeSans-Bold',
-                            color: '#333',
-                            fontSize: responsiveFontSize(2),
-
-                            marginBottom: scale(-5),
-                          }}>
-                          {item.status}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'BreezeSans-Bold',
-                            color: '#333',
-                            fontSize: scale(11.5),
-                          }}>
-                          Fine:{' '}
-                          {item.amountoutstanding > 0
-                            ? item.amountoutstanding
-                            : '0'}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'BreezeSans-Bold',
-                            color: '#333',
-                            fontSize: scale(11.5),
-                          }}>
-                          Return date: {item.date}
-                        </Text>
-                      </View>
-
-                      {/* indicator */}
-                      {/* <ProfitIndicator
-                    type={item.type}
-                    percentage_change={item.changes}
-                  /> */}
-                    </View>
-                  </View>
-                ) : null
-              }
+              renderItem={renderItem}
+          
               // horizontal={true}
             />
           </View>

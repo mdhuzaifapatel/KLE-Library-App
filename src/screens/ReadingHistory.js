@@ -32,6 +32,7 @@ const ReadingHistory = ({navigation}) => {
 
   // Books data
   books = data.fines[0].fine;
+
   const renderItem = ({item}) => {
     return item.amount > 0 ? (
       <View
@@ -200,12 +201,14 @@ const ReadingHistory = ({navigation}) => {
               marginTop: scale(-20),
               marginBottom: scale(6),
             }}>
+            
             <FlatList
+              
               style={{}}
               data={books}
               keyExtractor={(item, index) => String(index)}
               renderItem={renderItem}
-              // sortBy={amountoutstanding}
+            
               // horizontal={true}
             />
           </View>
