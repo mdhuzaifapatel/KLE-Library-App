@@ -193,9 +193,9 @@ const styles = ScaledSheet.create({
     shadowRadius: scale(5),
   },
   profileImage: {
-    height: responsiveScreenHeight(20),
-    width: responsiveScreenWidth(30),
-    borderRadius: scale(10),
+    height: hp(20),
+    width: hp(15),
+    borderRadius: hp(1),
     borderColor: '#00397c',
     right: scale(22),
     // borderWidth: wp('0.06%'),
@@ -204,7 +204,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     flexDirection: 'column',
     width: scale(200),
-    marginLeft: scale(145),
+    marginLeft: hp(20),
     marginTop: scale(-125),
   },
 

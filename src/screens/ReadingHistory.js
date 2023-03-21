@@ -185,7 +185,6 @@ const ReadingHistory = ({navigation}) => {
                 ) : null
               }
               // horizontal={true}
-              
             />
           </View>
         ) : (

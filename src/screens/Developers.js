@@ -28,11 +28,17 @@ const Developers = ({navigation}) => {
   DATA = [
     {
       id: 1,
-      name: 'First Item',
+      name: 'Md Huzaifa Patel',
+      title: 'Software Developer',
+      email: 'mdhuzaifapatel@gmail.com',
+      image: require('../assets/images/dev1.jpg'),
     },
     {
       id: 2,
-      name: 'Second Item',
+      name: 'Dhiraj Inchalkaranji',
+      title: 'Software Developer',
+      email: 'itsdhirajdi@gmail.com',
+      image: require('../assets/images/dev2.jpg'),
     },
   ];
 
@@ -97,9 +103,7 @@ const Developers = ({navigation}) => {
         <View
           style={{
             flex: 3.5,
-            backgroundColor: Colors.main2, 
-            // marginTop: scale(-20),
-            // marginBottom: scale(6),
+            backgroundColor: Colors.main2,
           }}>
           <FlatList
             style={{}}
@@ -112,59 +116,36 @@ const Developers = ({navigation}) => {
                 location={[1, 0]}
                 colors={['#7881dc', '#9ba6f6', '#b7bef2', '#7881dc']}
                 style={styles.profileCard}>
+
+
                 {/* Profile Card*/}
                 <View style={{marginTop: scale(18)}}>
                   <View style={styles.profileCardSettings}>
                     <Image
                       style={styles.profileImage}
                       resizeMode="cover"
-                      source={require('../assets/images/profile.png')}
+                      source={item.image}
                     />
                   </View>
 
                   <View style={styles.profileInfo}>
-                    {/* USN */}
-                    <Text style={styles.usn}>2442</Text>
+                    {/* Name */}
+                    <Text style={styles.name}>{item.name}</Text>
 
-                    {/* Course */}
-                    <View style={styles.category1}>
+                    {/* Title */}
+                    <View style={styles.icon}>
                       <Icon
                         name="school"
                         size={hp(2.5)}
                         color="#002c62"
                         style={{top: hp(0.2)}}
                       />
-                      <Text style={styles.category2}>stthdhd</Text>
+                      <Text style={styles.title}>{item.title}</Text>
                     </View>
 
-                    {/* Branch */}
-                    <View style={{top: hp(-2)}}>
-                      <Text style={styles.profileCardTextRight}>
-                        <Text style={styles.profileCardTextLeft}>Branch: </Text>{' '}
-                        ss
-                      </Text>
-
-                      {/* D.O.B */}
-                      <Text style={styles.profileCardTextRight}>
-                        <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
-                        sss
-                      </Text>
-
-                      {/* No. Books issued */}
-                      <Text style={styles.profileCardTextRight}>
-                        <Text style={styles.profileCardTextLeft}>
-                          Books issued:{' '}
-                        </Text>{' '}
-                        ss
-                      </Text>
-
-                      {/* Fine */}
-                      <Text style={styles.profileCardTextRight}>
-                        <Text style={styles.profileCardTextLeft}>
-                          Fine amount:{' '}
-                        </Text>{' '}
-                        ₹ 45
-                      </Text>
+                    {/* Email */}
+                    <View style={{}}>
+                      <Text style={styles.email}>{item.email}</Text>
                     </View>
                   </View>
                 </View>
@@ -226,9 +207,9 @@ const styles = StyleSheet.create({
     shadowRadius: scale(5),
   },
   profileImage: {
-    height: responsiveScreenHeight(20),
-    width: responsiveScreenWidth(30),
-    borderRadius: scale(10),
+    height: hp(15),
+    width: hp(15),
+    borderRadius: hp(50),
     borderColor: '#00397c',
     right: scale(22),
     // borderWidth: wp('0.06%'),
@@ -241,9 +222,9 @@ const styles = StyleSheet.create({
     marginTop: scale(-125),
   },
 
-  usn: {
+  name: {
     marginTop: responsiveScreenHeight(-2.5),
-    fontSize: responsiveFontSize(3.4),
+    fontSize: responsiveFontSize(3),
     fontFamily: 'BreezeSans-Bold',
     color: '#fff',
     textShadowColor: '#00397c',
@@ -251,20 +232,15 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
     paddingBottom: scale(5),
   },
-  profileCardTextRight: {
-    fontSize: responsiveFontSize(2),
-    fontFamily: 'OpenSans-Medium',
-    color: '#00397c',
-    textShadowRadius: wp('2.2%'),
-    left: scale(7),
-  },
-  profileCardTextLeft: {
-    fontSize: responsiveFontSize(2),
+  email: {
+    fontSize: responsiveFontSize(1.5),
     fontFamily: 'BreezeSans-Bold',
     color: '#00397c',
     textShadowRadius: wp('2.2%'),
+    left: scale(7),
+    top: hp(-10),
   },
-  category2: {
+  title: {
     fontSize: hp(2.2),
     fontFamily: 'BreezeSans-Bold',
     // textShadowColor: '#002c62',
@@ -272,7 +248,7 @@ const styles = StyleSheet.create({
     textShadowRadius: wp('2.2%'),
     left: scale(7),
   },
-  category1: {
+  icon: {
     flex: 1,
     flexDirection: 'row',
     left: scale(7),
