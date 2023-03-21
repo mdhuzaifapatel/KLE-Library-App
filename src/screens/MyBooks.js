@@ -114,7 +114,7 @@ const MyBooks = ({navigation}) => {
                   fontSize: scale(11.5),
                 }}>
                 Due date: {item.onloan}
-              </Text>
+              </Text> 
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
