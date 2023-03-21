@@ -181,14 +181,14 @@ const styles = ScaledSheet.create({
     color: '#002c6280',
   },
   email: {
-    top: 5,
+    top: 2,
     fontFamily: 'BreezeSans-Bold',
     fontSize: responsiveFontSize(1.5),
     textAlign: 'center',
     color: '#002c6280',
   },
   emailIcon: {
-    top: 4.5,
+    top: 2.5,
     right: 2,
     fontFamily: 'BreezeSans-Bold',
     textAlign: 'center',

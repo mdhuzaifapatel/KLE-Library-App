@@ -181,7 +181,7 @@ const styles = ScaledSheet.create({
     elevation: hp('2.5%'),
     shadowColor: '#000',
     shadowRadius: wp('1%'),
-    marginTop: hp('-16%'),
+    marginTop: hp('-16'),
     marginLeft: scale(18),
   },
   profileCardSettings: {
@@ -191,11 +191,12 @@ const styles = ScaledSheet.create({
     marginLeft: scale(50),
     shadowColor: '#000',
     shadowRadius: scale(5),
+    // top: hp(-0.2)
   },
   profileImage: {
-    height: hp(20),
-    width: hp(15),
-    borderRadius: hp(1),
+    height: responsiveScreenHeight(20),
+    width: responsiveScreenWidth(30),
+    borderRadius: scale(10),
     borderColor: '#00397c',
     right: scale(22),
     // borderWidth: wp('0.06%'),
@@ -204,7 +205,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     flexDirection: 'column',
     width: scale(200),
-    marginLeft: hp(20),
+    marginLeft: scale(145),
     marginTop: scale(-125),
   },
 
@@ -231,6 +232,7 @@ const styles = ScaledSheet.create({
     color: '#00397c',
     textShadowRadius: wp('2.2%'),
   },
+
 
   bell: {
     flexDirection: 'row',

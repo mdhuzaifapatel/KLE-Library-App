@@ -14,7 +14,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ProfitIndicator} from '../components';
 import {scale} from 'react-native-size-matters';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
@@ -129,6 +128,9 @@ const MyBooks = ({navigation}) => {
       </View>
     );
   };
+
+
+  
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
