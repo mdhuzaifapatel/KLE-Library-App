@@ -97,7 +97,7 @@ const Developers = ({navigation}) => {
         <View
           style={{
             flex: 3.5,
-            backgroundColor: Colors.main2,
+            backgroundColor: Colors.main2, 
             // marginTop: scale(-20),
             // marginBottom: scale(6),
           }}>
