@@ -122,11 +122,9 @@ const Fine = ({navigation}) => {
 
             <View style={{top: hp(0.4), left: wp(4)}}>
               <Text
-                style={{
-                  fontFamily: 'BreezeSans-Bold',
-                  color: '#333',
-                  fontSize: scale(11.5),
-                }}>
+                style={[
+                  item.amountoutstanding > 0 ? styles.red : styles.normal,
+                ]}>
                 Fine:{' '}
                 {item.amountoutstanding > 0 ? item.amountoutstanding : '0'}
               </Text>
@@ -150,7 +148,6 @@ const Fine = ({navigation}) => {
       </View>
     ) : null;
   };
-
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -214,7 +211,7 @@ const Fine = ({navigation}) => {
               data={booksData}
               keyExtractor={(item, index) => String(index)}
               renderItem={renderItem}
-          
+
               // horizontal={true}
             />
           </View>
@@ -266,5 +263,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.font2,
     marginHorizontal: wp(9),
+  },
+  normal: {
+    fontFamily: 'BreezeSans-Bold',
+    color: '#333',
+    fontSize: scale(11.5),
+  },
+  red: {
+    fontFamily: 'BreezeSans-Bold',
+    color: Colors.red,
+    fontSize: scale(11.5),
   },
 });

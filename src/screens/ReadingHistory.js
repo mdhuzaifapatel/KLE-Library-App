@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 const ReadingHistory = ({navigation}) => {
   const {userInfo} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
-  let books = null;
+  let books1 = null;
   let noOfBooks = 0;
   try {
     if (data.loans) {
@@ -31,7 +31,11 @@ const ReadingHistory = ({navigation}) => {
   } catch (e) {}
 
   // Books data
-  books = data.fines[0].fine;
+
+  books1 = data.fines[0].fine;
+  let books = books1.sort((a, b) =>
+    a.amountoutstanding > 0 || a.date > b.date ? -1 : 1,
+  );
 
   const renderItem = ({item}) => {
     return item.amount > 0 ? (
@@ -115,11 +119,9 @@ const ReadingHistory = ({navigation}) => {
 
             <View style={{top: hp(0.4), left: wp(4)}}>
               <Text
-                style={{
-                  fontFamily: 'BreezeSans-Bold',
-                  color: '#333',
-                  fontSize: scale(11.5),
-                }}>
+                style={[
+                  item.amountoutstanding > 0 ? styles.red : styles.normal
+                ]}>
                 Fine:{' '}
                 {item.amountoutstanding > 0 ? item.amountoutstanding : '0'}
               </Text>
@@ -201,14 +203,12 @@ const ReadingHistory = ({navigation}) => {
               marginTop: scale(-20),
               marginBottom: scale(6),
             }}>
-            
             <FlatList
-              
               style={{}}
               data={books}
               keyExtractor={(item, index) => String(index)}
               renderItem={renderItem}
-            
+
               // horizontal={true}
             />
           </View>
@@ -261,4 +261,14 @@ const styles = StyleSheet.create({
     color: Colors.font2,
     marginHorizontal: wp(9),
   },
+  normal:{
+    fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+  },
+  red:{
+    fontFamily: 'BreezeSans-Bold',
+                  color: Colors.red,
+                  fontSize: scale(11.5),
+  }
 });

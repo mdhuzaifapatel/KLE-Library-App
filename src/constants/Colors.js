@@ -9,4 +9,5 @@ export default Colors = {
   font2: '#002c6280',
   mainLight: '#b7bef266',
   main2: '#b7bef28f',
+  red: '#ff0000'
 };
