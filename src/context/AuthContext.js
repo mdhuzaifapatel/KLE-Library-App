@@ -12,6 +12,7 @@ import {
   data,
   IMAGE_URL,
   USER_INFO,
+  BOOK,
 } from '../utils/config';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
@@ -22,6 +23,7 @@ export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [bookInfo, setBookInfo] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
   const [buttonText, setButtonText] = useState('');
@@ -204,11 +206,30 @@ export const AuthProvider = ({children}) => {
       });
   };
 
+  
+  // For previous
+  const book = async () => {
+    setIsLoading(true);
+    await axios
+      .get(`${BOOK}`)
+      .then(res => {
+        parseString(res.data, {trim: true}, function (err, result) {
+          let bookInfo = result;
+          setBookInfo(bookInfo);
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    setIsLoading(false);
+  };
+
   // const base64Icon = 'data:image/png;base64, {userInfo}';
   // <Image style={{width: 50, height: 50}} source={{uri: base64Icon}} />;
 
   useEffect(() => {
     // adminLogin();
+
     isLoggedIn();
   }, []);
 
@@ -216,9 +237,9 @@ export const AuthProvider = ({children}) => {
     getPatronInfo();
   }, [userToken]);
 
-  // useEffect(() => {
-  //   getBase64();
-  // }, [userToken]);
+  useEffect(() => {
+    book();
+  }, [userToken]);
 
   return (
     <>
@@ -258,7 +279,15 @@ export const AuthProvider = ({children}) => {
         closeOnTouchOutside={touch}
       />
       <AuthContext.Provider
-        value={{login, logout, barcodeLogin, isLoading, userToken, userInfo}}>
+        value={{
+          login,
+          logout,
+          barcodeLogin,
+          isLoading,
+          userToken,
+          userInfo,
+          bookInfo,
+        }}>
         {children}
       </AuthContext.Provider>
     </>
