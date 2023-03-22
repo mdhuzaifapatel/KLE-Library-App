@@ -5,7 +5,7 @@ export const BASE_URL = 'http://103.139.157.231';
 
 export const IMAGE_URL = `${BASE_URL}/cgi-bin/koha/members/patronimage.pl?borrowernumber=`;
 export const data = {
-  userid: 'admin', //2KL19EC021
+  userid: '2KL19EC021', 
   password: 'admin',
 };
 export const USER_INFO = `${BASE_URL}/cgi-bin/koha/ilsdi.pl?service=GetPatronInfo&patron_id`;
