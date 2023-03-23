@@ -14,31 +14,19 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ProfitIndicator} from '../components';
+
 import {scale} from 'react-native-size-matters';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 
 const ReadingHistory = ({navigation}) => {
-  const {userInfo} = useContext(AuthContext);
-  const data = userInfo.GetPatronInfo;
-  let books1 = null;
-  let noOfBooks = 0;
-  try {
-    if (data.loans) {
-      noOfBooks = JSON.stringify(Object.keys(data.fines[0].fine).length);
-    }
-  } catch (e) {}
-
-  // Books data
-
-  books1 = data.fines[0].fine;
-  let books = books1.sort((a, b) =>
-    a.amountoutstanding > 0 || a.date > b.date ? -1 : 1,
-  );
+  const {previousBooksInfo} = useContext(AuthContext);
+  let noOfBooks = null;
+  noOfBooks = previousBooksInfo.length;
+  console.log(noOfBooks);
 
   const renderItem = ({item}) => {
-    return item.amount > 0 ? (
+    return (
       <View
         style={{
           alignSelf: 'center',
@@ -76,11 +64,10 @@ const ReadingHistory = ({navigation}) => {
               marginLeft: wp(2),
               marginRight: wp(15),
             }}>
-            {item.description}
+            {item.name}
           </Text>
         </View>
 
-        {/* coin and price indicator */}
         <View
           style={{
             flexDirection: 'row',
@@ -88,62 +75,59 @@ const ReadingHistory = ({navigation}) => {
             alignItems: 'center',
             top: hp(3),
           }}>
-          {/* Coin Price */}
-
           <View style={{flexDirection: 'row'}}>
-            {item.status == 'RETURNED' ? (
+            {item.location == 'Central Library' ? (
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
                   color: Colors.font2,
                   fontSize: responsiveFontSize(2),
                   right: wp(3),
-                  top: hp(0.7),
+                  top: hp(1),
                   marginBottom: scale(-5),
                 }}>
-                RETURNED
+                Central Library
               </Text>
             ) : (
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
-                  color: 'red',
+                  color: Colors.font2,
                   fontSize: responsiveFontSize(2),
                   right: wp(3),
-                  top: hp(0.7),
+                  top: hp(1),
                   marginBottom: scale(-5),
                 }}>
-                UNRETURNED
+                Lending Library
               </Text>
             )}
 
             <View style={{top: hp(0.4), left: wp(4)}}>
-              <Text
-                style={[
-                  item.amountoutstanding > 0 ? styles.red : styles.normal
-                ]}>
-                Fine:{' '}
-                {item.amountoutstanding > 0 ? item.amountoutstanding : '0'}
-              </Text>
+              <Text style={styles.normal}>Issue date: {item.issuedate}</Text>
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
                   color: '#333',
                   fontSize: scale(11.5),
+                  paddingBottom: hp(0.5),
                 }}>
-                Return date: {item.date}
+                Due date: {item.duedate}
+              </Text>
+
+              <Text>
+                {item.returndate == 'Checked' ? (
+                  <Text style={styles.return2}>To be returned</Text>
+                ) : (
+                  <Text style={styles.return}>
+                    Return data: {item.returndate}
+                  </Text>
+                )}
               </Text>
             </View>
           </View>
-
-          {/* indicator */}
-          {/* <ProfitIndicator
-        type={item.type}
-        percentage_change={item.changes}
-      /> */}
         </View>
       </View>
-    ) : null;
+    );
   };
 
   return (
@@ -205,8 +189,8 @@ const ReadingHistory = ({navigation}) => {
             }}>
             <FlatList
               style={{}}
-              data={books}
-              keyExtractor={(item, index) => String(index)}
+              data={previousBooksInfo}
+              keyExtractor={item => item.id.toString()}
               renderItem={renderItem}
 
               // horizontal={true}
@@ -261,14 +245,25 @@ const styles = StyleSheet.create({
     color: Colors.font2,
     marginHorizontal: wp(9),
   },
-  normal:{
+  normal: {
     fontFamily: 'BreezeSans-Bold',
-                  color: '#333',
-                  fontSize: scale(11.5),
+    color: '#333',
+    fontSize: scale(11.5),
+    paddingBottom: hp(0.5),
   },
-  red:{
+  red: {
     fontFamily: 'BreezeSans-Bold',
-                  color: Colors.red,
-                  fontSize: scale(11.5),
-  }
+    color: Colors.red,
+    fontSize: scale(11.5),
+  },
+  return: {
+    fontFamily: 'BreezeSans-Bold',
+    color: '#333',
+    fontSize: scale(11.5),
+  },
+  return2: {
+    fontFamily: 'BreezeSans-Bold',
+    color: Colors.red,
+    fontSize: scale(11.5),
+  },
 });

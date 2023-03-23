@@ -1,5 +1,4 @@
-import React, {createContext, useState, useEffect, useContext} from 'react';
-import {Alert, Image} from 'react-native';
+import React, {createContext, useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   heightPercentageToDP as hp,
@@ -7,13 +6,14 @@ import {
 } from 'react-native-responsive-screen';
 import axios from 'axios';
 import {
+  ADMIN_LOGIN_URL,
   BARCODE_URL,
   BASE_URL,
-  data,
+  BOOKS_URL,
   IMAGE_URL,
   USER_INFO,
-  BOOK,
 } from '../utils/config';
+import cheerio from 'react-native-cheerio';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {Colors} from '../constants';
@@ -22,11 +22,12 @@ export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [userToken, setUserToken] = useState(null);
+  const [previousBooksInfo, setpreviousBooksInfo] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
-  const [bookInfo, setBookInfo] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
   const [buttonText, setButtonText] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [touch, setTouch] = useState();
   var parseString = require('react-native-xml2js').parseString;
 
@@ -99,21 +100,63 @@ export const AuthProvider = ({children}) => {
   };
 
   // Admin Login
-  const config = {
-    method: 'post',
-    url: BASE_URL,
-    data: data,
-    headers: {'Content-Type': 'multipart/form-data'},
-  };
+
   const adminLogin = async () => {
     setIsLoading(true);
-    await axios(config)
+    await axios
+      .get(`${ADMIN_LOGIN_URL}`)
+
+      // .then(res => {
+      //   console.log('admin: ' + JSON.stringify(res.status));
+      // })
+
       .then(res => {
-        console.log(JSON.stringify(res.data).includes('admin'));
-        console.log('admin: ' + JSON.stringify(res.status));
+        return axios.get(`${BOOKS_URL}=${userToken}`);
       })
-      .then(() => {
-        // getBase64();
+
+      // Previous Books
+      .then(res => {
+        const $ = cheerio.load(res.data);
+        const tableRows = $('tr');
+
+        const data = [];
+        tableRows.each((i, row) => {
+          const rowData = {};
+
+          $(row)
+            .find('td')
+            .each((j, cell) => {
+              let key = `column${j + 1}`;
+              const value = $(cell).text().trim();
+              rowData.id = i;
+
+              switch (key) {
+                case 'column3':
+                  rowData['name'] = value;
+                  break;
+                case 'column8':
+                  rowData['issuedate'] = value.split(' ')[0];
+                  break;
+                case 'column9':
+                  rowData['location'] = value;
+                  break;
+                case 'column10':
+                  rowData['duedate'] = value.split(' ')[0];
+                  break;
+                case 'column11':
+                  rowData['returndate'] = value.split(' ')[0];
+                  break;
+                default:
+                  rowData[key] = value;
+                  break;
+              }
+            });
+          if (Object.keys(rowData).length > 0) {
+            data.push(rowData);
+          }
+        });
+        // console.log(data);
+        setpreviousBooksInfo(data);
       })
       .catch(err => {
         console.log(err);
@@ -167,10 +210,6 @@ export const AuthProvider = ({children}) => {
   const getPatronInfo = async () => {
     setIsLoading(true);
     await axios
-      // .get(`${USER_INFO}=4683&show_fines=1&show_loans=1`)
-      // .get(
-      //   'https://catalog.bywatersolutions.com/cgi-bin/koha/ilsdi.pl?service=GetPatronInfo&patron_id=40&show_contact=0&show_loans=1',
-      // )
       .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
       .then(res => {
         parseString(res.data, {trim: true}, function (err, result) {
@@ -187,6 +226,17 @@ export const AuthProvider = ({children}) => {
   };
 
   //Patron Image
+  const getImage = async () => {
+    await fetch(`${IMAGE_URL}=${userToken}`)
+      .then(response => {
+        setImageUrl(response.url);
+        console.log(response.url);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   const getBase64 = async () => {
     const patronimage = IMAGE_URL + userToken;
     console.log(patronimage);
@@ -206,40 +256,21 @@ export const AuthProvider = ({children}) => {
       });
   };
 
-  
-  // For previous
-  const book = async () => {
-    setIsLoading(true);
-    await axios
-      .get(`${BOOK}`)
-      .then(res => {
-        parseString(res.data, {trim: true}, function (err, result) {
-          let bookInfo = result;
-          setBookInfo(bookInfo);
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    setIsLoading(false);
-  };
-
   // const base64Icon = 'data:image/png;base64, {userInfo}';
   // <Image style={{width: 50, height: 50}} source={{uri: base64Icon}} />;
 
   useEffect(() => {
-    // adminLogin();
-
     isLoggedIn();
   }, []);
 
   useEffect(() => {
+    adminLogin();
     getPatronInfo();
   }, [userToken]);
 
   useEffect(() => {
-    book();
-  }, [userToken]);
+    getImage();
+  }, [userInfo]);
 
   return (
     <>
@@ -286,7 +317,8 @@ export const AuthProvider = ({children}) => {
           isLoading,
           userToken,
           userInfo,
-          bookInfo,
+          previousBooksInfo,
+          imageUrl,
         }}>
         {children}
       </AuthContext.Provider>

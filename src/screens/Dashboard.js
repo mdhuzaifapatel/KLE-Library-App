@@ -22,6 +22,9 @@ export const Dashboard = ({navigation}) => {
   const data = userInfo.GetPatronInfo;
   let books = '0';
 
+  // Image
+  const {imageUrl} = useContext(AuthContext);
+  
   //************** Conditional rendering section **********************//
 
   // No. of Books
@@ -105,7 +108,7 @@ export const Dashboard = ({navigation}) => {
               <Image
                 style={styles.profileImage}
                 resizeMode="cover"
-                source={require('../assets/images/profile.png')}
+                source={{uri: img}}
               />
             </View>
 
@@ -232,7 +235,6 @@ const styles = ScaledSheet.create({
     color: '#00397c',
     textShadowRadius: wp('2.2%'),
   },
-
 
   bell: {
     flexDirection: 'row',

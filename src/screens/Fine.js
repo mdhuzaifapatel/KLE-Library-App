@@ -39,8 +39,11 @@ const Fine = ({navigation}) => {
   });
 
   let booksData = new_data.fines.fine;
-  // console.log(booksData);
+  console.log(booksData[0].date[0].split(' ')[0]);
+
   const renderItem = ({item}) => {
+    // let date = item.date.split(' ')[0];
+    const [date, time] = item.date.split(' ');
     return item.amount > 0 ? (
       <View
         style={{
@@ -101,7 +104,7 @@ const Fine = ({navigation}) => {
                   color: Colors.font2,
                   fontSize: responsiveFontSize(2),
                   right: wp(3),
-                  top: hp(0.7),
+                  top: hp(1),
                   marginBottom: scale(-5),
                 }}>
                 RETURNED
@@ -110,10 +113,10 @@ const Fine = ({navigation}) => {
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
-                  color: 'red',
+                  color: Colors.red,
                   fontSize: responsiveFontSize(2),
                   right: wp(3),
-                  top: hp(0.7),
+                  top: hp(1),
                   marginBottom: scale(-5),
                 }}>
                 UNRETURNED
@@ -211,8 +214,6 @@ const Fine = ({navigation}) => {
               data={booksData}
               keyExtractor={(item, index) => String(index)}
               renderItem={renderItem}
-
-              // horizontal={true}
             />
           </View>
         ) : (
@@ -273,5 +274,6 @@ const styles = StyleSheet.create({
     fontFamily: 'BreezeSans-Bold',
     color: Colors.red,
     fontSize: scale(11.5),
+    paddingBottom: hp(0.2),
   },
 });
