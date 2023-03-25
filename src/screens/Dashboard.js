@@ -1,6 +1,13 @@
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
+import {
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -19,12 +26,16 @@ import {Colors} from '../constants';
 export const Dashboard = ({navigation}) => {
   // Data fetch
   const {userInfo} = useContext(AuthContext);
+  const {imageURI} = useContext(AuthContext);
+  // const {fetchAndStoreImage} = useContext(AuthContext);
+  const {getPatronInfo} = useContext(AuthContext);
+
+  // console.log('Dashboard', imageURI);
   const data = userInfo.GetPatronInfo;
   let books = '0';
 
   // Image
-  const {imageUrl} = useContext(AuthContext);
-  
+
   //************** Conditional rendering section **********************//
 
   // No. of Books
@@ -45,15 +56,19 @@ export const Dashboard = ({navigation}) => {
 
   //For Branch
   let branch = data.sort1;
-  if (data.sort1 == 'Electronics & Communication' || data.sort1 == 'E&C') {
-    branch = 'EC';
+  if (
+    data.sort1 == 'Electronics & Communication' ||
+    data.sort1 == 'E&C' ||
+    data.sort1 == 'Electrical & Commu.'
+  ) {
+    branch = 'ECE';
   } else if (
     data.sort1 == 'Computer Science' ||
     data.sort1 == 'Computer Science Engg'
   ) {
     branch = 'CSE';
   } else if (data.sort1 == 'Electrical & Electronics') {
-    branch = 'E&E';
+    branch = 'EEE';
   }
 
   return (
@@ -85,8 +100,16 @@ export const Dashboard = ({navigation}) => {
             {/* App Title*/}
             <View>
               <Text style={styles.title}>KLE LIBRARY</Text>
+              <View style={styles.refresh}>
+                <TouchableOpacity
+                  onPress={() => {
+                    getPatronInfo();
+                  }}>
+                  <Icon name="refresh" size={hp(2.7)} color="#002c62" />
+                </TouchableOpacity>
+              </View>
               <View style={styles.bell}>
-                <Icon name="bell" size={scale(20)} color="#002c62" />
+                <Icon name="bell" size={hp(2.7)} color="#002c62" />
               </View>
             </View>
           </View>
@@ -105,11 +128,9 @@ export const Dashboard = ({navigation}) => {
           {/* Profile Card*/}
           <View style={{marginTop: scale(18)}}>
             <View style={styles.profileCardSettings}>
-              <Image
-                style={styles.profileImage}
-                resizeMode="cover"
-                source={{uri: img}}
-              />
+              {imageURI && (
+                <Image source={{uri: imageURI}} style={styles.profileImage} />
+              )}
             </View>
 
             <View style={styles.profileInfo}>
@@ -237,10 +258,16 @@ const styles = ScaledSheet.create({
   },
 
   bell: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    // flexDirection: 'row',
+    // alignItems: 'center',
     marginRight: scale(9),
-    marginTop: scale(-24),
+    marginTop: hp(-3),
+  },
+  refresh: {
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    left: wp(-9),
+    marginTop: hp(-3.2),
   },
   title: {
     fontFamily: 'BreezeSans-Bold',

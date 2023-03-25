@@ -13,7 +13,9 @@ import {
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
+
 import cheerio from 'react-native-cheerio';
+import RNFetchBlob from 'rn-fetch-blob';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {Colors} from '../constants';
@@ -26,8 +28,9 @@ export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
-  const [buttonText, setButtonText] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [buttonText, setButtonText] = useState();
+  const [imageURI, setImageURI] = useState(null);
+
   const [touch, setTouch] = useState();
   var parseString = require('react-native-xml2js').parseString;
 
@@ -219,6 +222,9 @@ export const AuthProvider = ({children}) => {
           // console.log('name: ' + userInfo.GetPatronInfo.surname[0]);
         });
       })
+      .then(res => {
+        fetchAndStoreImage();
+      })
       .catch(err => {
         console.log(err);
       });
@@ -226,35 +232,41 @@ export const AuthProvider = ({children}) => {
   };
 
   //Patron Image
-  const getImage = async () => {
-    await fetch(`${IMAGE_URL}=${userToken}`)
-      .then(response => {
-        setImageUrl(response.url);
-        console.log(response.url);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const fetchAndStoreImage = async () => {
+    try {
+      const response = await RNFetchBlob.config({
+        fileCache: true,
+        appendExt: 'png',
+      }).fetch('GET', `${IMAGE_URL}=${userToken}`);
+
+      const localUri = response.path();
+      setImageURI(`file://${localUri}`);
+      // console.log(localUri);
+    } catch (error) {
+      console.error(error);
+      const defaultImage = require('../assets/images/default-image.png');
+      setImageURI(defaultImage);
+    }
   };
 
-  const getBase64 = async () => {
-    const patronimage = IMAGE_URL + userToken;
-    console.log(patronimage);
-    return await axios
-      .get(patronimage, {
-        responseType: 'text',
-        responseEncoding: 'base64',
-      })
-      .then(response => {
-        const img = Buffer.from(response.data, 'base64');
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        console.log();
-      });
-  };
+  // const getBase64 = async () => {
+  //   const patronimage = IMAGE_URL + userToken;
+  //   console.log(patronimage);
+  //   return await axios
+  //     .get(patronimage, {
+  //       responseType: 'text',
+  //       responseEncoding: 'base64',
+  //     })
+  //     .then(response => {
+  //       const img = Buffer.from(response.data, 'base64');
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     })
+  //     .finally(() => {
+  //       console.log();
+  //     });
+  // };
 
   // const base64Icon = 'data:image/png;base64, {userInfo}';
   // <Image style={{width: 50, height: 50}} source={{uri: base64Icon}} />;
@@ -267,10 +279,6 @@ export const AuthProvider = ({children}) => {
     adminLogin();
     getPatronInfo();
   }, [userToken]);
-
-  useEffect(() => {
-    getImage();
-  }, [userInfo]);
 
   return (
     <>
@@ -318,7 +326,8 @@ export const AuthProvider = ({children}) => {
           userToken,
           userInfo,
           previousBooksInfo,
-          imageUrl,
+          imageURI,
+          getPatronInfo,
         }}>
         {children}
       </AuthContext.Provider>

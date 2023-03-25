@@ -25,6 +25,7 @@ import {AuthContext} from '../context/AuthContext';
 
 const Profile = ({navigation}) => {
   const {userInfo} = useContext(AuthContext);
+  const {imageURI} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
   return (
     <View style={{flex: 1}}>
@@ -95,11 +96,9 @@ const Profile = ({navigation}) => {
 
         {/* Profile Card*/}
         <View style={styles.profileCard}>
-          <Image
-            style={styles.profileImage}
-            resizeMode="contain"
-            source={require('../assets/images/profile.png')}
-          />
+        {imageURI && (
+                <Image source={{uri: imageURI}} style={styles.profileImage} />
+              )}
           <Text style={styles.name}>{data.surname}</Text>
           <Text style={styles.usn}>{data.cardnumber}</Text>
           <View style={{flex: 1, flexDirection: 'row', alignItems: 'center',top:-5}}>

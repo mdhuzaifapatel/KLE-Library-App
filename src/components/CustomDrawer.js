@@ -28,6 +28,8 @@ const CustomDrawer = ({...props}) => {
   const {logout} = useContext(AuthContext);
   const {userInfo} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
+  const {imageURI} = useContext(AuthContext);
+
   
   // For Category
   if (data.categorycode == 'ST') {
@@ -57,16 +59,15 @@ const CustomDrawer = ({...props}) => {
         <ImageBackground
           source={require('../assets/images/drawerImage.png')}
           style={{padding: wp(5)}}>
-          <Image
-            source={require('../assets/images/profile.png')}
-            style={{
-              height: wp(25),
-              width: wp(25),
-              borderRadius: wp(15),
-              marginBottom: hp(1),
-            }}
-            resizeMode="contain"
-          />
+          {imageURI && (
+                <Image source={{uri: imageURI}} style={{
+                  height: wp(25),
+                  width: wp(25),
+                  borderRadius: wp(15),
+                  marginBottom: hp(1),
+                }}
+                resizeMode="cover" />
+              )}
           <Text
             style={{
               color: '#fff',

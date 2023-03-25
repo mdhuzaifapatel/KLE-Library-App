@@ -42,8 +42,6 @@ const Fine = ({navigation}) => {
   console.log(booksData[0].date[0].split(' ')[0]);
 
   const renderItem = ({item}) => {
-    // let date = item.date.split(' ')[0];
-    const [date, time] = item.date.split(' ');
     return item.amount > 0 ? (
       <View
         style={{

@@ -23,7 +23,7 @@ const ReadingHistory = ({navigation}) => {
   const {previousBooksInfo} = useContext(AuthContext);
   let noOfBooks = null;
   noOfBooks = previousBooksInfo.length;
-  console.log(noOfBooks);
+  // console.log(noOfBooks);
 
   const renderItem = ({item}) => {
     return (
@@ -119,7 +119,7 @@ const ReadingHistory = ({navigation}) => {
                   <Text style={styles.return2}>To be returned</Text>
                 ) : (
                   <Text style={styles.return}>
-                    Return data: {item.returndate}
+                    Return date: {item.returndate}
                   </Text>
                 )}
               </Text>
