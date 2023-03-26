@@ -31,17 +31,24 @@ const Fine = ({navigation}) => {
   // Books data (Fine)
   let books = data.fines[0].fine;
 
-  console.log(books);
+  // console.log(books);
 
   const new_data = {fines: {fine: []}};
-  books.forEach(fine => {
-    if (fine.amountoutstanding && parseFloat(fine.amountoutstanding) > 0) {
-      new_data.fines.fine.push(fine);
-    }
-  });
+  // console.log('new: ', new_data);
+
+  try {
+    books.forEach(fine => {
+      if (fine.amountoutstanding && parseFloat(fine.amountoutstanding) > 0) {
+        new_data.fines.fine.push(fine);
+      }
+    });
+  } catch (e) {}
 
   let booksData = new_data.fines.fine;
+  // console.log('books:', booksData);
 
+
+  
   // Date format
   function formatDate(dateString) {
     const date = new Date(dateString);
