@@ -30,7 +30,6 @@ const CustomDrawer = ({...props}) => {
   const data = userInfo.GetPatronInfo;
   const {imageURI} = useContext(AuthContext);
 
-  
   // For Category
   if (data.categorycode == 'ST') {
     var category = 'STUDENT';
@@ -39,17 +38,6 @@ const CustomDrawer = ({...props}) => {
   } else {
     var category = '';
   }
-
-  // For Capitilize
-  // const word = data.surname[0];
-
-  // const firstLetter = word.charAt(0);
-  // console.log(firstLetter);
-  // const firstLetterCap = firstLetter.toUpperCase();
-  // const remainingLetters = word.slice(1);
-  // const r = remainingLetters.toLowerCase();
-
-  // const name = firstLetterCap + r;
 
   return (
     <View style={{flex: 1}}>
@@ -60,14 +48,19 @@ const CustomDrawer = ({...props}) => {
           source={require('../assets/images/drawerImage.png')}
           style={{padding: wp(5)}}>
           {imageURI && (
-                <Image source={{uri: imageURI}} style={{
-                  height: wp(25),
-                  width: wp(25),
-                  borderRadius: wp(15),
-                  marginBottom: hp(1),
-                }}
-                resizeMode="cover" />
-              )}
+            <Image
+              source={{uri: imageURI}}
+              style={{
+                height: wp(25),
+                width: wp(25),
+                borderRadius: wp(15),
+                marginBottom: hp(1),
+                borderColor: Colors.font,
+                borderWidth: wp('0.05%'),
+              }}
+              resizeMode="contain"
+            />
+          )}
           <Text
             style={{
               color: '#fff',

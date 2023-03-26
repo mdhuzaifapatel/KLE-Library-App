@@ -88,7 +88,7 @@ const ChangePassword = ({navigation}) => {
           <Image
             style={styles.profileImage}
             resizeMode="contain"
-            source={require('../assets/images/profile.png')}
+            // source={require('')}
           />
           <Text style={styles.name}>JAYRAJ MODGEKAR</Text>
           <Text style={styles.usn}>02FE21MCA009</Text>

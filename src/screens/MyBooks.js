@@ -33,11 +33,15 @@ const MyBooks = ({navigation}) => {
   // Books data
   books = data.loans[0].loan;
 
-  // Capitalise
-  function capitalizeString(str) {
-    return str.toLowerCase().replace(/\b\w/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1);
-    });
+  // Date format
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
   }
 
   const renderItem = ({item}) => {
@@ -112,15 +116,15 @@ const MyBooks = ({navigation}) => {
                   color: '#333',
                   fontSize: scale(11.5),
                 }}>
-                Due date: {item.onloan}
-              </Text> 
+                Due date: {formatDate(item.onloan)}
+              </Text>
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
                   color: '#333',
                   fontSize: scale(11.5),
                 }}>
-                Issue date: {item.datelastborrowed}
+                Issue date: {formatDate(item.datelastborrowed)}
               </Text>
             </View>
           </View>
@@ -129,8 +133,6 @@ const MyBooks = ({navigation}) => {
     );
   };
 
-
-  
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />

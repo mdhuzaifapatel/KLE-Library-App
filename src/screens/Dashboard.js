@@ -27,14 +27,11 @@ export const Dashboard = ({navigation}) => {
   // Data fetch
   const {userInfo} = useContext(AuthContext);
   const {imageURI} = useContext(AuthContext);
-  // const {fetchAndStoreImage} = useContext(AuthContext);
   const {getPatronInfo} = useContext(AuthContext);
 
-  // console.log('Dashboard', imageURI);
   const data = userInfo.GetPatronInfo;
   let books = '0';
 
-  // Image
 
   //************** Conditional rendering section **********************//
 

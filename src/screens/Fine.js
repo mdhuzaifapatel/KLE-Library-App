@@ -14,7 +14,6 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {ProfitIndicator} from '../components';
 import {scale} from 'react-native-size-matters';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
@@ -31,6 +30,9 @@ const Fine = ({navigation}) => {
 
   // Books data (Fine)
   let books = data.fines[0].fine;
+
+  console.log(books);
+
   const new_data = {fines: {fine: []}};
   books.forEach(fine => {
     if (fine.amountoutstanding && parseFloat(fine.amountoutstanding) > 0) {
@@ -39,9 +41,30 @@ const Fine = ({navigation}) => {
   });
 
   let booksData = new_data.fines.fine;
-  console.log(booksData[0].date[0].split(' ')[0]);
+
+  // Date format
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
+  }
 
   const renderItem = ({item}) => {
+    const name = item.description
+      .toString()
+      .match(/[a-zA-Z]+/g)
+      .join(' ');
+    let date = item.date.toString().split(' ')[0];
+    let dateString = item.description.toString();
+    let dueDate = date;
+    try {
+      dueDate = dateString.match(/\d{4}-\d{2}-\d{2}/)[0];
+    } catch (e) {}
+
     return item.amount > 0 ? (
       <View
         style={{
@@ -80,7 +103,7 @@ const Fine = ({navigation}) => {
               marginLeft: wp(2),
               marginRight: wp(15),
             }}>
-            {item.description}
+            {name}
           </Text>
         </View>
 
@@ -92,8 +115,6 @@ const Fine = ({navigation}) => {
             alignItems: 'center',
             top: hp(3),
           }}>
-          {/* Coin Price */}
-
           <View style={{flexDirection: 'row'}}>
             {item.status == 'RETURNED' ? (
               <Text
@@ -129,22 +150,26 @@ const Fine = ({navigation}) => {
                 Fine:{' '}
                 {item.amountoutstanding > 0 ? item.amountoutstanding : '0'}
               </Text>
+
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
                   color: '#333',
                   fontSize: scale(11.5),
                 }}>
-                Due date: {item.date}
+                Due date: {formatDate(dueDate)}
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                Return date: {formatDate(date)}
               </Text>
             </View>
           </View>
-
-          {/* indicator */}
-          {/* <ProfitIndicator
-        type={item.type}
-        percentage_change={item.changes}
-      /> */}
         </View>
       </View>
     ) : null;

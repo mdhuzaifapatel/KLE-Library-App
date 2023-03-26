@@ -23,9 +23,27 @@ const ReadingHistory = ({navigation}) => {
   const {previousBooksInfo} = useContext(AuthContext);
   let noOfBooks = null;
   noOfBooks = previousBooksInfo.length;
-  // console.log(noOfBooks);
+
+  // Date format
+  function formatDate(dateString) {
+    const parts = dateString.split('/');
+    const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
+  }
 
   const renderItem = ({item}) => {
+    let dd = item.duedate.toString();
+    let rd = item.returndate.toString();
+    let id = item.issuedate.toString();
+    let dueDate = formatDate(dd);
+    let returnDate = formatDate(rd);
+    let issueDate = formatDate(id);
+
     return (
       <View
         style={{
@@ -103,7 +121,7 @@ const ReadingHistory = ({navigation}) => {
             )}
 
             <View style={{top: hp(0.4), left: wp(4)}}>
-              <Text style={styles.normal}>Issue date: {item.issuedate}</Text>
+              <Text style={styles.normal}>Issue date: {issueDate}</Text>
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
@@ -111,16 +129,14 @@ const ReadingHistory = ({navigation}) => {
                   fontSize: scale(11.5),
                   paddingBottom: hp(0.5),
                 }}>
-                Due date: {item.duedate}
+                Due date: {dueDate}
               </Text>
 
               <Text>
                 {item.returndate == 'Checked' ? (
                   <Text style={styles.return2}>To be returned</Text>
                 ) : (
-                  <Text style={styles.return}>
-                    Return date: {item.returndate}
-                  </Text>
+                  <Text style={styles.return}>Return date: {returnDate}</Text>
                 )}
               </Text>
             </View>

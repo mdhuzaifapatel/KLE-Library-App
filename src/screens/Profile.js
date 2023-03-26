@@ -97,7 +97,7 @@ const Profile = ({navigation}) => {
         {/* Profile Card*/}
         <View style={styles.profileCard}>
         {imageURI && (
-                <Image source={{uri: imageURI}} style={styles.profileImage} />
+                <Image source={{uri: imageURI}} style={styles.profileImage} resizeMode='contain' />
               )}
           <Text style={styles.name}>{data.surname}</Text>
           <Text style={styles.usn}>{data.cardnumber}</Text>
