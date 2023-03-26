@@ -1,2 +1,2 @@
 To be updated soon....
-App under devlopment.
+App under development.
