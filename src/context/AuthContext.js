@@ -103,63 +103,13 @@ export const AuthProvider = ({children}) => {
   };
 
   // Admin Login
-
   const adminLogin = async () => {
     setIsLoading(true);
     await axios
       .get(`${ADMIN_LOGIN_URL}`)
 
-      // .then(res => {
-      //   console.log('admin: ' + JSON.stringify(res.status));
-      // })
-
       .then(res => {
-        return axios.get(`${BOOKS_URL}=${userToken}`);
-      })
-
-      // Previous Books
-      .then(res => {
-        const $ = cheerio.load(res.data);
-        const tableRows = $('tr');
-
-        const data = [];
-        tableRows.each((i, row) => {
-          const rowData = {};
-
-          $(row)
-            .find('td')
-            .each((j, cell) => {
-              let key = `column${j + 1}`;
-              const value = $(cell).text().trim();
-              rowData.id = i;
-
-              switch (key) {
-                case 'column3':
-                  rowData['name'] = value;
-                  break;
-                case 'column8':
-                  rowData['issuedate'] = value.split(' ')[0];
-                  break;
-                case 'column9':
-                  rowData['location'] = value;
-                  break;
-                case 'column10':
-                  rowData['duedate'] = value.split(' ')[0];
-                  break;
-                case 'column11':
-                  rowData['returndate'] = value.split(' ')[0];
-                  break;
-                default:
-                  rowData[key] = value;
-                  break;
-              }
-            });
-          if (Object.keys(rowData).length > 0) {
-            data.push(rowData);
-          }
-        });
-        // console.log(data);
-        setpreviousBooksInfo(data);
+        readingHistory();
       })
       .catch(err => {
         console.log(err);
@@ -167,6 +117,52 @@ export const AuthProvider = ({children}) => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  // Reading History
+  const readingHistory = async () => {
+    const res = await axios.get(`${BOOKS_URL}=${userToken}`);
+    const $ = cheerio.load(res.data);
+    const tableRows = $('tr');
+
+    const data = [];
+    tableRows.each((i, row) => {
+      const rowData = {};
+
+      $(row)
+        .find('td')
+        .each((j, cell) => {
+          let key = `column${j + 1}`;
+          const value = $(cell).text().trim();
+          rowData.id = i;
+
+          switch (key) {
+            case 'column3':
+              rowData['name'] = value;
+              break;
+            case 'column8':
+              rowData['issuedate'] = value.split(' ')[0];
+              break;
+            case 'column9':
+              rowData['location'] = value;
+              break;
+            case 'column10':
+              rowData['duedate'] = value.split(' ')[0];
+              break;
+            case 'column11':
+              rowData['returndate'] = value.split(' ')[0];
+              break;
+            default:
+              rowData[key] = value;
+              break;
+          }
+        });
+      if (Object.keys(rowData).length > 0) {
+        data.push(rowData);
+      }
+    });
+    // console.log(data);
+    setpreviousBooksInfo(data);
   };
 
   // Barcode Login
@@ -249,28 +245,7 @@ export const AuthProvider = ({children}) => {
     }
   };
 
-  // const getBase64 = async () => {
-  //   const patronimage = IMAGE_URL + userToken;
-  //   console.log(patronimage);
-  //   return await axios
-  //     .get(patronimage, {
-  //       responseType: 'text',
-  //       responseEncoding: 'base64',
-  //     })
-  //     .then(response => {
-  //       const img = Buffer.from(response.data, 'base64');
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //       console.log();
-  //     });
-  // };
-
-  // const base64Icon = 'data:image/png;base64, {userInfo}';
-  // <Image style={{width: 50, height: 50}} source={{uri: base64Icon}} />;
-
+  // Use effects
   useEffect(() => {
     isLoggedIn();
   }, []);
@@ -328,6 +303,7 @@ export const AuthProvider = ({children}) => {
           previousBooksInfo,
           imageURI,
           getPatronInfo,
+          readingHistory,
         }}>
         {children}
       </AuthContext.Provider>

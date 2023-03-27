@@ -28,10 +28,10 @@ export const Dashboard = ({navigation}) => {
   const {userInfo} = useContext(AuthContext);
   const {imageURI} = useContext(AuthContext);
   const {getPatronInfo} = useContext(AuthContext);
+  const {readingHistory} = useContext(AuthContext);
 
   const data = userInfo.GetPatronInfo;
   let books = '0';
-
 
   //************** Conditional rendering section **********************//
 
@@ -101,6 +101,7 @@ export const Dashboard = ({navigation}) => {
                 <TouchableOpacity
                   onPress={() => {
                     getPatronInfo();
+                    readingHistory();
                   }}>
                   <Icon name="refresh" size={hp(2.7)} color="#002c62" />
                 </TouchableOpacity>
