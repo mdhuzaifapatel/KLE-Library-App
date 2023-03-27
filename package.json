@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/netinfo": "^9.3.7",
+    "@react-native-picker/picker": "^2.4.9",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
@@ -42,6 +43,7 @@
     "react-native-table-component": "^1.2.2",
     "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-webview": "^11.26.1",
     "react-native-xml2js": "^1.0.3",
     "rn-fetch-blob": "^0.12.0"
   },
