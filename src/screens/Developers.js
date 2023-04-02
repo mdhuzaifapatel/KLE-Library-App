@@ -39,6 +39,8 @@ const Developers = ({navigation}) => {
       websitelink: 'https://mdhuzaifa.tech',
       websitename: 'mdhuzaifa.tech',
       gmail: 'mailto:mdhuzaifapatel@gmail.com',
+      batch: '2019-2023',
+      branch: 'ECE',
     },
     {
       id: 2,
@@ -52,6 +54,8 @@ const Developers = ({navigation}) => {
       websitelink: 'https://dhiraj-dev.tech',
       websitename: 'dhiraj-dev.tech',
       gmail: 'mailto:dhiraj.jsx@gmail.com',
+      batch: '2019-2023',
+      branch: 'ECE',
     },
   ];
 
@@ -125,7 +129,7 @@ const Developers = ({navigation}) => {
               <View style={styles.profileCard}>
                 {/* Profile Card*/}
                 <ImageBackground
-                  resizeMode={'stretch'} // or cover
+                  resizeMode={'cover'} // or cover
                   source={require('../assets/images/bg.jpg')}
                   style={{
                     // marginTop: scale(18),
@@ -147,6 +151,9 @@ const Developers = ({navigation}) => {
                         resizeMode="cover"
                         source={item.image}
                       />
+
+                      <Text style={styles.batch}>{item.batch}</Text>
+                      <Text style={styles.branch}>{item.branch}</Text>
                     </View>
 
                     <View style={styles.profileInfo}>
@@ -298,7 +305,7 @@ const styles = StyleSheet.create({
     width: hp(13.5),
     borderRadius: hp(50),
     borderColor: '#00397c',
-    top: hp(-4.8),
+    top: hp(-2.5),
     left: wp(3.3),
     // borderWidth: 0,
     // right: scale(22),
@@ -335,6 +342,22 @@ const styles = StyleSheet.create({
     left: scale(10),
   },
 
+  batch: {
+    top: hp(-0.5),
+    fontSize: responsiveFontSize(1.7),
+    fontFamily: 'BreezeSans-Bold',
+    color: Colors.font,
+    left: wp(8),
+  },
+  branch: {
+    top: hp(-0.5),
+
+    fontSize: responsiveFontSize(1.7),
+    fontFamily: 'BreezeSans-Bold',
+    color: Colors.font,
+    left: wp(13),
+  },
+
   icon: {
     flex: 0.5,
     flexDirection: 'row',
@@ -346,7 +369,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     left: wp(2),
-    // top: hp(5),
+    top: hp(0.5),
   },
 
   socialIcons: {
