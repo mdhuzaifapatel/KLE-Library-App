@@ -1,19 +1,19 @@
-export const BASE_URL = 'http://172.16.250.241';
-export const BASE_URL_8080 = 'http://172.16.250.241:8080';
+// export const BASE_URL = 'http://172.16.250.241';
+// export const BASE_URL_8080 = 'http://172.16.250.241:8080';
 
 // DEMO
-// export const BASE_URL = 'https://demo1.orex.es';
-// export const BASE_URL_8080 = 'https://intra1.orex.es';
+export const BASE_URL = 'https://demo1.orex.es';
+export const BASE_URL_8080 = 'https://intra1.orex.es';
 
 // export const BASE_URL = 'http://103.139.157.231';
 // export const BASE_URL_8080 = 'http://103.139.157.231:8080';
 
 // Super admin login details
-const userid = '2KL19EC021';
-const password = '2KL19EC021';
+// const userid = '2KL19EC021';
+// const password = '2KL19EC021';
 
-// const userid = 'admin'; 
-// const password = 'admin';
+const userid = 'admin'; 
+const password = 'admin';
 
 export const ADMIN_LOGIN_URL = `${BASE_URL_8080}/cgi-bin/koha/svc/authentication?userid=${userid}&password=${password}`;
 
