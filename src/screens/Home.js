@@ -9,7 +9,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import MyBooks from './MyBooks';
+import MyBooks from './CurrentBooks';
 const Tab = createBottomTabNavigator();
 
 const Home = ({navigation}) => {

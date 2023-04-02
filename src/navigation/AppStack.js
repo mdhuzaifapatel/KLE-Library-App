@@ -7,7 +7,7 @@ import {Dashboard, Home, Profile, Search} from '../screens';
 import Info from '../screens/Info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../constants';
-import MyBooks from '../screens/MyBooks';
+import MyBooks from '../screens/CurrentBooks';
 import Developers from '../screens/Developers';
 import Fine from '../screens/Fine';
 import ReadingHistory from '../screens/ReadingHistory';

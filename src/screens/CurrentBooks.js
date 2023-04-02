@@ -87,7 +87,22 @@ const MyBooks = ({navigation}) => {
           </Text>
         </View>
 
-        {/* coin and price indicator */}
+        <View style={{}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              top: hp(2.1),
+              fontFamily: 'BreezeSans-Bold',
+              color: Colors.font2,
+              fontSize: responsiveFontSize(1.7),
+              marginLeft: wp(3),
+              marginRight: wp(15),
+            }}>
+            {item.author}
+          </Text>
+        </View>
+
+        {/* Location, Issue date, Due date */}
         <View
           style={{
             flexDirection: 'row',
@@ -95,8 +110,6 @@ const MyBooks = ({navigation}) => {
             alignItems: 'center',
             top: hp(3),
           }}>
-          {/* Coin Price */}
-
           <View style={{flexDirection: 'row'}}>
             <Text
               style={{

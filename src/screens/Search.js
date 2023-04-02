@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
-  ScrollView,
-  SafeAreaView,
   TextInput,
   FlatList,
   Image,
@@ -21,11 +19,8 @@ import {
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {scale} from 'react-native-size-matters';
 import {Picker} from '@react-native-picker/picker';
-import WebView from 'react-native-webview';
 import {BASE_URL} from '../utils/config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {color} from '@rneui/base';
 
 const Search = ({navigation}) => {
   const [query, setQuery] = useState('');
