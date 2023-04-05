@@ -18,7 +18,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import Contact from '../screens/Contact';
+import Contact from '../screens/Links';
 import ChangePassword from '../screens/ChangePassword';
 
 function Root() {

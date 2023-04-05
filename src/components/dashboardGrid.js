@@ -57,10 +57,10 @@ const DashboardGrid = () => {
       icon: 'code-tags',
     },
     {
-      name: 'CONTACT US',
+      name: 'IMPORTANT LINKS',
       code: Colors.mainLight,
       route: 'Contact',
-      icon: 'cellphone-basic',
+      icon: 'link',
     },
     {
       name: 'ABOUT              LIBRARY',

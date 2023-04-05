@@ -5,6 +5,7 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import {Colors} from '../constants';
 import {
@@ -16,7 +17,7 @@ import {scale} from 'react-native-size-matters';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
-const Info = ({navigation}) => {
+const Links = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
@@ -50,7 +51,7 @@ const Info = ({navigation}) => {
 
             <View style={{marginLeft: scale(-20)}}>
               <Ionicon
-                name="information-circle"
+                name="link"
                 size={scale(23)}
                 margin={scale(18)}
                 color={Colors.font}
@@ -68,63 +69,87 @@ const Info = ({navigation}) => {
                 fontSize: scale(17),
                 color: Colors.font,
               }}>
-              About Library
+              Important Links
             </Text>
           </View>
         </View>
       </View>
-      <View style={{flex: 3.6}}>
-        <Text style={styles.text1}>Welcome to KLE Library</Text>
-        <Text style={styles.text2}>
-          It is centrally located in the campus, housed in a three stored
-          ultra-modern Library Building “JNANA CHETANA” with an excellent
-          collection of books, journals and non-book material in Engineering
-          Technology and Management. The Library has over 1,06,000 volumes which
-          are updated regularly by way of adding new literature in the form of
-          text books, reference books, reports, proceedings, encyclopedias,
-          standards (National & International) Journals, Audio Visual resources,
-          CDs, educational videos and thesis/reports.
+      <View style={{flex: 3.8}}>
+        <Text style={styles.text3}>Library website</Text>
+        <Text style={styles.text4}>
+          For more information about the library, its services and facilities
+          you can visit the institution's official library website. {'\n'}
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`https://www.klescet.ac.in/library/`)
+            }>
+            <Text style={[styles.text4, {color: Colors.font2}]}>
+              https://www.klescet.ac.in/library/
+            </Text>
+          </TouchableOpacity>
         </Text>
 
-        <Text style={styles.text3}>Working Hours</Text>
+        <Text style={styles.text3}>E Resources</Text>
         <Text style={styles.text4}>
-          Monday to saturday :{' '}
-          <Text style={{color: Colors.font2}}>08.00 A.M. - 09.00 P.M.</Text>
-        </Text>
-        <Text style={styles.text4}>
-          Sunday & Government Holidays :{' '}
-          <Text style={{color: Colors.font2}}>10.00 A.M. - 05.00 P.M.</Text>
-        </Text>
-        <Text style={styles.text4}>
-          Reading Hall :<Text style={{color: Colors.font2}}> 24 Hours</Text>
+          The following e -resources subscribed for all branches of engineering
+          for UG and PG through VTU e-resource consortium for the year 2022-23.
+          {'\n'}
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`https://www.klescet.ac.in/library-e-resources/`)
+            }>
+            <Text style={[styles.text4, {color: Colors.font2}]}>
+              https://www.klescet.ac.in/library-e-resources/
+            </Text>
+          </TouchableOpacity>
         </Text>
 
-        <Text style={styles.text3}>Contact us</Text>
-        <Text style={[styles.text5, styles.text7]}>Address</Text>
-        <Text style={styles.text2}>Dr. Satish V Totar</Text>
-        <Text style={styles.text8}>
-          (Head of Library and Information Center) {'\n'}
+        <Text style={styles.text3}>Online catalog (EPAC)</Text>
+        <Text style={styles.text4}>
+          Online catalogue facility is available to users through intranet and
+          Internet. By clicking this link, the search page is opened to search
+          for the Library resources.{'\n'}
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`http://103.139.157.231/`)}>
+            <Text style={[styles.text4, {color: Colors.font2}]}>
+              http://103.139.157.231/
+            </Text>
+          </TouchableOpacity>
         </Text>
-        <Text style={styles.text8}>
-          KLE Technological University's (Belagavi Campus), {'\n'} Dr. M.S.
-          Sheshgiri College of Engineering and Technology
+
+        <Text style={styles.text3}>Remote Access</Text>
+        <Text style={styles.text4}>
+          The Institution Library also has the facility to give access
+          e-resources to outside the Campus Network.{'\n'}The Authenticate users
+          by using User Name & Password to access remotely the subscribed
+          e-resources through the VTU consortia.{'\n'}
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`https://klemsscet.mapmyaccess.com`)
+            }>
+            <Text style={[styles.text4, {color: Colors.font2}]}>
+              https://klemsscet.mapmyaccess.com
+            </Text>
+          </TouchableOpacity>
         </Text>
-        <Text style={styles.text5}>
-          Telephone :<Text style={[styles.text6]}> 0831 244 0322</Text>
-        </Text>
-        <Text style={[styles.text5, styles.email]}>
-          Email :<Text style={[styles.text6]}> library@klescet.ac.in</Text>
-        </Text>
-        <Text style={[styles.text5, styles.email]}>
-          For app related queries :
-          <Text style={[styles.text6]}> libraryapp@klescet.ac.in</Text>
+
+        <Text style={styles.text3}>Rate us on Google Play</Text>
+        <Text style={styles.text4}>
+          Visit play store or click the link below to rate us. Your feedback
+          will help us improve.
+          <TouchableOpacity
+            onPress={() => Linking.openURL(`https://play.google.com`)}>
+            <Text style={[styles.text4, {color: Colors.font2}]}>
+              https://play.google.com
+            </Text>
+          </TouchableOpacity>
         </Text>
       </View>
     </View>
   );
 };
 
-export default Info;
+export default Links;
 
 const styles = StyleSheet.create({
   container2: {
@@ -164,6 +189,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Colors.black,
     marginLeft: wp(9),
+    marginRight: wp(5),
   },
 
   text5: {
