@@ -20,13 +20,14 @@ import CustomButton from '../components/CustomButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import CheckInternet from '../context/CheckInternet';
 import {useNetInfo} from '@react-native-community/netinfo';
+
 const Login = ({navigation}) => {
   const net = useNetInfo();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {login} = useContext(AuthContext);
+
   return (
     <SafeAreaView
       style={{
@@ -195,5 +196,3 @@ const Login = ({navigation}) => {
 };
 
 export default Login;
-
-

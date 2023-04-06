@@ -22,6 +22,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import DashboardGrid from '../components/DashboardGrid';
 import {Colors} from '../constants';
+import PushNotification from 'react-native-push-notification';
+import moment from 'moment';
 
 export const Dashboard = ({navigation}) => {
   // Data fetch
@@ -32,6 +34,7 @@ export const Dashboard = ({navigation}) => {
 
   const data = userInfo.GetPatronInfo;
   let books = '0';
+  let loans = [];
 
   //************** Conditional rendering section **********************//
 
@@ -39,6 +42,7 @@ export const Dashboard = ({navigation}) => {
   try {
     if (data.loans) {
       books = JSON.stringify(Object.keys(data.loans[0].loan).length);
+      loans = data.loans[0].loan;
     }
   } catch (e) {}
 
@@ -56,6 +60,7 @@ export const Dashboard = ({navigation}) => {
   if (
     data.sort1 == 'Electronics & Communication' ||
     data.sort1 == 'E&C' ||
+    data.sort1 == 'E & C' ||
     data.sort1 == 'Electrical & Commu.'
   ) {
     branch = 'ECE';
@@ -66,6 +71,45 @@ export const Dashboard = ({navigation}) => {
     branch = 'CSE';
   } else if (data.sort1 == 'Electrical & Electronics') {
     branch = 'EEE';
+  }
+
+  // Notifications
+
+  for (let loan of loans) {
+    let date = loan.onloan[0].trim();
+    console.log(date.trim());
+    let notificationDate = moment('2023-04-8', 'YYYY-MM-DD')
+      .set({hour: 12, minute: 10})
+      .subtract(1, 'day')
+      .toDate();
+
+    //  .subtract(1, 'day').toDate();
+
+    console.log('date2: ', notificationDate);
+
+    PushNotification.localNotificationSchedule({
+      channelId: '123',
+      id: '1236', // Unique ID for the notification
+      ticker: 'My Notification Ticker', // Ticker text (Android only)
+      autoCancel: true, // Cancel notification when tapped on (Android only)
+      largeIcon: 'ic_launcher', // Large icon name (Android only)
+      smallIcon: 'ic_notification', // Small icon name (Android only)
+      bigText: `Return your ${loan.title} Book`, // Big text (Android only)
+      subText: 'ok', // Subtext (Android only)
+      color: 'red', // Accent color (Android only)
+      vibrate: true, // Vibration (Android only)
+      vibration: 300, // Vibration duration in milliseconds, ignored if vibrate=false (Android only)
+      tag: 'some_tag', // Tag used to replace existing notifications with the same ID (Android only)
+      group: 'group', // Notification group (Android only)
+      ongoing: false, // Whether the notification is ongoing (Android only)
+      priority: 'high', // Notification priority (Android only)
+      visibility: 'public', // Notification visibility (Android only)
+      importance: 'high', // Notification importance (Android only)
+      title: 'Due date tommorow', // Notification title
+      message: `Return your ${loan.title} Book`, // Notification message
+      date: notificationDate,
+      allowWhileIdle: true,
+    });
   }
 
   return (
@@ -107,7 +151,9 @@ export const Dashboard = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.bell}>
-                <Icon name="bell" size={hp(2.7)} color="#002c62" />
+                <TouchableOpacity onPress={() => {}}>
+                  <Icon name="bell" size={hp(2.7)} color="#002c62" />
+                </TouchableOpacity>
               </View>
             </View>
           </View>
