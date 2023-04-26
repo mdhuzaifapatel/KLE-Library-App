@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "81082046605",
+    "project_id": "library-app-notifications",
+    "storage_bucket": "library-app-notifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81082046605:android:448bda9bb3d0aaa9792ac4",
+        "android_client_info": {
+          "package_name": "com.kle.library"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81082046605-0lh433fmucm1d34k2m0shk15s1r25vvk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kle.library",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "81082046605-jkbat6qbfsh2t0l9tgs2o3ptg2ung9a2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDu5X4GZH6SeT7eGRq5_bJtrqTl9t0ksWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81082046605-jkbat6qbfsh2t0l9tgs2o3ptg2ung9a2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
