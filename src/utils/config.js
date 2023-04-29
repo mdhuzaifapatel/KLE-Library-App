@@ -1,10 +1,8 @@
-// export const BASE_URL = 'http://172.16.250.241';
-// export const BASE_URL_8080 = 'http://172.16.250.241:8080';
-
 // DEMO
 // export const BASE_URL = 'https://demo1.orex.es';
 // export const BASE_URL_8080 = 'https://intra1.orex.es';
 
+// COLLEGE 
 export const BASE_URL = 'http://103.139.157.231';
 export const BASE_URL_8080 = 'http://103.139.157.231:8080';
 
