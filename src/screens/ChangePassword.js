@@ -166,6 +166,7 @@ const ChangePassword = ({navigation}) => {
             }}></View>
         </View>
 
+        {/* FORM */}
         <View style={{flex: 2.5, padding: scale(20)}}>
           {/* Current */}
           <InputField
@@ -246,40 +247,79 @@ const ChangePassword = ({navigation}) => {
             onChangeText={text => setconfirmPassword(text)}
           />
 
-          <TouchableOpacity
-            onPress={handlePress}
-            style={{
-              backgroundColor: Colors.main,
-              padding: 10,
-              borderRadius: 10,
-              marginBottom: 5,
-              marginTop: 5,
-              height: hp(7),
-            }}>
-            <View
+          {currentPassword == '' ||
+          newPassword == '' ||
+          confirmPassword == '' ? (
+            <TouchableOpacity
+              disabled
               style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: Colors.main2,
+                padding: 10,
+                borderRadius: 10,
+                marginBottom: 5,
+                marginTop: 5,
+                height: hp(7),
               }}>
-              <Ionicons
-                name="enter"
-                size={responsiveFontSize(2.3)}
-                style={{marginRight: wp(2)}}
-                color={Colors.font}
-              />
-              <Text
+              <View
                 style={{
-                  textAlign: 'center',
-                  fontSize: responsiveFontSize(2),
-                  color: Colors.font,
-                  fontFamily: 'BreezeSans-Bold',
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                Change Password
-              </Text>
-            </View>
-          </TouchableOpacity>
+                <Ionicons
+                  name="enter"
+                  size={responsiveFontSize(2.3)}
+                  style={{marginRight: wp(2)}}
+                  color={Colors.font}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: responsiveFontSize(2),
+                    color: Colors.font2,
+                    fontFamily: 'BreezeSans-Bold',
+                  }}>
+                  Change Password
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={handlePress}
+              style={{
+                backgroundColor: Colors.main,
+                padding: 10,
+                borderRadius: 10,
+                marginBottom: 5,
+                marginTop: 5,
+                height: hp(7),
+              }}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Ionicons
+                  name="enter"
+                  size={responsiveFontSize(2.3)}
+                  style={{marginRight: wp(2)}}
+                  color={Colors.font}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: responsiveFontSize(2),
+                    color: Colors.font,
+                    fontFamily: 'BreezeSans-Bold',
+                  }}>
+                  Change Password
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </>
