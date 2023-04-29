@@ -61,8 +61,6 @@ const ChangePassword = ({navigation}) => {
       setAlertMsg(`Passwords don't match`);
       setButtonText('OK');
       setTouch(true);
-
-      console.log('Password dont match');
     }
   };
 
