@@ -138,9 +138,13 @@ const Links = ({navigation}) => {
           Visit play store or click the link below to rate us. Your feedback
           will help us improve.
           <TouchableOpacity
-            onPress={() => Linking.openURL(`https://play.google.com`)}>
+            onPress={() =>
+              Linking.openURL(
+                `https://play.google.com/store/apps/details?id=com.kle.library`,
+              )
+            }>
             <Text style={[styles.text4, {color: Colors.font2}]}>
-              https://play.google.com
+              https://play.google.com/kle.library
             </Text>
           </TouchableOpacity>
         </Text>

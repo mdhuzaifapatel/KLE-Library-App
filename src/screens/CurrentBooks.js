@@ -71,6 +71,7 @@ const MyBooks = ({navigation}) => {
             source={require('../assets/images/book.png')}
             resizeMode="contain"
           />
+
           <Text
             adjustsFontSizeToFit={true}
             minimumFontScale={0.5}
@@ -102,7 +103,6 @@ const MyBooks = ({navigation}) => {
           </Text>
         </View>
 
-        {/* Location, Issue date, Due date */}
         <View
           style={{
             flexDirection: 'row',
@@ -111,17 +111,35 @@ const MyBooks = ({navigation}) => {
             top: hp(3),
           }}>
           <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                fontFamily: 'BreezeSans-Bold',
-                color: Colors.font2,
-                fontSize: responsiveFontSize(2),
-                right: wp(3),
-                top: hp(0.7),
-                marginBottom: scale(-5),
-              }}>
-              {item.itype == 'LEN_BK' ? 'Lending Library' : 'Central Library'}
-            </Text>
+            {/* Location */}
+            <View>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: Colors.font2,
+                  fontSize: responsiveFontSize(2),
+                  right: wp(3),
+                  top: hp(0.1),
+                  marginBottom: scale(-5),
+                }}>
+                {item.itype == 'LEN_BK' ? 'Lending Library' : 'Central Library'}
+              </Text>
+
+              {/* Barcode */}
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: Colors.black,
+                  fontSize: responsiveFontSize(1.75),
+                  right: wp(3),
+                  top: hp(0.5),
+                  marginBottom: scale(-5),
+                }}>
+                {item.barcode}
+              </Text>
+            </View>
+
+            {/* Dates */}
             <View style={{top: hp(0.4), left: wp(4)}}>
               <Text
                 style={{
