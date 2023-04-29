@@ -48,8 +48,8 @@ export const Dashboard = ({navigation}) => {
 
   //************** Conditional rendering section **********************//
 
-  // No. of Books
   try {
+    // Date format
     if (userInfo) {
       var data = userInfo.GetPatronInfo;
       cardnumber = data.cardnumber;
@@ -61,6 +61,7 @@ export const Dashboard = ({navigation}) => {
       dateofbirth = '';
     }
 
+    // No. of Books
     if (data.loans) {
       books = JSON.stringify(Object.keys(data.loans[0].loan).length);
     }
@@ -84,6 +85,7 @@ export const Dashboard = ({navigation}) => {
     if (
       data.sort1 == 'Electronics & Communication' ||
       data.sort1 == 'E&C' ||
+      data.sort1 == 'E & C' ||
       data.sort1 == 'Electrical & Commu.'
     ) {
       branch = 'ECE';
@@ -93,7 +95,11 @@ export const Dashboard = ({navigation}) => {
       data.sort1 == 'COMPUTER SCIENCE'
     ) {
       branch = 'CSE';
-    } else if (data.sort1 == 'Electrical & Electronics') {
+    } else if (
+      data.sort1 == 'Electrical & Electronics' ||
+      data.sort1 == 'E&E' ||
+      data.sort1 == 'E & E'
+    ) {
       branch = 'EEE';
     }
   } catch (error) {}
