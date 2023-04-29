@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   View,
+  ScrollView,
   Text,
   StyleSheet,
   StatusBar,
@@ -20,7 +21,7 @@ const Info = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
-      <View style={{flex: 1, flexDirection: 'column', marginTop: scale(-60)}}>
+      <View style={{flex: 1, flexDirection: 'column', marginBottom: hp(-30)}}>
         {/* Backbutton with header  */}
         <View
           style={{
@@ -36,7 +37,7 @@ const Info = ({navigation}) => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              top: hp(5),
+              top: hp(2),
             }}>
             {/* backbutton */}
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -73,7 +74,7 @@ const Info = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View style={{flex: 3.6}}>
+      <ScrollView style={{marginTop: hp(30)}}>
         <Text style={styles.text1}>Welcome to KLE Library</Text>
         <Text style={styles.text2}>
           It is centrally located in the campus, housed in a three stored
@@ -119,7 +120,7 @@ const Info = ({navigation}) => {
           For app related queries :
           <Text style={[styles.text6]}> libraryapp@klescet.ac.in</Text>
         </Text>
-      </View>
+      </ScrollView>
     </View>
   );
 };
