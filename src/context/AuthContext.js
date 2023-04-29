@@ -10,6 +10,7 @@ import {
   BARCODE_URL,
   BASE_URL,
   BOOKS_URL,
+  CHANGE_PASSWORD_URL,
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
@@ -200,34 +201,38 @@ export const AuthProvider = ({children}) => {
       .catch(e => {
         console.log(`Login error ${e}`);
       });
-
-    // setUserToken('sefsesghs');
     setIsLoading(false);
   };
 
   // Patron Info
   const getPatronInfo = async () => {
     setIsLoading(true);
-    await axios
-      .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
-      .then(res => {
-        parseString(res.data, {trim: true}, function (err, result) {
-          let userInfo = result;
-          setUserInfo(userInfo);
-          // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-          // console.log('name: ' + userInfo.GetPatronInfo.surname[0]);
-        });
-      })
-      .then(res => {
-        fetchAndStoreImage();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    setIsLoading(false);
+    try {
+      if (userToken) {
+        await axios
+          .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
+          .then(res => {
+            parseString(res.data, {trim: true}, function (err, result) {
+              let userInfo = result;
+              setUserInfo(userInfo);
+              // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+              // console.log('name: ' + userInfo.GetPatronInfo.surname[0]);
+            });
+          })
+          .then(res => {
+            fetchAndStoreImage();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  //Patron Image
+  // Patron Image
   const fetchAndStoreImage = async () => {
     try {
       const response = await RNFetchBlob.config({
@@ -243,6 +248,27 @@ export const AuthProvider = ({children}) => {
       const defaultImage = require('../assets/images/default-image.png');
       setImageURI(defaultImage);
     }
+  };
+
+  // Change Password
+  const changePassword = async (newPassword, confirmPassword) => {
+    setIsLoading(true);
+    await axios
+      .post(`${CHANGE_PASSWORD_URL}/${userToken}/password`, {
+        password: newPassword,
+        password_2: confirmPassword,
+      })
+      .then(function (response) {
+        if (response.status == 200) {
+          setShowAlert(true);
+          setTouch(false);
+          setAlertMsg('Password changed successfully');
+          setButtonText('OK');
+        }
+      })
+      .catch(function (error) {
+      });
+    setIsLoading(false);
   };
 
   // Use effects
@@ -304,6 +330,7 @@ export const AuthProvider = ({children}) => {
           imageURI,
           getPatronInfo,
           readingHistory,
+          changePassword,
         }}>
         {children}
       </AuthContext.Provider>

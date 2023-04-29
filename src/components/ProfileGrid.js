@@ -24,6 +24,26 @@ const ProfileGrid = () => {
   const {userInfo} = useContext(AuthContext);
   const data = userInfo.GetPatronInfo;
 
+  // Date Format
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
+  }
+
+  // For Date of Birth
+  try {
+    var dateofbirth = formatDate(data.dateofbirth);
+  } catch (error) {}
+
+  if (dateofbirth == 'NaN-NaN-NaN') {
+    dateofbirth = '';
+  }
+
   // For Category
   if (data.categorycode == 'ST') {
     var category = 'STUDENT';
@@ -44,13 +64,13 @@ const ProfileGrid = () => {
       name: 'Date of birth:',
       code: Colors.mainLight,
       icon: 'calendar-account-outline',
-      data: data.dateofbirth,
+      data: dateofbirth,
     },
     {
       name: 'Card expiry date:',
       code: Colors.mainLight,
       icon: 'card-bulleted-outline',
-      data: data.dateexpiry,
+      data: formatDate(data.dateexpiry),
     },
 
     {

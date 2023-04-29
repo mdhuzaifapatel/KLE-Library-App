@@ -6,6 +6,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+
 
 export default function InputField({
   label,
@@ -16,6 +19,7 @@ export default function InputField({
   fieldButtonFunction,
   value,
   onChangeText,
+  icon2,
 }) {
   return (
     <View
@@ -59,6 +63,7 @@ export default function InputField({
           placeholderTextColor={Colors.font}
         />
       )}
+      {icon2}
       <TouchableOpacity onPress={fieldButtonFunction}>
         <Text style={{color: Colors.font, fontWeight: '700'}}>
           {fieldButtonLabel}

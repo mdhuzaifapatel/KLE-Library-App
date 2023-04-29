@@ -1,6 +1,13 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
+import {
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -15,8 +22,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {ScaledSheet, scale} from 'react-native-size-matters';
 import DashboardGrid from '../components/DashboardGrid';
 import {Colors} from '../constants';
-// import PushNotification from 'react-native-push-notification';
-import moment from 'moment';
 
 export const Dashboard = ({navigation}) => {
   // Data fetch
@@ -25,85 +30,73 @@ export const Dashboard = ({navigation}) => {
   const {getPatronInfo} = useContext(AuthContext);
   const {readingHistory} = useContext(AuthContext);
 
-  const data = userInfo.GetPatronInfo;
   let books = '0';
-  let loans = [];
+  let cardnumber = '';
+  let dateofbirth = '';
+  let charges = '';
+
+  // Date Format
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' + day : day}-${
+      month < 10 ? '0' + month : month
+    }-${year}`;
+  }
 
   //************** Conditional rendering section **********************//
 
   // No. of Books
   try {
+    if (userInfo) {
+      var data = userInfo.GetPatronInfo;
+      cardnumber = data.cardnumber;
+      dateofbirth = formatDate(data.dateofbirth);
+      charges = data.charges;
+    }
+
+    if (dateofbirth == 'NaN-NaN-NaN') {
+      dateofbirth = '';
+    }
+
     if (data.loans) {
       books = JSON.stringify(Object.keys(data.loans[0].loan).length);
-      loans = data.loans[0].loan;
     }
   } catch (e) {}
 
   //For Category
-  if (data.categorycode == 'ST') {
-    var category = 'STUDENT';
-  } else if (data.categorycode == 'S') {
-    var category = 'STAFF';
-  } else {
-    var category = '';
-  }
+
+  try {
+    if (data.categorycode == 'ST') {
+      var category = 'STUDENT';
+    } else if (data.categorycode == 'S') {
+      var category = 'STAFF';
+    } else {
+      var category = '';
+    }
+  } catch (error) {}
 
   //For Branch
-  let branch = data.sort1;
-  if (
-    data.sort1 == 'Electronics & Communication' ||
-    data.sort1 == 'E&C' ||
-    data.sort1 == 'E & C' ||
-    data.sort1 == 'Electrical & Commu.'
-  ) {
-    branch = 'ECE';
-  } else if (
-    data.sort1 == 'Computer Science' ||
-    data.sort1 == 'Computer Science Engg'
-  ) {
-    branch = 'CSE';
-  } else if (data.sort1 == 'Electrical & Electronics') {
-    branch = 'EEE';
-  }
-
-  // Notifications
-
-  // for (let loan of loans) {
-  //   let date = loan.onloan[0].trim();
-  //   console.log(date.trim());
-  //   let notificationDate = moment('2023-04-8', 'YYYY-MM-DD')
-  //     .set({hour: 12, minute: 10})
-  //     .subtract(1, 'day')
-  //     .toDate();
-
-  //   //  .subtract(1, 'day').toDate();
-
-  //   console.log('date2: ', notificationDate);
-
-  //   PushNotification.localNotificationSchedule({
-  //     channelId: '123',
-  //     id: '1236', // Unique ID for the notification
-  //     ticker: 'My Notification Ticker', // Ticker text (Android only)
-  //     autoCancel: true, // Cancel notification when tapped on (Android only)
-  //     largeIcon: 'ic_launcher', // Large icon name (Android only)
-  //     smallIcon: 'ic_notification', // Small icon name (Android only)
-  //     bigText: `Return your ${loan.title} Book`, // Big text (Android only)
-  //     subText: 'ok', // Subtext (Android only)
-  //     color: 'red', // Accent color (Android only)
-  //     vibrate: true, // Vibration (Android only)
-  //     vibration: 300, // Vibration duration in milliseconds, ignored if vibrate=false (Android only)
-  //     tag: 'some_tag', // Tag used to replace existing notifications with the same ID (Android only)
-  //     group: 'group', // Notification group (Android only)
-  //     ongoing: false, // Whether the notification is ongoing (Android only)
-  //     priority: 'high', // Notification priority (Android only)
-  //     visibility: 'public', // Notification visibility (Android only)
-  //     importance: 'high', // Notification importance (Android only)
-  //     title: 'Due date tommorow', // Notification title
-  //     message: `Return your ${loan.title} Book`, // Notification message
-  //     date: notificationDate,
-  //     allowWhileIdle: true,
-  //   });
-  // }
+  try {
+    var branch = data.sort1;
+    if (
+      data.sort1 == 'Electronics & Communication' ||
+      data.sort1 == 'E&C' ||
+      data.sort1 == 'Electrical & Commu.'
+    ) {
+      branch = 'ECE';
+    } else if (
+      data.sort1 == 'Computer Science' ||
+      data.sort1 == 'Computer Science Engg' ||
+      data.sort1 == 'COMPUTER SCIENCE'
+    ) {
+      branch = 'CSE';
+    } else if (data.sort1 == 'Electrical & Electronics') {
+      branch = 'EEE';
+    }
+  } catch (error) {}
 
   return (
     <View style={{flex: 1}}>
@@ -144,9 +137,7 @@ export const Dashboard = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={styles.bell}>
-                <TouchableOpacity onPress={() => {}}>
-                  <Icon name="bell" size={hp(2.7)} color="#002c62" />
-                </TouchableOpacity>
+                <Icon name="bell" size={hp(2.7)} color="#002c62" />
               </View>
             </View>
           </View>
@@ -172,7 +163,7 @@ export const Dashboard = ({navigation}) => {
 
             <View style={styles.profileInfo}>
               {/* USN */}
-              <Text style={styles.usn}>{data.cardnumber}</Text>
+              <Text style={styles.usn}>{cardnumber}</Text>
 
               {/* Course */}
               <View style={styles.category1}>
@@ -195,7 +186,7 @@ export const Dashboard = ({navigation}) => {
                 {/* D.O.B */}
                 <Text style={styles.profileCardTextRight}>
                   <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
-                  {data.dateofbirth}
+                  {dateofbirth}
                 </Text>
 
                 {/* No. Books issued */}
@@ -207,7 +198,7 @@ export const Dashboard = ({navigation}) => {
                 {/* Fine */}
                 <Text style={styles.profileCardTextRight}>
                   <Text style={styles.profileCardTextLeft}>Fine amount: </Text>{' '}
-                  ₹ {data.charges}
+                  ₹ {charges}
                 </Text>
               </View>
             </View>

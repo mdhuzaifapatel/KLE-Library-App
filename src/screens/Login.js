@@ -1,13 +1,10 @@
 import React, {useState, useContext} from 'react';
 import {
-  StyleSheet,
   Text,
   ScrollView,
   View,
   SafeAreaView,
-  StatusBar,
   Image,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
 import {Colors} from '../../src/constants';
@@ -20,10 +17,8 @@ import CustomButton from '../components/CustomButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../context/AuthContext';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import {useNetInfo} from '@react-native-community/netinfo';
 
 const Login = ({navigation}) => {
-  const net = useNetInfo();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const {login} = useContext(AuthContext);

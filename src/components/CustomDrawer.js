@@ -27,17 +27,24 @@ const CustomDrawer = ({...props}) => {
   const navigation = useNavigation();
   const {logout} = useContext(AuthContext);
   const {userInfo} = useContext(AuthContext);
-  const data = userInfo.GetPatronInfo;
+
   const {imageURI} = useContext(AuthContext);
 
+  let surname = 'xxx';
+
+  try {
+    var data = userInfo.GetPatronInfo;
+    surname = data.surname;
+    if (data.categorycode == 'ST') {
+      var category = 'STUDENT';
+    } else if (data.categorycode == 'S') {
+      var category = 'STAFF';
+    } else {
+      var category = '';
+    }
+  } catch (error) {}
+
   // For Category
-  if (data.categorycode == 'ST') {
-    var category = 'STUDENT';
-  } else if (data.categorycode == 'S') {
-    var category = 'STAFF';
-  } else {
-    var category = '';
-  }
 
   return (
     <View style={{flex: 1}}>
@@ -68,7 +75,7 @@ const CustomDrawer = ({...props}) => {
               fontFamily: 'BreezeSans-Bold',
               marginBottom: hp(0.5),
             }}>
-            {data.surname}
+            {surname}
           </Text>
 
           <View style={{flexDirection: 'row'}}>
