@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   StatusBar,
+  ScrollView,
   TouchableOpacity,
   Linking,
 } from 'react-native';
@@ -21,7 +22,7 @@ const Links = ({navigation}) => {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <StatusBar barStyle="dark-content" translucent={true} />
-      <View style={{flex: 1, flexDirection: 'column', marginTop: scale(-60)}}>
+      <View style={{flex: 1, flexDirection: 'column', marginBottom: hp(-30)}}>
         {/* Backbutton with header  */}
         <View
           style={{
@@ -37,7 +38,7 @@ const Links = ({navigation}) => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-              top: hp(5),
+              top: hp(2),
             }}>
             {/* backbutton */}
             <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -74,7 +75,7 @@ const Links = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View style={{flex: 3.8}}>
+      <ScrollView style={{marginTop: hp(30),marginBottom:hp(2)}}>
         <Text style={styles.text3}>Library website</Text>
         <Text style={styles.text4}>
           For more information about the library, its services and facilities
@@ -148,7 +149,7 @@ const Links = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </Text>
-      </View>
+      </ScrollView>
     </View>
   );
 };
