@@ -14,12 +14,14 @@ import {
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
-
+import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import cheerio from 'react-native-cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {Colors} from '../constants';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -31,9 +33,10 @@ export const AuthProvider = ({children}) => {
   const [alertMsg, setAlertMsg] = useState('');
   const [buttonText, setButtonText] = useState();
   const [imageURI, setImageURI] = useState(null);
-
   const [touch, setTouch] = useState();
+  const [deviceToken, setDeviceToken] = useState('');
   var parseString = require('react-native-xml2js').parseString;
+  let token = '';
 
   // Login
   const login = async (username, password) => {
@@ -266,13 +269,20 @@ export const AuthProvider = ({children}) => {
           setButtonText('OK');
         }
       })
-      .catch(function (error) {
-      });
+      .catch(function (error) {});
     setIsLoading(false);
+  };
+
+  // FCM Token
+  const getFcmToken = async () => {
+    token = await messaging().getToken();
+    setDeviceToken(token);
+    // console.log(token);
   };
 
   // Use effects
   useEffect(() => {
+    getFcmToken();
     isLoggedIn();
   }, []);
 
@@ -331,6 +341,7 @@ export const AuthProvider = ({children}) => {
           getPatronInfo,
           readingHistory,
           changePassword,
+          deviceToken,
         }}>
         {children}
       </AuthContext.Provider>

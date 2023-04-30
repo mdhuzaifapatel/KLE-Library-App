@@ -1,13 +1,8 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '../context/AuthContext';
-import {
-  Text,
-  View,
-  Button,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
+import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   widthPercentageToDP as wp,
@@ -29,6 +24,28 @@ export const Dashboard = ({navigation}) => {
   const {imageURI} = useContext(AuthContext);
   const {getPatronInfo} = useContext(AuthContext);
   const {readingHistory} = useContext(AuthContext);
+  const {deviceToken} = useContext(AuthContext);
+
+  //=========================== FIREBASE START ===========================//
+  // Save data
+  const saveData = async () => {
+    firestore()
+      .collection('deviceTokens')
+      .doc('app')
+      .update({
+        tokens: firestore.FieldValue.arrayUnion(deviceToken),
+      })
+      .then(() => {
+        console.log('Token sent to firebase!');
+      });
+  };
+
+  // Send data to firebase
+  useEffect(() => {
+    saveData();
+  }, []);
+
+  //=========================== FIREBASE END ===========================//
 
   let books = '0';
   let cardnumber = '';
