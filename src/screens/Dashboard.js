@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import {Text, View, Image, TouchableOpacity, StatusBar} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -25,6 +26,11 @@ export const Dashboard = ({navigation}) => {
   const {getPatronInfo} = useContext(AuthContext);
   const {readingHistory} = useContext(AuthContext);
   const {deviceToken} = useContext(AuthContext);
+  const [showAlert, setShowAlert] = useState(false);
+  const [titleMsg, setTitleMsg] = useState('');
+  const [alertMsg, setAlertMsg] = useState('');
+  const [buttonText, setButtonText] = useState();
+  const [touch, setTouch] = useState();
 
   //=========================== FIREBASE START ===========================//
   // Save data
@@ -40,13 +46,28 @@ export const Dashboard = ({navigation}) => {
       });
   };
 
-  // Send data to firebase
+  
+  // Send data to firebase & receive push notification data (in foreground mode)
   useEffect(() => {
     saveData();
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      let notification = remoteMessage['notification'];
+      let title = notification.title;
+      let body = notification.body;
+      setShowAlert(true);
+      setTitleMsg(`${title}`);
+      setAlertMsg(`${body}`);
+      setButtonText('OK');
+      setTouch(true);
+    });
+    return unsubscribe;
+
   }, []);
 
   //=========================== FIREBASE END ===========================//
 
+  // Variables
   let books = '0';
   let cardnumber = '';
   let dateofbirth = '';
@@ -101,6 +122,7 @@ export const Dashboard = ({navigation}) => {
     var branch = data.sort1;
     if (
       data.sort1 == 'Electronics & Communication' ||
+      data.sort1 == 'Electronics & Communication Engg' ||
       data.sort1 == 'E&C' ||
       data.sort1 == 'E & C' ||
       data.sort1 == 'Electrical & Commu.'
@@ -122,116 +144,167 @@ export const Dashboard = ({navigation}) => {
   } catch (error) {}
 
   return (
-    <View style={{flex: 1}}>
-      {/* Statusbar */}
-      <StatusBar
-        barStyle="light-content"
-        translucent={true}
-        backgroundColor="transparent"
+    <>
+      {/*========================== ALERT CODE ==========================*/}
+      <AwesomeAlert
+        show={showAlert}
+        // alertContainerStyle={{backgroundColor: Colors.white}}
+        contentContainerStyle={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: Colors.white,
+          height: hp(24),
+          width: wp(70),
+        }}
+        title={titleMsg}
+        titleStyle={{
+          fontSize: responsiveFontSize(2),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font,
+        }}
+        message={alertMsg}
+        messageStyle={{
+          fontSize: responsiveFontSize(1.8),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font2,
+        }}
+        showConfirmButton={true}
+        confirmText={buttonText}
+        confirmButtonTextStyle={{
+          fontSize: responsiveFontSize(1.7),
+          fontFamily: 'BreezeSans-Bold',
+          color: Colors.font,
+        }}
+        confirmButtonStyle={{top: hp(1.5), backgroundColor: Colors.main}}
+        onConfirmPressed={() => {
+          setShowAlert(false);
+        }}
+        closeOnTouchOutside={touch}
       />
 
-      {/* Background gradient */}
-      <LinearGradient
-        start={{x: 15, y: 1}}
-        end={{x: 1, y: 15}}
-        location={[0, 1]}
-        colors={['#ACB5F4', '#b7bef2', '#b7bef2', '#ACB5F4']}
-        style={{flex: 1.2, flexDirection: 'column'}}>
-        {/* Navbar  */}
-        <View style={styles.navbarSettings}>
-          <View style={styles.navbar}>
-            {/* Drawer Icon */}
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <View style={styles.drawerIcon}>
-                <Icon name="menu" size={scale(25)} color="#002c62" />
-              </View>
-            </TouchableOpacity>
+      {/*========================== DASHBOARD CODE ==========================*/}
 
-            {/* App Title*/}
-            <View>
-              <Text style={styles.title}>KLE LIBRARY</Text>
-              <View style={styles.refresh}>
-                <TouchableOpacity
-                  onPress={() => {
-                    getPatronInfo();
-                    readingHistory();
-                  }}>
-                  <Icon name="refresh" size={hp(2.7)} color="#002c62" />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.bell}>
-                <Icon name="bell" size={hp(2.7)} color="#002c62" />
-              </View>
-            </View>
-          </View>
-        </View>
-      </LinearGradient>
+      <View style={{flex: 1}}>
+        {/* Statusbar */}
+        <StatusBar
+          barStyle="light-content"
+          translucent={true}
+          backgroundColor="transparent"
+        />
 
-      {/* Body section */}
-      <View style={styles.body}>
-        {/* Profile Card Gradient*/}
+        {/* Background gradient */}
         <LinearGradient
-          start={{x: 0.0, y: 0.1}}
-          end={{x: 1, y: 1.0}}
-          location={[1, 0]}
-          colors={['#7881dc', '#9ba6f6', '#b7bef2', '#7881dc']}
-          style={styles.profileCard}>
-          {/* Profile Card*/}
-          <View style={{marginTop: scale(18)}}>
-            <View style={styles.profileCardSettings}>
-              {imageURI && (
-                <Image source={{uri: imageURI}} style={styles.profileImage} />
-              )}
-            </View>
+          start={{x: 15, y: 1}}
+          end={{x: 1, y: 15}}
+          location={[0, 1]}
+          colors={['#ACB5F4', '#b7bef2', '#b7bef2', '#ACB5F4']}
+          style={{flex: 1.2, flexDirection: 'column'}}>
+          {/* Navbar  */}
+          <View style={styles.navbarSettings}>
+            <View style={styles.navbar}>
+              {/* Drawer Icon */}
+              <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                <View style={styles.drawerIcon}>
+                  <Icon name="menu" size={scale(25)} color="#002c62" />
+                </View>
+              </TouchableOpacity>
 
-            <View style={styles.profileInfo}>
-              {/* USN */}
-              <Text style={styles.usn}>{cardnumber}</Text>
+              {/* App Title*/}
+              <View>
+                <Text style={styles.title}>KLE LIBRARY</Text>
+                <View style={styles.refresh}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      getPatronInfo();
+                      readingHistory();
+                    }}>
+                    <Icon name="refresh" size={hp(2.7)} color="#002c62" />
+                  </TouchableOpacity>
+                </View>
 
-              {/* Course */}
-              <View style={styles.category1}>
-                <Icon
-                  name="school"
-                  size={hp(2.5)}
-                  color="#002c62"
-                  style={{top: hp(0.2)}}
-                />
-                <Text style={styles.category2}>{category}</Text>
-              </View>
-
-              {/* Branch */}
-              <View style={{top: hp(-2)}}>
-                <Text style={styles.profileCardTextRight}>
-                  <Text style={styles.profileCardTextLeft}>Branch: </Text>{' '}
-                  {branch}
-                </Text>
-
-                {/* D.O.B */}
-                <Text style={styles.profileCardTextRight}>
-                  <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
-                  {dateofbirth}
-                </Text>
-
-                {/* No. Books issued */}
-                <Text style={styles.profileCardTextRight}>
-                  <Text style={styles.profileCardTextLeft}>Books issued: </Text>{' '}
-                  {books}
-                </Text>
-
-                {/* Fine */}
-                <Text style={styles.profileCardTextRight}>
-                  <Text style={styles.profileCardTextLeft}>Fine amount: </Text>{' '}
-                  ₹ {charges}
-                </Text>
+                <View style={styles.bell}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('Notice');
+                    }}>
+                    <Icon name="bell" size={hp(2.7)} color="#002c62" />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
         </LinearGradient>
 
-        {/* Dashboard Buttons */}
-        <DashboardGrid />
+        {/* Body section */}
+        <View style={styles.body}>
+          {/* Profile Card Gradient*/}
+          <LinearGradient
+            start={{x: 0.0, y: 0.1}}
+            end={{x: 1, y: 1.0}}
+            location={[1, 0]}
+            colors={['#7881dc', '#9ba6f6', '#b7bef2', '#7881dc']}
+            style={styles.profileCard}>
+            {/* Profile Card*/}
+            <View style={{marginTop: scale(18)}}>
+              <View style={styles.profileCardSettings}>
+                {imageURI && (
+                  <Image source={{uri: imageURI}} style={styles.profileImage} />
+                )}
+              </View>
+
+              <View style={styles.profileInfo}>
+                {/* USN */}
+                <Text style={styles.usn}>{cardnumber}</Text>
+
+                {/* Course */}
+                <View style={styles.category1}>
+                  <Icon
+                    name="school"
+                    size={hp(2.5)}
+                    color="#002c62"
+                    style={{top: hp(0.2)}}
+                  />
+                  <Text style={styles.category2}>{category}</Text>
+                </View>
+
+                {/* Branch */}
+                <View style={{top: hp(-2)}}>
+                  <Text style={styles.profileCardTextRight}>
+                    <Text style={styles.profileCardTextLeft}>Branch: </Text>{' '}
+                    {branch}
+                  </Text>
+
+                  {/* D.O.B */}
+                  <Text style={styles.profileCardTextRight}>
+                    <Text style={styles.profileCardTextLeft}>D.O.B: </Text>{' '}
+                    {dateofbirth}
+                  </Text>
+
+                  {/* No. Books issued */}
+                  <Text style={styles.profileCardTextRight}>
+                    <Text style={styles.profileCardTextLeft}>
+                      Books issued:{' '}
+                    </Text>{' '}
+                    {books}
+                  </Text>
+
+                  {/* Fine */}
+                  <Text style={styles.profileCardTextRight}>
+                    <Text style={styles.profileCardTextLeft}>
+                      Fine amount:{' '}
+                    </Text>{' '}
+                    ₹ {charges}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+
+          {/* Dashboard Buttons */}
+          <DashboardGrid />
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

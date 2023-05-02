@@ -6,6 +6,8 @@ import AppStack from './AppStack';
 import {AuthContext} from '../context/AuthContext';
 import {Colors} from '../constants';
 import {scale} from 'react-native-size-matters';
+import navigationService from '../utils/navigationService';
+
 function AppNav() {
   const {isLoading, userToken} = useContext(AuthContext);
   if (isLoading) {
@@ -38,7 +40,8 @@ function AppNav() {
     );
   }
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={ref => navigationService.setTopLevelNavigator(ref)}>
       {userToken !== null ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );

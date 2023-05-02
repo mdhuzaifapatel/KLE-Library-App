@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View, ScrollView, Linking} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
@@ -12,7 +12,6 @@ import {
 } from 'react-native-responsive-screen';
 import {
   responsiveFontSize,
-  responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
 import {QP_URL} from '../utils/config';
 

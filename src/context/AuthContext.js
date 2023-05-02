@@ -14,7 +14,6 @@ import {
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
-import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import cheerio from 'react-native-cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -348,12 +347,3 @@ export const AuthProvider = ({children}) => {
     </>
   );
 };
-
-// export const useAPI = () => {
-//   const context = useContext(AuthProvider);
-//   console.log(context);
-//   if (context === undefined) {
-//     throw new Error('Context must be used within a Provider');
-//   }
-//   return context;
-// };

@@ -22,20 +22,14 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import InputField from '../components/InputField';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AwesomeAlert from 'react-native-awesome-alerts';
-import axios from 'axios';
-import {CHANGE_PASSWORD_URL} from '../utils/config';
 import {AuthContext} from '../context/AuthContext';
 
 const ChangePassword = ({navigation}) => {
   const [currentPassword, setcurrentPassword] = useState('');
   const [newPassword, setnewPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
-  const [showCurrentPassword, setShowcurrentPassword] = useState(false);
-  const [showNewPassword, setShownewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [buttonText, setButtonText] = useState();
   const [touch, setTouch] = useState();
   const {changePassword} = useContext(AuthContext);
