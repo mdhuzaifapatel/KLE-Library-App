@@ -10,19 +10,15 @@ import {Text, TextInput} from 'react-native';
 import navigationService from './src/utils/navigationService';
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  console.log('Message handled in the background!');
-  const notificationData = remoteMessage.notification.body;
-  const notificationTitle = remoteMessage.notification.title;
-  navigationService.navigate('Notice', {notificationData, notificationTitle});
+  console.log('index: Message handled in the background!');
+  // const notificationData = remoteMessage.notification.body;
+  // const notificationTitle = remoteMessage.notification.title;
+  // navigationService.navigate('Notice', {notificationData, notificationTitle});
 });
 
 // messaging().getInitialNotification(async remoteMessage => {
 //   console.log('Message handled in the kill state!', remoteMessage);
 // });
-
-messaging().getInitialNotification()(async remoteMessage =>{
-  
-});
 
 AppRegistry.registerComponent(appName, () => App);
 

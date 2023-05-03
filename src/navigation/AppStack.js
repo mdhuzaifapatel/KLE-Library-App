@@ -1,9 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import CustomDrawer from '../components/CustomDrawer';
-import {Dashboard, Home, Profile, Search} from '../screens';
+import {Home, Profile, Search} from '../screens';
 import Info from '../screens/Info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Colors} from '../constants';
@@ -21,6 +20,9 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Contact from '../screens/Links';
 import ChangePassword from '../screens/ChangePassword';
 import Notice from '../screens/Notice';
+import { notificationListeners } from '../utils/notificationService';
+
+
 
 function Root() {
   return (
@@ -110,6 +112,7 @@ function Root() {
 }
 
 function AppStack() {
+  notificationListeners();
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Root" component={Root} />
@@ -124,4 +127,3 @@ function AppStack() {
   );
 }
 export default AppStack;
-const styles = StyleSheet.create({});

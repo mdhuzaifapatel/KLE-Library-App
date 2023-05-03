@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  Image,
   Text,
   StyleSheet,
   StatusBar,
@@ -15,7 +14,6 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {scale} from 'react-native-size-matters';
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
-import {useNavigation} from '@react-navigation/native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 
 function Notice({route, navigation}) {
@@ -29,9 +27,9 @@ function Notice({route, navigation}) {
   try {
     notificationData = route.params.notificationData;
     notificationTitle = route.params.notificationTitle;
-    console.log(notificationData);
+    // console.log(notificationData);
   } catch (e) {
-    console.log(e);
+    console.log('Error: ', e);
   }
 
   return (
@@ -73,7 +71,7 @@ function Notice({route, navigation}) {
         closeOnTouchOutside={touch}
       />
 
-      {/*========================== DASHBOARD CODE ==========================*/}
+      {/*========================== NOTICE CODE ==========================*/}
 
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <StatusBar barStyle="dark-content" translucent={true} />

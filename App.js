@@ -6,9 +6,7 @@ import AppNav from './src/navigation/AppNav';
 import {useNetInfo} from '@react-native-community/netinfo';
 import CheckInternet from './src/context/CheckInternet';
 import {PermissionsAndroid} from 'react-native';
-import {
-  notificationListeners,
-} from './src/utils/notificationService';
+
 
 const App = () => {
   useEffect(() => {
@@ -23,8 +21,6 @@ const App = () => {
           console.log(error);
         });
     }
-
-    notificationListeners();
   }, []);
 
   const net = useNetInfo();
