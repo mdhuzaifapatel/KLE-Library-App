@@ -20,9 +20,8 @@ import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import Contact from '../screens/Links';
 import ChangePassword from '../screens/ChangePassword';
 import Notice from '../screens/Notice';
-import { notificationListeners } from '../utils/notificationService';
-
-
+import {notificationListeners} from '../utils/notificationService';
+import Acknowledgement from '../screens/Acknowledgement';
 
 function Root() {
   return (
@@ -104,6 +103,16 @@ function Root() {
         options={{
           drawerIcon: () => (
             <Icon name="information" size={wp(5.5)} color={Colors.font} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Guidance & Support"
+        component={Acknowledgement}
+        options={{
+          drawerIcon: () => (
+            <Icon name="hand-heart" size={wp(5.5)} color={Colors.font} />
           ),
         }}
       />
