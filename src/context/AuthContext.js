@@ -5,15 +5,6 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import axios from 'axios';
-import {
-  ADMIN_LOGIN_URL,
-  BARCODE_URL,
-  BASE_URL,
-  BOOKS_URL,
-  CHANGE_PASSWORD_URL,
-  IMAGE_URL,
-  USER_INFO,
-} from '../utils/config';
 import messaging from '@react-native-firebase/messaging';
 import cheerio from 'react-native-cheerio';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -34,15 +25,65 @@ export const AuthProvider = ({children}) => {
   const [imageURI, setImageURI] = useState(null);
   const [touch, setTouch] = useState();
   const [deviceToken, setDeviceToken] = useState('');
+  const [urls, setUrls] = useState({
+    BASE_URL: '',
+    BASE_URL_8080: '',
+    ADMIN_LOGIN_URL: '',
+    IMAGE_URL: '',
+    USER_INFO: '',
+    BOOKS_URL: '',
+    BARCODE_URL: '',
+    CHANGE_PASSWORD_URL: '',
+    QP_URL: '',
+    FEEDBACK_URL: '',
+  });
   var parseString = require('react-native-xml2js').parseString;
   let token = '';
+  const WEB_APP_URL =
+    'https://script.google.com/macros/s/AKfycbzXWZCHczHVkL4ddEHKuCasd0jGPtS2BnA2GEXrI_QaUIp6koNkn51hj0I_b-cgOsM18g/exec';
+  
+  
+  
+  // Fetch URLs
+  const fetchURLs = async () => {
+    try {
+      const response = await axios.get(WEB_APP_URL);
+      const data = response.data;
+      const {
+        BASE_URL,
+        BASE_URL_8080,
+        ADMIN_LOGIN_URL,
+        IMAGE_URL,
+        USER_INFO,
+        BOOKS_URL,
+        BARCODE_URL,
+        CHANGE_PASSWORD_URL,
+        QP_URL,
+        FEEDBACK_URL,
+      } = data.body[0];
+      setUrls({
+        BASE_URL,
+        BASE_URL_8080,
+        ADMIN_LOGIN_URL,
+        IMAGE_URL,
+        USER_INFO,
+        BOOKS_URL,
+        BARCODE_URL,
+        CHANGE_PASSWORD_URL,
+        QP_URL,
+        FEEDBACK_URL,
+      });
+    } catch (error) {
+      console.log('Error fetching URLs:', error);
+    }
+  };
 
   // Login
   const login = async (username, password) => {
     setIsLoading(true);
     await axios
       .get(
-        `${BASE_URL}/cgi-bin/koha/ilsdi.pl?service=AuthenticatePatron&username=${username}&password=${password}`,
+        `${urls.BASE_URL}/cgi-bin/koha/ilsdi.pl?service=AuthenticatePatron&username=${username}&password=${password}`,
         {username, password},
       )
       .then(res => {
@@ -109,13 +150,13 @@ export const AuthProvider = ({children}) => {
   const adminLogin = async () => {
     setIsLoading(true);
     await axios
-      .get(`${ADMIN_LOGIN_URL}`)
+      .get(`${urls.ADMIN_LOGIN_URL}`)
 
       .then(res => {
         readingHistory();
       })
       .catch(err => {
-        console.log(err);
+        
       })
       .finally(() => {
         setIsLoading(false);
@@ -124,7 +165,7 @@ export const AuthProvider = ({children}) => {
 
   // Reading History
   const readingHistory = async () => {
-    const res = await axios.get(`${BOOKS_URL}=${userToken}`);
+    const res = await axios.get(`${urls.BOOKS_URL}=${userToken}`);
     const $ = cheerio.load(res.data);
     const tableRows = $('tr');
 
@@ -173,7 +214,7 @@ export const AuthProvider = ({children}) => {
     setIsLoading(true);
     console.log('Barcode:', data);
     await axios
-      .get(`${BARCODE_URL}=${data}&id_type=cardnumber`)
+      .get(`${urls.BARCODE_URL}=${data}&id_type=cardnumber`)
       .then(res => {
         parseString(res.data, function (err, result) {
           if (result.LookupPatron.id) {
@@ -212,7 +253,7 @@ export const AuthProvider = ({children}) => {
     try {
       if (userToken) {
         await axios
-          .get(`${USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
+          .get(`${urls.USER_INFO}=${userToken}&show_fines=1&show_loans=1`)
           .then(res => {
             parseString(res.data, {trim: true}, function (err, result) {
               let userInfo = result;
@@ -240,7 +281,7 @@ export const AuthProvider = ({children}) => {
       const response = await RNFetchBlob.config({
         fileCache: true,
         appendExt: 'png',
-      }).fetch('GET', `${IMAGE_URL}=${userToken}`);
+      }).fetch('GET', `${urls.IMAGE_URL}=${userToken}`);
 
       const localUri = response.path();
       setImageURI(`file://${localUri}`);
@@ -256,7 +297,7 @@ export const AuthProvider = ({children}) => {
   const changePassword = async (newPassword, confirmPassword) => {
     setIsLoading(true);
     await axios
-      .post(`${CHANGE_PASSWORD_URL}/${userToken}/password`, {
+      .post(`${urls.CHANGE_PASSWORD_URL}/${userToken}/password`, {
         password: newPassword,
         password_2: confirmPassword,
       })
@@ -280,15 +321,26 @@ export const AuthProvider = ({children}) => {
   };
 
   // Use effects
+  // useEffect(() => {
+  //   fetchURLs();
+  //   getFcmToken();
+  //   isLoggedIn();
+  // }, []);
+
   useEffect(() => {
-    getFcmToken();
-    isLoggedIn();
+    const fetchData = async () => {
+      await fetchURLs();
+      getFcmToken();
+      isLoggedIn();
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
     adminLogin();
     getPatronInfo();
-  }, [userToken]);
+  }, [userToken, urls]);
 
   return (
     <>
@@ -341,6 +393,7 @@ export const AuthProvider = ({children}) => {
           readingHistory,
           changePassword,
           deviceToken,
+          urls,
         }}>
         {children}
       </AuthContext.Provider>

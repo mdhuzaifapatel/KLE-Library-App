@@ -23,7 +23,6 @@ const ReadingHistory = ({navigation}) => {
   const {previousBooksInfo} = useContext(AuthContext);
   let noOfBooks = null;
   noOfBooks = previousBooksInfo.length;
-
   // Date format
   function formatDate(dateString) {
     const parts = dateString.split('/');

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Text,
   View,
@@ -19,10 +19,11 @@ import {
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {scale} from 'react-native-size-matters';
 import {Picker} from '@react-native-picker/picker';
-import {BASE_URL} from '../utils/config';
+import {AuthContext} from '../context/AuthContext';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Search = ({navigation}) => {
+  const {urls} = useContext(AuthContext);
   const [query, setQuery] = useState('');
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +50,7 @@ const Search = ({navigation}) => {
     }
     axios
       .get(
-        `${BASE_URL}/cgi-bin/koha/opac-search.pl?idx=${selectedSearchCriteria}&q=${query}&weight_search=1`,
+        `${urls.BASE_URL}/cgi-bin/koha/opac-search.pl?idx=${selectedSearchCriteria}&q=${query}&weight_search=1`,
       )
       .then(response => {
         const $ = cheerio.load(response.data);
