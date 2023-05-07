@@ -39,6 +39,7 @@ const ReadingHistory = ({navigation}) => {
     let dd = item.duedate.toString();
     let rd = item.returndate.toString();
     let id = item.issuedate.toString();
+    let barcode = item.column6.toString();
     let dueDate = formatDate(dd);
     let returnDate = formatDate(rd);
     let issueDate = formatDate(id);
@@ -93,31 +94,45 @@ const ReadingHistory = ({navigation}) => {
             top: hp(3),
           }}>
           <View style={{flexDirection: 'row'}}>
-            {item.location == 'Central Library' ? (
+            <View>
+              {item.location == 'Central Library' ? (
+                <Text
+                  style={{
+                    fontFamily: 'BreezeSans-Bold',
+                    color: Colors.font2,
+                    fontSize: responsiveFontSize(2),
+                    right: wp(3),
+                    top: hp(1),
+                    marginBottom: scale(-5),
+                  }}>
+                  Central Library
+                </Text>
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: 'BreezeSans-Bold',
+                    color: Colors.font2,
+                    fontSize: responsiveFontSize(2),
+                    right: wp(3),
+                    top: hp(1),
+                    marginBottom: scale(-5),
+                  }}>
+                  Lending Library
+                </Text>
+              )}
+              {/* Barcode */}
               <Text
                 style={{
                   fontFamily: 'BreezeSans-Bold',
-                  color: Colors.font2,
-                  fontSize: responsiveFontSize(2),
+                  color: Colors.black,
+                  fontSize: responsiveFontSize(1.75),
                   right: wp(3),
-                  top: hp(1),
+                  top: hp(1.7),
                   marginBottom: scale(-5),
                 }}>
-                Central Library
+                {barcode}
               </Text>
-            ) : (
-              <Text
-                style={{
-                  fontFamily: 'BreezeSans-Bold',
-                  color: Colors.font2,
-                  fontSize: responsiveFontSize(2),
-                  right: wp(3),
-                  top: hp(1),
-                  marginBottom: scale(-5),
-                }}>
-                Lending Library
-              </Text>
-            )}
+            </View>
 
             <View style={{top: hp(0.4), left: wp(4)}}>
               <Text style={styles.normal}>Issue date: {issueDate}</Text>
