@@ -340,7 +340,7 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     adminLogin();
     getPatronInfo();
-  }, [userToken, urls]);
+  }, [userToken]);
 
   return (
     <>
