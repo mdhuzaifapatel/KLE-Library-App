@@ -11,7 +11,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-
+import axios from 'axios';
 import {
   responsiveScreenHeight,
   responsiveScreenWidth,
@@ -23,39 +23,50 @@ import InputField from '../components/InputField';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {AuthContext} from '../context/AuthContext';
+import {BASE_URL} from '../utils/config';
 
 const ChangePassword = ({navigation}) => {
   const [currentPassword, setcurrentPassword] = useState('');
   const [newPassword, setnewPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
+  // const [username, setUsername] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
   const [buttonText, setButtonText] = useState();
   const [touch, setTouch] = useState();
   const {changePassword} = useContext(AuthContext);
+  const {userInfo} = useContext(AuthContext);
+  var parseString = require('react-native-xml2js').parseString;
 
-  /*  
-  const togglePasswordVisibility = () =>
-    setShowcurrentPassword(!showCurrentPassword);
-
-  const toggleNewPasswordVisibility = () =>
-    setShownewPassword(!showNewPassword);
-
-  const toggleConfirmPasswordVisibility = () =>
-    setShowConfirmPassword(!showConfirmPassword);
- */
-
-  const handlePress = () => {
-    if (newPassword === confirmPassword) {
-      changePassword(newPassword, confirmPassword);
-      // passwords match, proceed with sending the request
-    } else {
-      // passwords don't match, show error message
-      setShowAlert(true);
-      setAlertMsg(`Passwords don't match`);
-      setButtonText('OK');
-      setTouch(true);
-    }
+  const handlePress = async () => {
+    var username = userInfo.GetPatronInfo.cardnumber[0];
+    await axios
+      .get(
+        `${BASE_URL}/cgi-bin/koha/ilsdi.pl?service=AuthenticatePatron&username=${username}&password=${currentPassword}`,
+      )
+      .then(res => {
+        parseString(res.data, function (err, result) {
+          if (result.AuthenticatePatron.id) {
+            // New Password
+            if (newPassword === confirmPassword) {
+              changePassword(newPassword, confirmPassword);
+            } else {
+              // Passwords don't match, show error message
+              setShowAlert(true);
+              setAlertMsg(`Passwords don't match`);
+              setButtonText('OK');
+              setTouch(true);
+            }
+          } else {
+            // Current Password don't match, show error message
+            setShowAlert(true);
+            setAlertMsg(`Check your current password`);
+            setButtonText('OK');
+            setTouch(true);
+          }
+        });
+      })
+      .catch(e => {});
   };
 
   return (
@@ -172,16 +183,6 @@ const ChangePassword = ({navigation}) => {
                 style={{marginRight: 5}}
               />
             }
-            // icon2={
-            //   <Ionicons
-            //     name={showCurrentPassword ? 'eye' : 'eye-off'}
-            //     size={24}
-            //     color="gray"
-            //     onPress={togglePasswordVisibility}
-            //   />
-            // }
-
-            // visibilty={!showCurrentPassword}
             inputType="password"
             value={currentPassword}
             onChangeText={text => setcurrentPassword(text)}
