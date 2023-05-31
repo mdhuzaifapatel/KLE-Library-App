@@ -49,7 +49,7 @@ const Search = ({navigation}) => {
     }
     axios
       .get(
-        `${BASE_URL_8080}/cgi-bin/koha/catalogue/search.pl?count=40&sort_by=title_az&idx=${selectedSearchCriteria}&q=${query}`,
+        `${BASE_URL_8080}/cgi-bin/koha/catalogue/search.pl?count=25&sort_by=title_az&idx=${selectedSearchCriteria}&q=${query}`,
       )
       .then(response => {
         const $ = cheerio.load(response.data);
