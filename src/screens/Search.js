@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
@@ -19,9 +19,8 @@ import {
 import {responsiveFontSize} from 'react-native-responsive-dimensions';
 import {scale} from 'react-native-size-matters';
 import {Picker} from '@react-native-picker/picker';
-import {AuthContext} from '../context/AuthContext';
+import {BASE_URL, BASE_URL_8080} from '../utils/config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { BASE_URL } from '../utils/config';
 
 const Search = ({navigation}) => {
   const [query, setQuery] = useState('');
@@ -29,13 +28,13 @@ const Search = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedSearchCriteria, setSelectedSearchCriteria] = useState('ti');
 
-  useEffect(() => {
-    return () => {
-      setBooks([]);
-      setQuery('');
-      setSelectedSearchCriteria('ti');
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setBooks([]);
+  //     setQuery('');
+  //     setSelectedSearchCriteria('ti');
+  //   };
+  // }, [1]);
 
   const handleSearch = () => {
     if (!query) {
@@ -50,30 +49,47 @@ const Search = ({navigation}) => {
     }
     axios
       .get(
-        `${BASE_URL}/cgi-bin/koha/opac-search.pl?idx=${selectedSearchCriteria}&q=${query}&weight_search=1`,
+        `${BASE_URL_8080}/cgi-bin/koha/catalogue/search.pl?count=40&sort_by=title_az&idx=${selectedSearchCriteria}&q=${query}`,
       )
       .then(response => {
         const $ = cheerio.load(response.data);
         const bookList = [];
-        $('tr').each(function () {
-          const book = {};
-          const td = $(this).find('.bibliocol');
-          book.title = capitalizeWords(td.find('.title').text());
-          book.author = capitalizeWords(td.find('.author').text());
-          book.publication =
-            td.find('.publisher_name').text() +
-            ', ' +
-            td.find('.publisher_date').text() +
-            ', ' +
-            td.find('.publisher_place').text();
+        $('tr[id^="row"]').each((index, element) => {
+          const row = $(element);
 
-          book.availability = td
-            .find('.AvailabilityLabel strong')
+          // Extract the desired data from the row
+          const title = row.find('.title').text();
+          const biblionumber = row.find('input[name="biblionumber"]').val();
+          const author = row.find('.author a').text();
+
+          const availability = row
+            .find('.results_available_count')
             .text()
+            .trim()
+            .replace(':', '')
+            .split(',');
+
+          const libraryNameText = row
+            .find('.result_itype_image img')
+            .attr('title')
             .trim();
-          book.location = td.find('.ItemBranch').text();
+
+          const shelvingLoc = row.find('.shelvingloc').first().text().trim();
+          const splitParts = shelvingLoc.split('-');
+          const bookShelf = splitParts.slice(1).join('-').trim();
+
+          const book = {
+            id: biblionumber,
+            title,
+            author,
+            availability,
+            libraryNameText,
+            bookShelf,
+          };
+
           bookList.push(book);
         });
+
         if (bookList.length === 0) {
           setBooks({message: 'No books found'});
         } else {
@@ -88,27 +104,19 @@ const Search = ({navigation}) => {
   };
 
   const renderBook = ({item}) => {
-    <View style={{margin: 10}}>
-      <Text>{item.title}</Text>
-      <Text>{item.author}</Text>
-      <Text>{item.publication}</Text>
-      <Text>{item.availability}</Text>
-      <Text>{item.location}</Text>
-    </View>;
-
     return (
       <View
         style={{
           alignSelf: 'center',
           position: 'relative',
           flexDirection: 'column',
-          height: hp(20),
+          height: hp(19.5),
           width: wp(92),
-          borderColor: '#b7bef266',
-          backgroundColor: '#b7bef266',
+          borderColor: Colors.mainLight,
+          backgroundColor: Colors.mainLight,
           borderRadius: scale(15),
           // marginLeft: wp(2),
-          marginTop: hp(1.8),
+          marginTop: hp(1.5),
         }}>
         {/* Title and Icon */}
         <View
@@ -117,7 +125,12 @@ const Search = ({navigation}) => {
             alignItems: 'center',
           }}>
           <Image
-            style={{height: hp(4.5), width: wp(15), left: wp(1), top: hp(1.5)}}
+            style={{
+              height: hp(4.5),
+              width: wp(15),
+              left: wp(1),
+              top: hp(1.5),
+            }}
             source={require('../assets/images/book.png')}
             resizeMode="contain"
           />
@@ -129,8 +142,8 @@ const Search = ({navigation}) => {
               textAlign: 'left',
               top: hp(1.3),
               fontFamily: 'BreezeSans-Bold',
-              color: '#002c62',
-              fontSize: responsiveFontSize(1.9),
+              color: Colors.font,
+              fontSize: responsiveFontSize(2),
               marginLeft: wp(2),
               marginRight: wp(15),
             }}>
@@ -138,54 +151,87 @@ const Search = ({navigation}) => {
           </Text>
         </View>
 
+        <View style={{}}>
+          <Text
+            style={{
+              textAlign: 'left',
+              top: hp(1.3),
+              fontFamily: 'BreezeSans-Bold',
+              color: '#758283',
+              fontSize: responsiveFontSize(1.85),
+              marginLeft: wp(18),
+              // marginRight: wp(15),
+            }}>
+            {item.author}
+          </Text>
+        </View>
+
         <View
           style={{
             flexDirection: 'row',
-            // justifyContent: 'space-around',
-            alignItems: 'flex-start',
-            left: wp(18),
-            top: hp(1),
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            top: hp(2),
           }}>
-          <View style={{flexDirection: 'column'}}>
-            <Text
-              style={{
-                fontFamily: 'BreezeSans-Bold',
-                color: '#002c62',
-                fontSize: responsiveFontSize(1.7),
-                right: wp(3),
-                top: hp(1),
-                marginBottom: scale(3),
-              }}>
-              Author : {item.author}
-            </Text>
+          <View style={{flexDirection: 'row'}}>
+            {/* Location */}
+            <View>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: Colors.font2,
+                  fontSize: responsiveFontSize(2),
+                  right: wp(4),
+                  top: hp(0.1),
+                  marginBottom: scale(-8),
+                }}>
+                {item.libraryNameText == 'Stundent Lending LIbrary Books' ? (
+                  <Text>Lending Library</Text>
+                ) : (
+                  <Text>Central Library</Text>
+                )}
+              </Text>
 
-            <Text
-              style={{
-                fontFamily: 'BreezeSans-Bold',
-                color: '#002c62',
-                fontSize: responsiveFontSize(1.7),
-                right: wp(3),
-                top: hp(1),
-                marginBottom: scale(2),
-              }}>
-              {item.availability == 'Not available:' ? (
-                <Text style={styles.return2}>Not Available</Text>
-              ) : (
-                <Text style={styles.return}>Available</Text>
-              )}
-            </Text>
+              {/* Barcode */}
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: Colors.black,
+                  fontSize: responsiveFontSize(1.75),
+                  right: wp(4),
+                  top: hp(1.0),
+                  marginBottom: scale(0),
+                }}>
+                {`${item.availability[0]} , ${item.availability[1]}`}
+              </Text>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                  right: wp(4),
+                  top: hp(1.0),
+                  marginBottom: scale(0),
+                }}>
+                {item.bookShelf === '' ? <></> : <>Rack {item.bookShelf}</>}
+              </Text>
+            </View>
 
-            <Text
-              style={{
-                fontFamily: 'BreezeSans-Bold',
-                color: '#002c62',
-                fontSize: responsiveFontSize(1.7),
-                right: wp(3),
-                top: hp(1),
-                marginBottom: scale(-5),
-              }}>
-              {item.location}
-            </Text>
+            {/* Available */}
+            <View style={{top: hp(0.4), left: wp(4)}}>
+              <Text
+                style={{
+                  fontFamily: 'BreezeSans-Bold',
+                  color: '#333',
+                  fontSize: scale(11.5),
+                }}>
+                {item.availability[1] === ' None available' ? (
+                  <Text style={styles.return2}>Not Available</Text>
+                ) : (
+                  <Text style={styles.return}>Available</Text>
+                )}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -323,7 +369,7 @@ const Search = ({navigation}) => {
             flex: 2.5,
             backgroundColor: '#fff',
             // marginTop: scale(10),
-            marginBottom: hp(-5),
+            marginBottom: hp(-3.8),
             top: hp(-9),
           }}>
           {isLoading ? (
@@ -387,8 +433,9 @@ const styles = StyleSheet.create({
   },
   return: {
     fontFamily: 'BreezeSans-Bold',
-    color: '#002c62',
-    fontSize: scale(11.5),
+    color: '#1FAA59',
+    fontSize: scale(13.5),
+    borderWidth: scale(5),
   },
   return2: {
     fontFamily: 'BreezeSans-Bold',
@@ -419,18 +466,20 @@ const styles = StyleSheet.create({
     borderColor: Colors.font,
     borderWidth: wp(0.25),
     borderRadius: hp(50),
-    backgroundColor: Colors.white,
+    // backgroundColor: Colors.white,
     // marginRight: wp(1),
   },
 
   picker2: {
     fontSize: responsiveFontSize(1.8),
     color: Colors.font,
-    fontFamily: 'OpenSans-Bold',
     top: hp(-0.7),
+    backgroundColor: Colors.main2,
   },
   picker3: {
-    fontSize: responsiveFontSize(2.5),
+    fontSize: responsiveFontSize(2.1),
     color: Colors.font,
+    // backgroundColor: Colors.main2,
+    
   },
 });
