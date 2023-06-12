@@ -339,7 +339,7 @@ export const AuthProvider = ({children}) => {
       const today = new Date();
 
       const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 141);
+      tomorrow.setDate(tomorrow.getDate() + 1);
 
       for (let i = 0; i < duedates.length; i++) {
         const dueDate = new Date(duedates[i]);
