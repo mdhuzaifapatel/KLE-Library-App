@@ -20,7 +20,8 @@ import {
   IMAGE_URL,
   USER_INFO,
 } from '../utils/config';
-
+import MyBooks from '../screens/CurrentBooks';
+import notifee, {TimestampTrigger, TriggerType} from '@notifee/react-native';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
@@ -36,6 +37,9 @@ export const AuthProvider = ({children}) => {
   const [deviceToken, setDeviceToken] = useState('');
   var parseString = require('react-native-xml2js').parseString;
   let token = '';
+  var duedates = [];
+  var booknames = [];
+  let loandata = {};
 
   // Login
   const login = async (username, password) => {
@@ -215,12 +219,14 @@ export const AuthProvider = ({children}) => {
             parseString(res.data, {trim: true}, function (err, result) {
               let userInfo = result;
               setUserInfo(userInfo);
-              // AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-              // console.log('name: ' + userInfo.GetPatronInfo.surname[0]);
+              loandata = userInfo.GetPatronInfo.loans[0].loan;
             });
           })
           .then(res => {
             fetchAndStoreImage();
+          })
+          .then(res => {
+            scheduleDueDateNotifications();
           })
           .catch(err => {
             console.log(err);
@@ -276,6 +282,84 @@ export const AuthProvider = ({children}) => {
     setDeviceToken(token);
     // console.log(token);
   };
+
+  // Local notification content
+  async function scheduleNotification(body) {
+    const date = new Date(Date.now());
+    date.setHours(16);
+    date.setMinutes(16);
+
+    const now = Date.now();
+
+    if (now >= date.getTime()) {
+      console.log('The deadline has passed');
+    } else {
+      const trigger: TimestampTrigger = {
+        type: TriggerType.TIMESTAMP,
+        timestamp: date.getTime(),
+      };
+      const channelId = await notifee.createChannel({
+        id: 'overdue',
+        name: 'books overdue Channel',
+      });
+
+      await notifee.createTriggerNotification(
+        {
+          title: `Return your book before it's overdue.`,
+          body: body,
+          android: {
+            channelId: channelId,
+            autoCancel: true,
+            color: '#72CDCF',
+
+            pressAction: {
+              launchActivity: 'default',
+              id: 'default',
+            },
+          },
+          deeplink: MyBooks,
+        },
+        trigger,
+      );
+      console.log('Notification set!');
+    }
+  }
+
+  // Local notification scheduling
+  async function scheduleDueDateNotifications() {
+    for (let loan of loandata) {
+      let date = loan.onloan[0].trim();
+      let bookname = loan.title;
+      duedates.push(date);
+      booknames.push(bookname);
+      booknames = booknames.flat();
+    }
+
+    if (duedates.length !== 0) {
+      const today = new Date();
+
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 141);
+
+      for (let i = 0; i < duedates.length; i++) {
+        const dueDate = new Date(duedates[i]);
+
+        if (dueDate < today) {
+          // Handle past due dates
+          const bookName = booknames[i];
+          const bodyText = `Please return ${bookName} as soon as possible.`;
+
+          await scheduleNotification(bodyText);
+        } else if (dueDate.getDate() === tomorrow.getDate()) {
+          // Schedule notification for tomorrow
+          const bookName = booknames[i];
+          const bodyText = `${bookName} is due tomorrow.`;
+
+          await scheduleNotification(bodyText);
+        }
+      }
+    }
+  }
 
   // Use effects
   useEffect(() => {

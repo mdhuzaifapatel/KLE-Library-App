@@ -15,7 +15,7 @@ const App = () => {
         PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
       )
         .then(res => {
-          console.log('res+++++', res);
+          console.log('Notification:', res);
         })
         .catch(error => {
           console.log(error);

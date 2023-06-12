@@ -46,11 +46,11 @@ export const Dashboard = ({navigation}) => {
       });
   };
 
-  
   // Send data to firebase & receive push notification data (in foreground mode)
   useEffect(() => {
     saveData();
 
+    // Foreground notification (notice)
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       let notification = remoteMessage['notification'];
       let title = notification.title;
@@ -62,7 +62,6 @@ export const Dashboard = ({navigation}) => {
       setTouch(true);
     });
     return unsubscribe;
-
   }, []);
 
   //=========================== FIREBASE END ===========================//
@@ -106,7 +105,6 @@ export const Dashboard = ({navigation}) => {
   } catch (e) {}
 
   //For Category
-
   try {
     if (data.categorycode == 'ST') {
       var category = 'STUDENT';
