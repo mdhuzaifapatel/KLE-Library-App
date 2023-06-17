@@ -40,6 +40,10 @@ export const AuthProvider = ({children}) => {
   var duedates = [];
   var booknames = [];
   let loandata = {};
+  let notificationCount = 0;
+  let scheduledNotifications = [];
+  let overdueBooks = [];
+  let futureBooks = [];
 
   // Login
   const login = async (username, password) => {
@@ -226,7 +230,9 @@ export const AuthProvider = ({children}) => {
             fetchAndStoreImage();
           })
           .then(res => {
-            scheduleDueDateNotifications();
+            if (loandata !== undefined) {
+              scheduleDueDateNotifications();
+            }
           })
           .catch(err => {
             console.log(err);
@@ -283,35 +289,31 @@ export const AuthProvider = ({children}) => {
     // console.log(token);
   };
 
-  // Local notification content
-  async function scheduleNotification(body) {
-    const date = new Date(Date.now());
-    date.setHours(16);
-    date.setMinutes(16);
-
+  // Local Schedule notification
+  async function scheduleNotification(body, notificationDate, title) {
     const now = Date.now();
 
-    if (now >= date.getTime()) {
+    if (notificationDate <= now) {
       console.log('The deadline has passed');
     } else {
       const trigger: TimestampTrigger = {
         type: TriggerType.TIMESTAMP,
-        timestamp: date.getTime(),
+        timestamp: notificationDate.getTime(),
       };
+
       const channelId = await notifee.createChannel({
         id: 'overdue',
-        name: 'books overdue Channel',
+        name: 'Books Overdue Channel',
       });
 
       await notifee.createTriggerNotification(
         {
-          title: `Return your book before it's overdue.`,
+          title: title,
           body: body,
           android: {
             channelId: channelId,
             autoCancel: true,
             color: '#72CDCF',
-
             pressAction: {
               launchActivity: 'default',
               id: 'default',
@@ -321,11 +323,12 @@ export const AuthProvider = ({children}) => {
         },
         trigger,
       );
-      console.log('Notification set!');
+
+      notificationCount++;
+      console.log('Notification set! -> ' + notificationCount);
     }
   }
 
-  // Local notification scheduling
   async function scheduleDueDateNotifications() {
     for (let loan of loandata) {
       let date = loan.onloan[0].trim();
@@ -333,29 +336,111 @@ export const AuthProvider = ({children}) => {
       duedates.push(date);
       booknames.push(bookname);
       booknames = booknames.flat();
-    }
 
-    if (duedates.length !== 0) {
+      const dueDate = new Date(date);
       const today = new Date();
-
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      // dueDate.setDate(dueDate.getDate() - 1); // Set to one day before the due date
 
       for (let i = 0; i < duedates.length; i++) {
-        const dueDate = new Date(duedates[i]);
+        let dueDatesList = new Date(duedates[i]);
 
-        if (dueDate < today) {
-          // Handle past due dates
-          const bookName = booknames[i];
-          const bodyText = `Please return ${bookName} as soon as possible.`;
+        if (dueDatesList < today) {
+          overdueBooks.push({
+            dueDate: dueDate,
+            bookName: bookname,
+          });
+        } else if (dueDatesList > today) {
+          futureBooks.push({
+            dueDate: dueDate,
+            bookName: bookname,
+          });
+        }
+      }
+    }
 
-          await scheduleNotification(bodyText);
-        } else if (dueDate.getDate() === tomorrow.getDate()) {
-          // Schedule notification for tomorrow
-          const bookName = booknames[i];
-          const bodyText = `${bookName} is due tomorrow.`;
+    // console.log('Overdue books:', overdueBooks);
+    // console.log('Future books:', futureBooks);
 
-          await scheduleNotification(bodyText);
+    if (overdueBooks.length === 0 && futureBooks.length === 0) {
+      console.log(
+        'No books with approaching due dates. Skipping notification scheduling.',
+      );
+      return;
+    }
+
+    const today = new Date();
+    const twoDays = 2 * 24 * 60 * 60 * 1000; // Two days in milliseconds
+    const nextTwoMinutes = 2 * 60 * 1000;
+
+    for (let i = 0; i < overdueBooks.length; i++) {
+      const overdueBook = overdueBooks[i];
+      const dueDate = overdueBook.dueDate;
+      const bookName = overdueBook.bookName;
+
+      if (i % 2 === 0) {
+        // Schedule notification every two days
+        const title = 'The following books are currently overdue';
+        const bodyText = `${bookName} is already overdue. Return it as soon as possible.`;
+
+        // Calculate the desired notification date and time
+        const notificationDays = 1; // Number of days for the notification
+        const notificationDate = new Date(
+          today.getTime() + notificationDays * twoDays,
+        );
+
+        // Check if there are any existing notifications for the same book
+        const existingNotification = scheduledNotifications.find(
+          notification => notification.bookName === bookName,
+        );
+
+        if (!existingNotification) {
+          // Schedule the new notification
+          const newNotificationId = await scheduleNotification(
+            bodyText,
+            notificationDate,
+            title,
+          );
+          scheduledNotifications.push({
+            id: newNotificationId,
+            bookName: bookName,
+          });
+        }
+      }
+    }
+
+    for (let i = 0; i < futureBooks.length; i++) {
+      const futureBook = futureBooks[i];
+      const dueDate = futureBook.dueDate;
+      const bookName = futureBook.bookName;
+
+      if (i % 2 === 0) {
+        // Schedule notification every two days
+        const bodyText = `${bookName} is due soon. Return it on time.`;
+        const title = `Return your book before it's overdue`;
+
+        // Calculate the desired notification date and time
+        const notificationDate = new Date(dueDate.getTime() - 1);
+
+        // console.log(
+        //   'Already scheduled notification -> ' + scheduledNotifications,
+        // );
+
+        // Check if there are any existing notifications for the same book
+        const existingNotification = scheduledNotifications.find(
+          notification => notification.bookName === bookName,
+        );
+
+        if (!existingNotification) {
+          // Schedule the new notification
+          const newNotificationId = await scheduleNotification(
+            bodyText,
+            notificationDate,
+            title,
+          );
+          scheduledNotifications.push({
+            id: newNotificationId,
+            bookName: bookName,
+          });
         }
       }
     }
