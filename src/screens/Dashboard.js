@@ -138,6 +138,12 @@ export const Dashboard = ({navigation}) => {
       data.sort1 == 'E & E'
     ) {
       branch = 'EEE';
+    } else if (
+      data.sort1 == 'Chemical Engineering' ||
+      data.sort1 == 'Chemical' ||
+      data.sort1 == 'CH'
+    ) {
+      branch = 'Chemical';
     }
   } catch (error) {}
 
